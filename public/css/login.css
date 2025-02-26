@@ -1,0 +1,51 @@
+.full {
+    height: 100vh;
+}
+
+.form-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.login {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 30px;
+}
+
+.login-title {
+    padding-bottom: 5rem;
+    color: white;
+}
+
+.b-radius-20 {
+    border-radius: 20px;
+}
+
+.bg{
+    display: flex;
+    position: fixed;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -100;
+}
+.frame{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    z-index: -50;
+}
+.logobg{
+    /* position: fixed; */
+    z-index: -50;
+    opacity: 0.3;
+}
+body{
+    margin: 0;
+    padding: 0;
+}
