@@ -1,5 +1,6 @@
 $('#danhSachDiem').DataTable({
-    // reponsive : "true",
+    reponsive : "true",
+    scrollX: true,
     layout: {
         topStart: {
             buttons: [

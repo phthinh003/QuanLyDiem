@@ -20,8 +20,8 @@
                     <button class="btn {{ request()->is('*2') ? 'btn-success' : '' }}">Học Kì 2</button></a>
                 <a href="{{ route('canboManage.bangdiemcanamlopday', ['mamonhoc' => $mamonhoc]) }}">
                     <button class="btn {{ request()->is('*3') ? 'btn-success' : '' }}">Cả Năm</button></a>
-                <a href="{{ route('canboManage.bangdiemcanamlopday', ['mamonhoc' => $mamonhoc]) }}">
-                    <button class="btn {{ request()->is('*3') ? 'btn-success' : '' }}">Test Excel</button></a>
+                <a href="{{ route('canboManage.excelExport') }}">
+                    <button class="btn">Excel</button></a>
             </div>
         </div>
         <div class="card-body">

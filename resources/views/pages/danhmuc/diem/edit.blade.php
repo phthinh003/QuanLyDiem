@@ -8,7 +8,7 @@
 @endsection
 @section('content')
     <div class="card pt-2 mt-2">
-        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+        <div class="card-header flex-wrap border-0 pt-6 pb-6">
             {{ $page_title }}
             @if ($errors->any())
                 <div class="alert alert-danger pt-6 pb-0">
@@ -19,6 +19,14 @@
                     </ul>
                 </div>
             @endif
+            <hr>
+            {{-- Thong tin hoc sinh --}}
+            <table>
+                <tr>
+                    <td><i>Tên học sinh:</i></td>
+                    <td><b>{{ $datahocsinh->hotenhocsinh }}</b></td>
+                </tr>
+            </table>
         </div>
         <div class="card-body">
             <form action="{{ route('diemManage.update') }}" method="post">
@@ -34,6 +42,24 @@
                     <div class="col-xl-8">
                         <div class="my-5">
                             @foreach ($diem as $i => $value)
+                                <div class="form-group row align-items-center mb-4">
+                                    <label class="col-md-3 col-form-label text-right font-weight-bold">
+                                        {{ $value['tenloaidiem'] }}
+                                    </label>
+                                    <div class="col-md-6">
+                                        <div class="form-row">
+                                            @foreach ($value['diem'] as $key => $value2)
+                                                <div class="col">
+                                                    <input type="number" name="{{ $key }}"
+                                                        class="form-control form-input-diem" min="0" max="10" step="0.01" value="{{ $value2 }}" placeholder="Nhập điểm" />
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            {{-- @foreach ($diem as $i => $value)
                                 <div class="row mb-3 align-items-center justify-content-center">
                                     <label class="col-3">{{ $value['tenloaidiem'] }}</label>
                                     <div class="col-6">
@@ -43,7 +69,7 @@
                                         @endforeach
                                     </div>
                                 </div>
-                            @endforeach
+                            @endforeach --}}
                             {{-- Footer --}}
                             <div class="modal-footer mt-5 me-5">
                                 <div class="flex-wrap border-0 pt-6 pb-0">

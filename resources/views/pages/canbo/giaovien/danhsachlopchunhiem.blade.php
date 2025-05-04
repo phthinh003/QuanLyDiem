@@ -11,7 +11,6 @@
             </div>
             <hr>
             <div class="card-toolbar">
-
                 <a href="{{ route('canboManage.danhsachlopchunhiem', ['malop' => $malop, 'hocky' => 1]) }}">
                     <button class="btn {{ request()->is('*1') ? 'btn-success' : '' }}">Học Kì 1</button></a>
                 <a href="{{ route('canboManage.danhsachlopchunhiem', ['malop' => $malop, 'hocky' => 2]) }}">
