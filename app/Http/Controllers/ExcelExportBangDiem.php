@@ -8,7 +8,6 @@ class ExcelExportBangDiem extends Controller
 {
     public function exportBangDiemLop()
     {
-        $loaimon =
         $data = [
             [1, 'Trần Thiên Hương', 9.0, 9.0, 9.0, 9.0, 10.0, 7.0, 8.0, 8.6],
             // Thêm học sinh khác...

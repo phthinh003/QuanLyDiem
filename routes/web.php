@@ -43,7 +43,7 @@ Route::group(['middleware' => ['App\Http\Middleware\CheckPermission']], function
             Route::get('/htql/canbo/danhsachlopday/bangdiem/{mamonhoc}/3', 'App\Http\Controllers\DanhSachController@bangdiemcanamlopday')->name('bangdiemcanamlopday');
         });
         // EXCEL EXPORT Bang Diem Lop
-        Route::get('/download', 'App\Http\Controllers\ExcelExportBangDiem@exportBangDiemLop')->name('excelExport');
+        Route::get('/download/{malop}', 'App\Http\Controllers\ExcelExportBangDiem@exportBangDiemLop')->name('excelExport');
     });
 
     //Phan Quyen - Ban Giam Hieu

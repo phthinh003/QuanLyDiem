@@ -21,12 +21,13 @@
             @endif
             <hr>
             {{-- Thong tin hoc sinh --}}
-            <table>
-                <tr>
-                    <td><i>Tên học sinh:</i></td>
-                    <td><b>{{ $datahocsinh->hotenhocsinh }}</b></td>
-                </tr>
-            </table>
+            <div>
+                <b>{{ $datahocsinh->hotenhocsinh }} |
+                   {{ $datahocsinh->tenlop }} |
+                   {{ $monhoc->tenmon }} |
+                   Học kỳ {{ $hocki }}, {{ $datahocsinh->tennienkhoa }}
+                </b>
+            </div>
         </div>
         <div class="card-body">
             <form action="{{ route('diemManage.update') }}" method="post">

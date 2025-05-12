@@ -1,21 +1,6 @@
 $('#danhSachDiem').DataTable({
     reponsive : "true",
-    scrollX: true,
-    layout: {
-        topStart: {
-            buttons: [
-                {
-                    extend: 'excelHtml5',
-                    text: 'Xuất file Excel',
-                    exportOptions: {
-                        columns: ":not(.noExport)"
-                    },
-                    filename: document.getElementsByName('filename')[0].value,
-                    title: document.getElementsByName('filename')[0].value,
-                },
-            ]
-        }
-    },
+    // scrollX: true,
     columnDefs: [
         {
             target: 0,
@@ -28,6 +13,10 @@ $('#danhSachDiem').DataTable({
         {
             target: 'diem',
             width: '90px',
+        },
+        {
+            target: -1,
+            width: '100px'
         },
     ],
 

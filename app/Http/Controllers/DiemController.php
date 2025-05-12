@@ -41,7 +41,11 @@ class DiemController extends Controller
             ->join('mon', 'mon.mamon', 'monhoc.mamon')
             ->first();
 
-        $datahocsinh = HocSinh::where('mahocsinh', $mahocsinh)->first();
+        $datahocsinh = HocSinh::where('hocsinh.mahocsinh', $mahocsinh)->select(["hocsinh.*", "lop.tenlop", "nienkhoa.tennienkhoa"])
+                    ->join("lophoc", "lophoc.mahocsinh", "=", "hocsinh.mahocsinh")
+                    ->join("lop", "lop.malop", "=", "lophoc.malop")
+                    ->join("nienkhoa", "lop.nienkhoa", "=", "nienkhoa.manienkhoa")
+                    ->first();
         $datadiemhocsinh = Diem::where(['mahocsinh' => $mahocsinh, 'hocky'=> $hocki, 'mamonhoc' => $mamonhoc])->get();
         $dataloaidiem = LoaiDiem::whereIn('loaimon', [$monhoc->loaimon, 3])->orderBy('heso')->get();
 
