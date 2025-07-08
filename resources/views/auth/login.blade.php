@@ -7,7 +7,7 @@
 @section('content')
     <img class="bg" src="{{ asset('images/bgSchool.jpg') }}" alt="">
     <div class="frame">
-        <img class="logobg" src="{{ asset("images/logo1000.png") }}" alt="" width="500px" >
+        <img class="logobg" src="{{ asset("images/logo1280.png") }}" alt="" width="600px" >
     </div>
 
     <div class="d-flex full">
