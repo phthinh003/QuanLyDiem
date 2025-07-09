@@ -1,13 +1,26 @@
 @extends('layouts.canbo.layoutcanbo')
+@section('styles')
+    <style>
+        /* Chrome */
+        .diem-input::-webkit-inner-spin-button,
+        .diem-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Firefox */
+        .diem-input[type=number] {
+            -moz-appearance: textfield;
+        }
+    </style>
+@endsection
 @section('content')
     <div class="mt-2 pt-2 card card-custom">
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="cart-title">
                 <input type="hidden" name="filename" value="{{ $filename }}">
-                @foreach ($thongtinlop as $item => $value)
-                    @foreach ($value as $key => $v)
-                        {{ $key }} : {{ $v }}<br />
-                    @endforeach
+                @foreach ($thongtinlop as $key => $value)
+                    {{ $key }} : {{ $value }}<br />
                 @endforeach
             </div>
             <hr>
@@ -23,64 +36,72 @@
             </div>
         </div>
         <div class="card-body">
-            <table style="width: 100%;" class="table table-bordered table-hover table-checkable" id="danhSachDiem">
-                <thead class="thead-light">
-                    <tr>
-                        <th rowspan="2" class="text-center">STT</th>
-                        <th rowspan="2" class="text-center">Họ Tên Học Sinh</th>
-                        @foreach ($dataloaidiem as $item => $loaidiem)
-                            <th colspan="{{ $loaidiem->soluong }}" class="text-center diem" data-dt-order="disable">
-                                {{ $loaidiem->tenloaidiem }}
-                                {{ $lankt[] = $loaidiem->soluong }}
-                            </th>
-                        @endforeach
-                        @if ($hocki < 3)
-                            <th rowspan="2" class="text-center diem">TBM</th>
-                            <th rowspan="2" class="text-center noExport">Thao tác</th>
-                        @endif
-                    </tr>
-                    <tr>
-                        @foreach ($lankt as $value)
-                            @for ($i=1; $i <= $value ; $i++)
-                                <th data-dt-order="disable" class="text-center">L{{ $i }}</th>
-                            @endfor
-                        @endforeach
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach ($danhsach as $item => $value)
+            <div class="table-responsive">
+                <table style="width: 100%;" class="table table-bordered table-hover table-checkable" id="danhSachDiem">
+                    <thead class="thead-light">
                         <tr>
-                            <td class="text-center font-weight-bold">{{ $item + 1 }}</td>
-                            @foreach ($value as $key => $v)
-                                @if ($key == 'tenhocsinh')
-                                    <td class="text-center">{{ $v }}</td>
-                                @elseif ($key == 'tbm' && $hocki < 3)
-                                    <td class="text-center diem">
-                                        {{ $v == '' ? '' : number_format((float) $v, 1, '.', '') }}</td>
-                                @elseif ($key == 'mahocsinh')
-                                    @if ($hocki < 3)
-                                        <td class="text-center">
-                                            <a href="{{ route('diemManage.edit', ['hocki' => $hocki, 'mamonhoc' => $mamonhoc, 'mahocsinh' => $v]) }}"
-                                                class="btn btn-primary" title="Chỉnh sửa">Chỉnh sửa</a>
+                            <th rowspan="{{ $hocki < 3 ? 2 : 1 }}" class="text-center">STT</th>
+                            <th rowspan="{{ $hocki < 3 ? 2 : 1 }}" class="text-center">Họ Tên Học Sinh</th>
+                            @foreach ($dataloaidiem as $item => $loaidiem)
+                                <th colspan="{{ $loaidiem->soluong }}" class="text-center diem" data-dt-order="disable">
+                                    {{ $loaidiem->tenloaidiem }}
+                                    <?php $lankt[] = $loaidiem->soluong; ?>
+                                </th>
+                            @endforeach
+                            @if ($hocki < 3)
+                                <th rowspan="2" class="text-center diem">TBM</th>
+                                <th rowspan="2" class="text-center noExport">Thao tác</th>
+                            @endif
+                        </tr>
+                        @if ($hocki < 3)
+                            <tr>
+                                @foreach ($lankt as $value)
+                                    @for ($i = 1; $i <= $value; $i++)
+                                        <th data-dt-order="disable" class="text-center">L{{ $i }}</th>
+                                    @endfor
+                                @endforeach
+                            </tr>
+                        @endif
+                    </thead>
+
+                    <tbody>
+                        @foreach ($danhsach as $item => $value)
+                            <tr>
+                                <td class="text-center font-weight-bold">{{ $item + 1 }}</td>
+                                @foreach ($value as $key => $v)
+                                    @if ($key == 'tenhocsinh')
+                                        <td class="text-center">{{ $v }}</td>
+                                    @elseif ($key == 'tbm' && $hocki < 3)
+                                        <td class="text-center diem">
+                                            {{ $v == '' ? '' : number_format((float) $v, 1, '.', '') }}</td>
+                                    @elseif ($key == 'mahocsinh')
+                                        @if ($hocki < 3)
+                                            <td class="text-center">
+                                                <a href="{{ route('diemManage.edit', ['hocki' => $hocki, 'mamonhoc' => $mamonhoc, 'mahocsinh' => $v]) }}"
+                                                    class="btn btn-primary" title="Chỉnh sửa">Chỉnh sửa</a>
+                                            </td>
+                                        @endif
+                                    @elseif($key == 'diem')
+                                        @foreach ($v as $keydiem => $diem)
+                                            <td contenteditable="true" data-id="{{ $keydiem }}" data-field="diem"
+                                                class="text-center editable">
+                                                {{-- <input style="border: 0" class="form-control form-control-sm diem-input"
+                                                    min="0" max="10" step="0.25" type="number"
+                                                    value="{{ $diem != '' ? number_format((float) $diem, 2, '.', '') : '' }}"> --}}
+                                                {{ $diem != '' ? number_format((float) $diem, 2, '.', '') : '' }}
+                                            </td>
+                                        @endforeach
+                                    @else
+                                        <td class="text-center">{{ $v == '' ? '' : number_format((float) $v, 1, '.', '') }}
                                         </td>
                                     @endif
-                                @elseif($key == 'diem')
-                                    @foreach ($v as $keydiem => $diem)
-                                        <td class="text-center">
-                                            {{ $diem == '' ? '' : number_format((float) $diem, 2, '.', '') }}
-                                        </td>
-                                    @endforeach
-                                @else
-                                    <td class="text-center">{{ $v == '' ? '' : number_format((float) $v, 1, '.', '') }}
-                                    </td>
-                                @endif
-                            @endforeach
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            <!--end: Datatable-->
+                                @endforeach
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <!--end: Datatable-->
+            </div>
         </div>
     </div>
 @endsection
@@ -90,4 +111,59 @@
 @endsection
 @section('scripts')
     <script src="{{ asset('js/crud/lopday_datatables.js') }}"></script>
+    <script>
+        document.querySelectorAll('.editable').forEach(cell => {
+            let oldValue = cell.innerText.trim();
+            cell.addEventListener('focus', () => {
+                oldValue = cell.innerText.trim();
+            });
+
+            // Khi rời ô (blur) sẽ gửi AJAX
+            cell.addEventListener('blur', e => {
+                const newValue = e.target.innerText.trim();
+                if (parseFloat(oldValue)==parseFloat(newValue)) return;
+                const id = e.target.dataset.id;
+                const sodiem = e.target.dataset.field;
+                const mamonhoc = "";
+                fetch(`/diem-ajax/${id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            [sodiem]: newValue,
+                            "mamonhoc": {{ $thongtinlop['mamonhoc'] }},
+                            "hocki": {{ $hocki }}
+                        })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data.diem_moi)
+                        if (data.success) {
+                            // Cập nhật chính ô điểm (phòng trường hợp server chuẩn hoá)
+                            e.target.innerText = data.diem_moi;
+
+                        } else {
+                            this.innerText = oldValue; // rollback
+                            alert('Lưu thất bại!');
+                        }
+                    });
+                // .catch(err => console.error('Fetch error:', err));
+                // .then(res => res.json())
+                // .then(resp => {
+                //     if (!resp.success) alert('Lưu không thành công!');
+                // })
+                // .catch(() => alert('Lỗi mạng hoặc server'));
+            });
+
+            // Optional: nhấn Enter để blur ngay
+            cell.addEventListener('keydown', e => {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // không xuống dòng
+                    e.target.blur(); // kích hoạt blur
+                }
+            });
+        });
+    </script>
 @endsection

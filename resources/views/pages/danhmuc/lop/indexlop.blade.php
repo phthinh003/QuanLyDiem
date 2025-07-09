@@ -13,6 +13,7 @@
             </div>
             <hr>
             <div class="card-toolbar">
+                {{-- Tao lop moi --}}
                 <a href="{{ route('lopManage.createLop') }}"><button class="btn btn-success">Tạo mới</button></a>
                 <!--end::Button-->
             </div>

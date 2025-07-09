@@ -55,6 +55,7 @@ Route::group(['middleware' => ['App\Http\Middleware\CheckPermission']], function
     Route::name('diemManage.')->group(function () {
         Route::get('/diem/edit/hk{hocki}/{mahocsinh}/{mamonhoc}', 'App\Http\Controllers\DiemController@edit')->name('edit')->middleware('checklogincanbo::class');
         Route::post('/diem/update', 'App\Http\Controllers\DiemController@update')->name('update')->middleware('checklogincanbo::class');
+        Route::put('/diem-ajax/{id}', 'App\Http\Controllers\DiemController@update_ajax')->name('update-ajax')->middleware('checklogincanbo::class');
     });
 
     // Quản lý thông tin học sinh

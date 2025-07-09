@@ -12,6 +12,7 @@ use App\Models\Mon;
 use App\Models\PhuHuynh;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Psy\Readline\Hoa\Console;
 
 class DanhSachController extends Controller
 {
@@ -41,15 +42,15 @@ class DanhSachController extends Controller
                         ->join('lop','lop.malop','monhoc.malop')
                         ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
                         ->where('mamonhoc',$mamonhoc)->first();
-        $thongtinlop=[];
-        // dd($tt);
-        $thongtinlop=Arr::add($thongtinlop,count($thongtinlop),
-                ['Tên lớp'=>$tt->tenlop,
-                'Cán bộ giảng dạy'=>$tt->hoten,
-                'Môn'=>$tt->tenmon,
-                'Sỉ số'=>count($danhsachlop),
-                'Niên khóa'=>$tt->tennienkhoa
-            ]);
+        $thongtinlop=
+                [
+                'mamonhoc'=>$tt->mamonhoc,
+                'tenlop'=>$tt->tenlop,
+                'canbo'=>$tt->hoten,
+                'mon'=>$tt->tenmon,
+                'siso'=>count($danhsachlop),
+                'nienkhoa'=>$tt->tennienkhoa
+            ];
         $filename = 'Điểm_'.$tt->tenlop.'_'.($hocki<3?'hk'.$hocki:'canam').'_'.$tt->tennienkhoa;
         $dataloaidiem = LoaiDiem::whereIn('loaimon', [$monhoc->loaimon, 3])->orderBy('heso')->get();
         $danhsach = [];
@@ -68,15 +69,17 @@ class DanhSachController extends Controller
                 $i = $loaidiem->soluong;
                 $j = 0;
                 foreach ($diemhs as $item => $diem) {
-                    $d = Arr::add($d, $diem->loaidiem . '_' . $j, $diem->diem);
+                    $d = Arr::add($d, $diem->madiem, $diem->diem);
                     $j++;
                     $tongdiem += $loaidiem->heso * $diem->diem;
                     $tonghesodiem += (int) $loaidiem->heso;
                 }
-                if ($j != 0)
-                    $j--;
+// echo "<script>console.log('".$loaidiem->maloaidiem." ".$loaidiem->soluong."'".")</script>";
                 for ($e = $j; $e < $i; $e++) {
-                    $d = Arr::add($d, $loaidiem->maloaidiem . '_' . $e, "");
+//
+// echo "<script>console.log('".."'".")</script>";
+// echo "<script>console.log('".'new_' . $loaidiem->maloaidiem . '_' . $e-$j+1 ."'".")</script>";
+                    $d = Arr::add($d, $hocsinh->mahocsinh.'_' . $loaidiem->maloaidiem . '_' . $e-$j+1, "");
                 }
             }
 
@@ -118,15 +121,15 @@ class DanhSachController extends Controller
                         ->join('lop','lop.malop','monhoc.malop')
                         ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
                         ->where('mamonhoc',$mamonhoc)->first();
-        $thongtinlop=[];
-        // dd($tt);
-        $thongtinlop=Arr::add($thongtinlop,count($thongtinlop),
-                ['Tên lớp'=>$tt->tenlop,
+        $thongtinlop=
+            [
+                'mamonhoc'=>$tt->mamonhoc,
+                'Tên lớp'=>$tt->tenlop,
                 'Cán bộ giảng dạy'=>$tt->hoten,
                 'Môn'=>$tt->tenmon,
                 'Sỉ số'=>count($danhsachlop),
                 'Niên khóa'=>$tt->tennienkhoa
-            ]);
+            ];
         $filename = 'Điểm_'.$tt->tenlop.'_'.('canam').'_'.$tt->tennienkhoa;
         $dataloaidiem = LoaiDiem::whereIn('loaimon', [$monhoc->loaimon, 3])->orderBy('heso')->get();
         $danhsach = [];
