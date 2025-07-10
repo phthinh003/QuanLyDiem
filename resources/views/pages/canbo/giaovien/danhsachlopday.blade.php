@@ -72,7 +72,7 @@
                                     @if ($key == 'tenhocsinh')
                                         <td class="text-center">{{ $v }}</td>
                                     @elseif ($key == 'tbm' && $hocki < 3)
-                                        <td class="text-center diem">
+                                        <td class="text-center diem" id="tbm_{{ $value['mahocsinh'] }}">
                                             {{ $v == '' ? '' : number_format((float) $v, 1, '.', '') }}</td>
                                     @elseif ($key == 'mahocsinh')
                                         @if ($hocki < 3)
@@ -91,9 +91,6 @@
                                                 {{ $diem != '' ? number_format((float) $diem, 2, '.', '') : '' }}
                                             </td>
                                         @endforeach
-                                    @else
-                                        <td class="text-center">{{ $v == '' ? '' : number_format((float) $v, 1, '.', '') }}
-                                        </td>
                                     @endif
                                 @endforeach
                             </tr>
@@ -121,10 +118,14 @@
             // Khi rời ô (blur) sẽ gửi AJAX
             cell.addEventListener('blur', e => {
                 const newValue = e.target.innerText.trim();
-                if (parseFloat(oldValue)==parseFloat(newValue)) return;
+                if (parseFloat(oldValue)==parseFloat(newValue) || oldValue==newValue)
+                {
+                    console.log("Không có thay đổi")
+                    e.target.innerText = oldValue;
+                    return;
+                }
                 const id = e.target.dataset.id;
                 const sodiem = e.target.dataset.field;
-                const mamonhoc = "";
                 fetch(`/diem-ajax/${id}`, {
                         method: 'PUT',
                         headers: {
@@ -139,11 +140,13 @@
                     })
                     .then(res => res.json())
                     .then(data => {
-                        console.log(data.diem_moi)
+                        // console.log(data.diem_moi)
                         if (data.success) {
-                            // Cập nhật chính ô điểm (phòng trường hợp server chuẩn hoá)
+                            console.log('success');
+                            // Cập nhật lại ô điểm - chuẩn hoá số
                             e.target.innerText = data.diem_moi;
-
+                            const id_tbm = "tbm_"+data.mahocsinh;
+                            document.getElementById(id_tbm).innerText = data.tbm;
                         } else {
                             this.innerText = oldValue; // rollback
                             alert('Lưu thất bại!');
