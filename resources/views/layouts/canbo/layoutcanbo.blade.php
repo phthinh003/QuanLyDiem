@@ -31,8 +31,11 @@
                     <span class="sr-only">Toggle Menu</span>
                 </button>
             </div>
-            <div class="p-4 pt-1">
-                <h1><a href="index.html" class="logo">THPT <br/> TÂY ĐÔ</a></h1>
+            <div class="p-4 pt-1 logo">
+                <h1 >
+                    <img src="{{ asset('images/logo.png') }}"></img>
+                    {{-- <a href="index.html" class="logo">THPT <br/> TÂY ĐÔ</a> --}}
+                </h1>
                 @include('layouts.menu.menucanbo')
 
             </div>

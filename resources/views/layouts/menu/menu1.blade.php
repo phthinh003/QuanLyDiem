@@ -5,7 +5,7 @@
         </div>
         <div class="d-flex align-items-center">
             <div class="header_img">
-                {{-- <img src="{{ asset('images/logo1000.png') }}" alt="No image"> --}}
+                <img src="{{ asset('images/logo1280.png') }}" alt="No image">
             </div>
             <div class="w-auto d-flex align-items-center btn-lg px-2">
                 <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Xin chào</span>

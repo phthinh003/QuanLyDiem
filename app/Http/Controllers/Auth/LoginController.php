@@ -68,6 +68,8 @@ class LoginController extends Controller
                     session()->put("userhoten", $taikhoan->hotenhocsinh);
                 } else if ($typeacc=="PH") {
                     session()->put("userhoten", $taikhoan->tenphuhuynh);
+                } else {
+                    session()->put("userhoten","Admin");
                 }
 
                 toastr()->success('Đăng nhập thành công!', 'Thành công!');

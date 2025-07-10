@@ -8334,3 +8334,11 @@ a[data-toggle="collapse"] {
   .form-control:-moz-placeholder {
     /* Firefox 18- */
     color: rgba(0, 0, 0, 0.3); }
+.logo h1{
+background-color: #fff;
+border-radius: 50%;
+}
+.logo h1 img{
+    width: 100%;
+    max-width: 500px;
+}
