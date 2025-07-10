@@ -23,11 +23,11 @@
 
                     <div class="mb-4">
                         <input type="text" class="form-control b-radius-20" id="username" name="username"
-                            placeholder="Tài khoản" autocomplete="off"/>
+                            placeholder="Tài khoản" autocomplete="off" required/>
                     </div>
                     <div class="mb-5">
                         <input type="password" class="form-control b-radius-20" id="password" name="password"
-                            placeholder="Mật khẩu" />
+                            placeholder="Mật khẩu" required/>
                     </div>
                     <div>
                         <input class="btn btn-primary b-radius-20" type="submit" value="Đăng nhập" />

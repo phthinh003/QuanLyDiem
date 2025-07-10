@@ -22,7 +22,9 @@
 </head>
 
 <body>
-
+<div class="header">
+    <img src="{{ asset('images/bgheader.png') }}" alt="">
+</div>
     <div class="wrapper d-flex align-items-stretch">
         <nav id="sidebar">
             <div class="custom-menu">
@@ -31,11 +33,15 @@
                     <span class="sr-only">Toggle Menu</span>
                 </button>
             </div>
-            <div class="p-4 pt-1 logo">
-                <h1 >
+            <div class="p-4 pt-1 ">
+                <div class="logo ">
+<h1 >
+
                     <img src="{{ asset('images/logo.png') }}"></img>
                     {{-- <a href="index.html" class="logo">THPT <br/> TÂY ĐÔ</a> --}}
                 </h1>
+                </div>
+
                 @include('layouts.menu.menucanbo')
 
             </div>

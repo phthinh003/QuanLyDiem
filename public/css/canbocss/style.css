@@ -8335,10 +8335,23 @@ a[data-toggle="collapse"] {
     /* Firefox 18- */
     color: rgba(0, 0, 0, 0.3); }
 .logo h1{
+    width: 50%;
 background-color: #fff;
 border-radius: 50%;
 }
 .logo h1 img{
     width: 100%;
+
     max-width: 500px;
+}
+.header{
+ width: 100%px;
+  height: 150px;
+  overflow: hidden;
+  position: relative;
+}
+.header img{
+    position: absolute;
+  top: -50px;
+  left: -100px;
 }

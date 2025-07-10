@@ -1,8 +1,9 @@
 <ul class="list-unstyled components mb-5">
     <li class="{{ request()->is('*canbo') ? 'active' : '' }}">
-        <a href="{{ route('canboManage.indexCanboPage') }}">Bảng điều khiển</a>
+        <a href="{{ route('canboManage.indexCanboPage') }}">Trang chủ</a>
     </li>
-    <li class="{{ request()->is('*danhsachlopchunhiem*') ? 'active' : '' }}">
+    @if (count($datalopchunhiem)!=0)
+        <li class="{{ request()->is('*danhsachlopchunhiem*') ? 'active' : '' }}">
         <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false"
             class="dropdown-toggle">Lớp đang chủ nhiệm</a>
         <ul class="collapse list-unstyled" id="homeSubmenu">
@@ -14,7 +15,9 @@
 
         </ul>
     </li>
+    @endif
 
+@if (count($datalopday)!=0)
     <li class="{{ request()->is('*danhsachlopday*') ? 'active' : '' }}">
         <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
             class="dropdown-toggle">Các lớp đang dạy</a>
@@ -27,6 +30,8 @@
 
         </ul>
     </li>
+@endif
+
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         {{ csrf_field() }}
     </form>
