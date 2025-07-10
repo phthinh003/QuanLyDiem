@@ -9,6 +9,13 @@
         </div>
     </div>
     <div class="card-body">
+        <h4>Các chức năng</h4>
+        <a href="">
+            <div class="btn btn-primary">
+                Nhập điểm
+            </div>
+        </a>
+        <hr>
         <h4>Các lớp chủ nhiệm</h4>
         @foreach ($datalopchunhiem as $item => $value)
         <a href="{{ route('canboManage.danhsachlopchunhiem', ['malop' => $value->malop,'hocky' => 1]) }}">
