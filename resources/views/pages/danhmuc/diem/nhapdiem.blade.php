@@ -1,7 +1,7 @@
 @extends('layouts.canbo.layoutcanbo')
 @section('styles')
-    <style>
-        /* Chrome */
+    {{-- <style>
+        Chrome
         .diem-input::-webkit-inner-spin-button,
         .diem-input::-webkit-outer-spin-button {
             -webkit-appearance: none;
@@ -12,7 +12,7 @@
         .diem-input[type=number] {
             -moz-appearance: textfield;
         }
-    </style>
+    </style> --}}
 @endsection
 @section('content')
     <div class="mt-2 pt-2 card card-custom">
@@ -147,9 +147,6 @@
                             e.target.innerText = data.diem_moi;
                             const id_tbm = "tbm_"+data.mahocsinh;
                             document.getElementById(id_tbm).innerText = data.tbm;
-
-                            e.target.style.background = 'lightgreen';
-                            setTimeout(()=> e.target.style.background='', 3000);
                         } else {
                             this.innerText = oldValue; // rollback
                             alert('Lưu thất bại!');

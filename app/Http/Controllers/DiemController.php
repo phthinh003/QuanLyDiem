@@ -145,10 +145,16 @@ class DiemController extends Controller
             $diem->loaidiem = $loaidiem;
             $diem->save();
         }
+
+        //Lấy tbm
+        $tbm = Diem::tbm($diem->mahocsinh, $diem->mamonhoc, $diem->hocky);
+
         $sodiem=="" ? $diemmoi = null : $diemmoi = number_format($sodiem,2, '.');
         return response()->json([
             'success' => true,
-            'diem_moi' => $diemmoi
+            'diem_moi' => $diemmoi,
+            'mahocsinh' => $diem->mahocsinh,
+            'tbm' => $tbm,
         ]);
     }
 
