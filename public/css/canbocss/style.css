@@ -8344,15 +8344,54 @@ border-radius: 50%;
 
     max-width: 500px;
 }
+@media (min-width: 992px) {
 .header{
- width: 100%px;
-  height: 150px;
-  overflow: hidden;
+  width: 100%;
+  height: 100px;
   position: relative;
   margin-bottom: 2px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  background-image: url(../../images/2.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
-.header img{
+.childheader{
+    display: flex;
     position: absolute;
-  top: -200px;
-  left: -100px;
 }
+.childheader img{
+    width: 100px;
+}
+.header .hd{
+    /* Định dạng chữ "TRƯỜNG TRUNG HỌC PHỔ THÔNG TÂY ĐÔ" */
+    margin-top: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bolder;
+    color: #fff;
+    text-shadow:
+    -1px -1px 0 black,
+     1px -1px 0 black,
+    -1px  1px 0 black,
+     1px  1px 0 black;
+}
+.logosidebar{
+    display: none;
+}
+
+}
+@media (max-width: 992px) {
+    .header{
+        display: none;
+    }
+    .logosidebar{
+        display: block;
+        background-color: #fff;
+        border-radius: 50%;
+        max-width: 100px;
+    }
+}
+

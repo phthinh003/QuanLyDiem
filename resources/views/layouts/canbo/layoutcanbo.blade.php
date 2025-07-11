@@ -23,7 +23,10 @@
 
 <body>
 <div class="header">
-    <img src="{{ asset('images/bgheader.png') }}" alt="">
+    <div class="childheader">
+        <img src="{{ asset('images/logo1280.png') }}" alt="">
+        <h1 class="hd">TRƯỜNG TRUNG HỌC PHỔ THÔNG TÂY ĐÔ</h1>
+    </div>
 </div>
     <div class="wrapper d-flex align-items-stretch">
         <nav id="sidebar">
@@ -34,16 +37,8 @@
                 </button>
             </div>
             <div class="p-4 pt-1 ">
-                <div class="logo ">
-<h1 >
-
-                    <img src="{{ asset('images/logo.png') }}"></img>
-                    {{-- <a href="index.html" class="logo">THPT <br/> TÂY ĐÔ</a> --}}
-                </h1>
-                </div>
-
+                <img class="logosidebar" src="{{ asset('images/logo.png') }}"></img>
                 @include('layouts.menu.menucanbo')
-
             </div>
         </nav>
 
