@@ -8349,9 +8349,10 @@ border-radius: 50%;
   height: 150px;
   overflow: hidden;
   position: relative;
+  margin-bottom: 2px;
 }
 .header img{
     position: absolute;
-  top: -50px;
+  top: -200px;
   left: -100px;
 }
