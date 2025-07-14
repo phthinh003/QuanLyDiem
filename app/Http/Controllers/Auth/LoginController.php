@@ -73,6 +73,7 @@ class LoginController extends Controller
                 }
 
                 toastr()->success('Đăng nhập thành công!', 'Thành công!');
+                if($typeacc=="CB" && session('type')==1) return redirect()->route('dashboard');
                 if($typeacc=="CB") return redirect()->route('canboManage.indexCanboPage');
                 if($typeacc=="HS") return redirect()->route('hocsinhManage.indexHocsinhPage');
                 if($typeacc=="PH") return redirect()->route('phuhuynhManage.indexPhuHuynhPage');
@@ -105,8 +106,9 @@ class LoginController extends Controller
             $typeacc = Str::upper(substr(session()->get('userid'),0,2));
             if($typeacc=="AD"){
                 return true;
-            }else{
-                return false;
+            }elseif(session()->has('type')){
+                if(session('type')==1) return true;
+                else return false;
             }
         } else {
             return false;
