@@ -40,6 +40,24 @@
                                         placeholder="Nhập tên niên khóa" />
                                 </div>
                             </div>
+                            <div class="row mb-3 align-items-center justify-content-center">
+                                <label class="col-3">Thời gian bắt đầu
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-6">
+                                    <input type="date" name="batdau" id="batdau" class="form-control"
+                                        />
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center justify-content-center">
+                                <label class="col-3">Thời gian kết thúc
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-6">
+                                    <input type="date" name="ketthuc" id="ketthuc" class="form-control"
+                                        />
+                                </div>
+                            </div>
 
                             <div class="modal-footer mt-5 me-5">
                                 <div class="flex-wrap border-0 pt-6 pb-0">

@@ -24,15 +24,19 @@
                         <th class="text-center">STT</th>
                         <th class="text-center">Mã Niên Khóa</th>
                         <th class="text-center">Tên Niên Khóa</th>
+                        <th class="text-center">Thời gian bắt đầu</th>
+                        <th class="text-center">Thời gian kết thúc</th>
                         <th class="text-center">Thao Tác</th>
                     </tr>
-                </thead>
+                </thead>s
                 <tbody>
                     @foreach ($data as $item => $value)
                         <tr>
                             <td class="text-center font-weight-bold">{{ $item + 1 }}</td>
                             <td class="text-center">{{ $value->manienkhoa }}</td>
                             <td class="text-center">{{ $value->tennienkhoa }}</td>
+                            <td class="text-center">{{ $value->batdau }}</td>
+                            <td class="text-center">{{ $value->ketthuc }}</td>
                             <td class="text-center" style="display: flex; justify-content: center">
                                 <table>
                                     <tr>

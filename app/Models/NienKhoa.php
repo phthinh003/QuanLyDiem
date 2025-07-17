@@ -10,7 +10,7 @@ class NienKhoa extends Model
     use HasFactory;
     protected $table = "nienkhoa";
     protected $primaryKey = "manienkhoa";
-    protected $fillable = ['manienkhoa','tennienkhoa'];
+    protected $fillable = ['manienkhoa','tennienkhoa','batdau','ketthuc'];
 
     public static function getAllNienKhoa()
     {

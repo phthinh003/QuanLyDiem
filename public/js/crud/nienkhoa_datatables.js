@@ -10,8 +10,18 @@ $('#danhSachNienKhoa').DataTable({
             width: '200px'
         },
         {
+            target: 2,
+            width: '200px'
+        },
+        {
+            target: 4,
+            render: DataTable.render.datetime('DD-MM-yyyy'),
+            // width: '250px',
+        },
+        {
             target: 3,
-            width: '250px'
+            render: DataTable.render.datetime('DD-MM-yyyy'),
+            // width: '250px'
         }
     ],
     "language": {

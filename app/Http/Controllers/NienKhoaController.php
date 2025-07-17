@@ -26,7 +26,8 @@ class NienKhoaController extends Controller
         try {
             $nienkhoa = new NienKhoa();
             $nienkhoa->tennienkhoa=$request->tennienkhoa;
-
+            $nienkhoa->batdau=$request->batdau;
+            $nienkhoa->ketthuc=$request->ketthuc;
             $nienkhoa->save();
 
             // Hiển thị thông báo thêm thành công
@@ -51,6 +52,8 @@ class NienKhoaController extends Controller
             $nienkhoa = NienKhoa::find($request->manienkhoa);
 
             $nienkhoa->tennienkhoa=$request->tennienkhoa;
+            $nienkhoa->batdau=$request->batdau;
+            $nienkhoa->ketthuc=$request->ketthuc;
             $nienkhoa->save();
             toastr()->success('Cập nhật thông tin thành công!', 'Thành công!');
             return redirect()->route('nienkhoaManage.indexNienKhoa');
