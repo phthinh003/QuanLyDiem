@@ -27,11 +27,11 @@ class BangDiemExport implements FromArray, WithHeadings, WithEvents
     // Header nhiều dòng: dòng 1 là nhóm tiêu đề, dòng 2 là chi tiết
     public function headings(): array
     {
-        $data = LoaiDiem::all()->whereIn('loaimon', [1,3])->sortBy('heso');
+        $dataloaidiem = LoaiDiem::all()->whereIn('loaimon', [1,3])->sortBy('heso');
         // Row 1
         $arrRow1 = ['STT', 'Họ và tên'];
         $arrRow2 = ['', ''];
-        foreach ($data as $key => $value) {
+        foreach ($dataloaidiem as $key => $value) {
             $arrRow1[] = $value->tenloaidiem;
             $arrRow2[] = $value->soluong > 1 ?'L1' : '';
             for ($i=0; $i<$value->soluong-1; $i++) {

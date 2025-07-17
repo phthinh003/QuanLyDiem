@@ -19,9 +19,15 @@
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="cart-title">
                 <input type="hidden" name="filename" value="{{ $filename }}">
-                @foreach ($thongtinlop as $key => $value)
+                {{-- @foreach ($thongtinlop as $key => $value)
                     {{ $key }} : {{ $value }}<br />
-                @endforeach
+                @endforeach --}}
+                {{-- {{ dd() }} --}}
+                <b>Tên cán bộ</b> : {{ $thongtinlop['canbo'] }} <br/>
+                <b>Môn</b> : {{ $thongtinlop['mon'] }} <br/>
+                <b>Tên lớp</b> : {{ $thongtinlop['tenlop'] }} <br/>
+                <b>Sỉ số</b> : {{ $thongtinlop['siso'] }} <br/>
+                <b>Năm học</b> : {{ $thongtinlop['nienkhoa'] }}  <br/>
             </div>
             <hr>
             <div class="card-toolbar">
@@ -31,11 +37,11 @@
                     <button class="btn {{ request()->is('*2') ? 'btn-success' : '' }}">Học Kì 2</button></a>
                 <a href="{{ route('canboManage.bangdiemcanamlopday', ['mamonhoc' => $mamonhoc]) }}">
                     <button class="btn {{ request()->is('*3') ? 'btn-success' : '' }}">Cả Năm</button></a>
-                <a href="{{ route('canboManage.excelExport', ['$thongtinlop->malop']) }}">
+                <a href="{{ route('canboManage.excelExport', [$mamonhoc, $thongtinlop['malop'], $hocki], ) }}">
                     <button class="btn">Excel</button></a>
             </div>
         </div>
-        {{-- {{ dd($danhsach) }} --}}
+        {{-- {{ dd($mamonhoc) }} --}}
         <div class="card-body">
             <div class="table-responsive">
                 <table style="width: 100%;" class="table table-bordered table-hover table-checkable" id="danhSachDiem">
@@ -44,7 +50,8 @@
                             <th rowspan="{{ $hocki < 3 ? 2 : 1 }}" class="text-center">STT</th>
                             <th rowspan="{{ $hocki < 3 ? 2 : 1 }}" class="text-center">Họ Tên Học Sinh</th>
                             @foreach ($dataloaidiem as $item => $loaidiem)
-                                <th colspan="{{ $hocki < 3 ? $loaidiem->soluong : 1 }}" class="text-center diem" data-dt-order="disable">
+                                <th colspan="{{ $hocki < 3 ? $loaidiem->soluong : 1 }}" class="text-center diem"
+                                    data-dt-order="disable">
                                     {{ $loaidiem->tenloaidiem }}
                                     <?php $lankt[] = $loaidiem->soluong; ?>
                                 </th>
@@ -118,8 +125,7 @@
             // Khi rời ô (blur) sẽ gửi AJAX
             cell.addEventListener('blur', e => {
                 const newValue = e.target.innerText.trim();
-                if (parseFloat(oldValue)==parseFloat(newValue) || oldValue==newValue)
-                {
+                if (parseFloat(oldValue) == parseFloat(newValue) || oldValue == newValue) {
                     console.log("Không có thay đổi")
                     e.target.innerText = oldValue;
                     return;
@@ -134,7 +140,7 @@
                         },
                         body: JSON.stringify({
                             [sodiem]: newValue,
-                            "mamonhoc": {{ $thongtinlop['mamonhoc'] }},
+                            "mamonhoc": {{ $mamonhoc }},
                             "hocki": {{ $hocki }}
                         })
                     })
@@ -145,11 +151,11 @@
                             console.log('success');
                             // Cập nhật lại ô điểm - chuẩn hoá số
                             e.target.innerText = data.diem_moi;
-                            const id_tbm = "tbm_"+data.mahocsinh;
+                            const id_tbm = "tbm_" + data.mahocsinh;
                             document.getElementById(id_tbm).innerText = data.tbm;
 
                             e.target.style.background = 'lightgreen';
-                            setTimeout(()=> e.target.style.background='', 3000);
+                            setTimeout(() => e.target.style.background = '', 3000);
                         } else {
                             this.innerText = oldValue; // rollback
                             alert('Lưu thất bại!');

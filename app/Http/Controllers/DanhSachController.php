@@ -44,7 +44,8 @@ class DanhSachController extends Controller
                         ->where('mamonhoc',$mamonhoc)->first();
         $thongtinlop=
                 [
-                'mamonhoc'=>$tt->mamonhoc,
+                'mamon'=>$tt->mamon,
+                'malop' => $tt->malop,
                 'tenlop'=>$tt->tenlop,
                 'canbo'=>$tt->hoten,
                 'mon'=>$tt->tenmon,
@@ -124,11 +125,11 @@ class DanhSachController extends Controller
         $thongtinlop=
             [
                 'mamonhoc'=>$tt->mamonhoc,
-                'Tên lớp'=>$tt->tenlop,
-                'Cán bộ giảng dạy'=>$tt->hoten,
-                'Môn'=>$tt->tenmon,
-                'Sỉ số'=>count($danhsachlop),
-                'Niên khóa'=>$tt->tennienkhoa
+                'tenlop'=>$tt->tenlop,
+                'canbo'=>$tt->hoten,
+                'mon'=>$tt->tenmon,
+                'siso'=>count($danhsachlop),
+                'nienkhoa'=>$tt->tennienkhoa
             ];
         $filename = 'Điểm_'.$tt->tenlop.'_'.('canam').'_'.$tt->tennienkhoa;
         $dataloaidiem = LoaiDiem::whereIn('loaimon', [$monhoc->loaimon, 3])->orderBy('heso')->get();
