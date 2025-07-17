@@ -35,6 +35,7 @@
                     <button class="btn">Excel</button></a>
             </div>
         </div>
+        {{-- {{ dd($danhsach) }} --}}
         <div class="card-body">
             <div class="table-responsive">
                 <table style="width: 100%;" class="table table-bordered table-hover table-checkable" id="danhSachDiem">
@@ -43,7 +44,7 @@
                             <th rowspan="{{ $hocki < 3 ? 2 : 1 }}" class="text-center">STT</th>
                             <th rowspan="{{ $hocki < 3 ? 2 : 1 }}" class="text-center">Họ Tên Học Sinh</th>
                             @foreach ($dataloaidiem as $item => $loaidiem)
-                                <th colspan="{{ $loaidiem->soluong }}" class="text-center diem" data-dt-order="disable">
+                                <th colspan="{{ $hocki < 3 ? $loaidiem->soluong : 1 }}" class="text-center diem" data-dt-order="disable">
                                     {{ $loaidiem->tenloaidiem }}
                                     <?php $lankt[] = $loaidiem->soluong; ?>
                                 </th>
@@ -63,7 +64,6 @@
                             </tr>
                         @endif
                     </thead>
-
                     <tbody>
                         @foreach ($danhsach as $item => $value)
                             <tr>
@@ -71,7 +71,7 @@
                                 @foreach ($value as $key => $v)
                                     @if ($key == 'tenhocsinh')
                                         <td class="text-center">{{ $v }}</td>
-                                    @elseif ($key == 'tbm' && $hocki < 3)
+                                    @elseif ($key == 'tbm')
                                         <td class="text-center diem" id="tbm_{{ $value['mahocsinh'] }}">
                                             {{ $v == '' ? '' : number_format((float) $v, 1, '.', '') }}</td>
                                     @elseif ($key == 'mahocsinh')

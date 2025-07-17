@@ -150,9 +150,13 @@ class CanBoController extends Controller
         $page_title = "Cán bộ";
         $macanbo=session('userid');
         $canbo=Canbo::find($macanbo);
+
+        // Data lop duoc phan cong cho CanBo chu nhiem
         $datalopchunhiem=Lop::from('lop')
                 ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
                 ->where('chunhiem',$macanbo)->get();
+
+        // Data cac lop duoc phan cong cho CanBo giang day
         $datalopday=MonHoc::from('monhoc')
                                 ->join('lop','lop.malop','monhoc.malop')
                                 ->join('mon','monhoc.mamon','mon.mamon')

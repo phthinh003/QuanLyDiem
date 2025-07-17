@@ -202,7 +202,7 @@ class DanhSachController extends Controller
                 $tbm = ($tbm1 + 2 * $tbm2) / 3;
             }
 
-            $danhsach = Arr::add($danhsach, count($danhsach), ['tenhocsinh' => $hocsinh->hotenhocsinh, 'hocki1' => $tbm1, 'hocki2' => $tbm2, 'tbm' => $tbm, 'mahocsinh' => $hocsinh->mahocsinh]);
+            $danhsach = Arr::add($danhsach, count($danhsach), ['tenhocsinh' => $hocsinh->hotenhocsinh, 'diem'=> ['hocki1' => $tbm1, 'hocki2' => $tbm2], 'tbm' => $tbm, 'mahocsinh' => $hocsinh->mahocsinh]);
             // dd($danhsach);
         }
         $dataloaidiem = [];
