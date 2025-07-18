@@ -19,10 +19,11 @@ Route::post('/login', 'App\Http\Controllers\Auth\LoginController@xacthuc')->name
 Route::post('/logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
 Route::group(['middleware' => ['App\Http\Middleware\CheckPermission']], function () {
-    Route::get('/dashboard', function () {
-        $page_title = "Quản trị";
-        return view('pages.canbo.dashboard', compact('page_title'));
-    })->name('dashboard')->middleware('checkloginadmin::class');
+    Route::get('/dashboard','App\Http\Controllers\AdminController@index')->name('dashboard')->middleware('checkloginadmin::class');
+    // Route::get('/dashboard', function () {
+    //     $page_title = "Quản trị";
+    //     return view('pages.canbo.dashboard', compact('page_title'));
+    // })->name('dashboard')->middleware('checkloginadmin::class');
 
     // Quản lý thông tin cán bộ
     Route::name('canboManage.')->group(function () {
