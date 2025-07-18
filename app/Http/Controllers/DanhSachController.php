@@ -125,6 +125,7 @@ class DanhSachController extends Controller
         $thongtinlop=
             [
                 'mamonhoc'=>$tt->mamonhoc,
+                'malop'=>$tt->malop,
                 'tenlop'=>$tt->tenlop,
                 'canbo'=>$tt->hoten,
                 'mon'=>$tt->tenmon,
