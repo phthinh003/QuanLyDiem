@@ -23,11 +23,11 @@
                     {{ $key }} : {{ $value }}<br />
                 @endforeach --}}
                 {{-- {{ dd() }} --}}
-                <b>Tên cán bộ</b> : {{ $thongtinlop['canbo'] }} <br/>
-                <b>Môn</b> : {{ $thongtinlop['mon'] }} <br/>
-                <b>Tên lớp</b> : {{ $thongtinlop['tenlop'] }} <br/>
-                <b>Sỉ số</b> : {{ $thongtinlop['siso'] }} <br/>
-                <b>Năm học</b> : {{ $thongtinlop['nienkhoa'] }}  <br/>
+                <b>Tên cán bộ</b> : {{ $thongtinlop['canbo'] }} <br />
+                <b>Môn</b> : {{ $thongtinlop['mon'] }} <br />
+                <b>Tên lớp</b> : {{ $thongtinlop['tenlop'] }} <br />
+                <b>Sỉ số</b> : {{ $thongtinlop['siso'] }} <br />
+                <b>Năm học</b> : {{ $thongtinlop['nienkhoa'] }} <br />
             </div>
             <hr>
             <div class="card-toolbar">
@@ -37,14 +37,14 @@
                     <button class="btn {{ request()->is('*2') ? 'btn-success' : '' }}">Học Kì 2</button></a>
                 <a href="{{ route('canboManage.bangdiemcanamlopday', ['mamonhoc' => $mamonhoc]) }}">
                     <button class="btn {{ request()->is('*3') ? 'btn-success' : '' }}">Cả Năm</button></a>
-                <a href="{{ route('canboManage.excelExport', [$mamonhoc, $thongtinlop['malop'], $hocki], ) }}">
+                <a href="{{ route('canboManage.excelExport', [$mamonhoc, $thongtinlop['malop'], $hocki]) }}">
                     <button class="btn">Excel</button></a>
             </div>
         </div>
         {{-- {{ dd($mamonhoc) }} --}}
         <div class="card-body">
             <div class="table-responsive">
-                <table style="width: 100%;" class="table table-bordered table-hover table-checkable" id="danhSachDiem">
+                <table style="width: 100%; " class="table table-bordered table-hover table-checkable" id="danhSachDiem">
                     <thead class="thead-light">
                         <tr>
                             <th rowspan="{{ $hocki < 3 ? 2 : 1 }}" class="text-center">STT</th>
@@ -58,7 +58,10 @@
                             @endforeach
                             @if ($hocki < 3)
                                 <th rowspan="2" class="text-center diem">TBM</th>
-                                <th rowspan="2" class="text-center noExport">Thao tác</th>
+
+                                @if ($khoadiem == false)
+                                    <th rowspan="2" class="text-center noExport">Thao tác</th>
+                                @endif
                             @endif
                         </tr>
                         @if ($hocki < 3)
@@ -71,26 +74,33 @@
                             </tr>
                         @endif
                     </thead>
+
                     <tbody>
                         @foreach ($danhsach as $item => $value)
                             <tr>
                                 <td class="text-center font-weight-bold">{{ $item + 1 }}</td>
+
                                 @foreach ($value as $key => $v)
                                     @if ($key == 'tenhocsinh')
                                         <td class="text-center">{{ $v }}</td>
-                                    @elseif ($key == 'tbm')
+                                    @elseif ($key == 'tbm' )
                                         <td class="text-center diem" id="tbm_{{ $value['mahocsinh'] }}">
                                             {{ $v == '' ? '' : number_format((float) $v, 1, '.', '') }}</td>
                                     @elseif ($key == 'mahocsinh')
                                         @if ($hocki < 3)
-                                            <td class="text-center">
-                                                <a href="{{ route('diemManage.edit', ['hocki' => $hocki, 'mamonhoc' => $mamonhoc, 'mahocsinh' => $v]) }}"
-                                                    class="btn btn-primary" title="Chỉnh sửa">Chỉnh sửa</a>
-                                            </td>
+                                            {{-- <td>akdas</td> --}}
+
+                                            @if ($khoadiem == false)
+                                                <td class="text-center">
+                                                    <a href="{{ route('diemManage.edit', ['hocki' => $hocki, 'mamonhoc' => $mamonhoc, 'mahocsinh' => $v]) }}"
+                                                        class="btn btn-primary" title="Chỉnh sửa">Chỉnh sửa</a>
+                                                </td>
+                                            @endif
                                         @endif
                                     @elseif($key == 'diem')
                                         @foreach ($v as $keydiem => $diem)
-                                            <td contenteditable="true" data-id="{{ $keydiem }}" data-field="diem"
+                                            <td contenteditable="{{ $khoadiem == true ? 'false' : 'true' }}"
+                                                data-id="{{ $keydiem }}" data-field="diem"
                                                 class="text-center editable">
                                                 {{-- <input style="border: 0" class="form-control form-control-sm diem-input"
                                                     min="0" max="10" step="0.25" type="number"

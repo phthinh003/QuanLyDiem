@@ -12,6 +12,7 @@ use App\Models\Mon;
 use App\Models\PhuHuynh;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Date;
 use Psy\Readline\Hoa\Console;
 
 class DanhSachController extends Controller
@@ -91,10 +92,21 @@ class DanhSachController extends Controller
                 $tbm = "";
             }
             ;
+
             $danhsach = Arr::add($danhsach, count($danhsach), ['tenhocsinh' => $hocsinh->hotenhocsinh, 'diem' => $d, 'tbm' => $tbm, 'mahocsinh' => $hocsinh->mahocsinh]);
             // dd($danhsach);
         }
-        return view('pages.canbo.giaovien.danhsachlopday', compact('page_title', 'datalopchunhiem', 'datalopday', 'dataloaidiem', 'danhsach', 'mamonhoc', 'hocki','thongtinlop', 'filename'));
+        // Khoa diem
+        $date1=Date::now();
+        $khoadiem=false;
+        if($hocki==1){
+            if($date1>$tt->hk1) $khoadiem=true;
+        }elseif ($hocki==2){
+            if($date1>$tt->hk2) $khoadiem=true;
+        }
+        session()->put('khoadiem',$khoadiem);
+        // dd($khoadiem);
+        return view('pages.canbo.giaovien.danhsachlopday', compact('page_title', 'datalopchunhiem', 'datalopday', 'dataloaidiem', 'danhsach', 'mamonhoc', 'hocki','thongtinlop', 'filename','khoadiem'));
     }
     public function bangdiemcanamlopday($mamonhoc)
     {
@@ -222,6 +234,7 @@ class DanhSachController extends Controller
         $dataloaidiem = Arr::add($dataloaidiem, count($dataloaidiem), $loaidiem);
         $hocki=3;
         // dd($danhsach);
+
         return view('pages.canbo.giaovien.danhsachlopday', compact('page_title', 'datalopchunhiem', 'datalopday', 'dataloaidiem', 'danhsach', 'mamonhoc', 'hocki','thongtinlop','filename'));
     }
     public function danhsachlopchunhiem($malop, $hocki)
