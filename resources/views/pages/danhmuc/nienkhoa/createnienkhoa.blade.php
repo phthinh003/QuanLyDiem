@@ -58,6 +58,24 @@
                                         />
                                 </div>
                             </div>
+                            <div class="row mb-3 align-items-center justify-content-center">
+                                <label class="col-3">Thời hạn khóa điểm học kì 1
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-6">
+                                    <input type="date" name="hk1" id="hk1" class="form-control"
+                                        />
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center justify-content-center">
+                                <label class="col-3">Thời hạn khóa điểm học kì 2
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-6">
+                                    <input type="date" name="hk2" id="hk2" class="form-control"
+                                        />
+                                </div>
+                            </div>
 
                             <div class="modal-footer mt-5 me-5">
                                 <div class="flex-wrap border-0 pt-6 pb-0">

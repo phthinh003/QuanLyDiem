@@ -38,7 +38,7 @@
                                 </label>
                                 <div class="col-6">
                                     <input type="date" name="batdau" id="batdau" class="form-control"
-                                         value="{{ $info->batdau }}" />
+                                        value="{{ $info->batdau }}" />
                                 </div>
                             </div>
                             <div class="row mb-3 align-items-center justify-content-center">
@@ -47,7 +47,25 @@
                                 </label>
                                 <div class="col-6">
                                     <input type="date" name="ketthuc" id="ketthuc" class="form-control"
-                                         value="{{ $info->ketthuc }}" />
+                                        value="{{ $info->ketthuc }}" />
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center justify-content-center">
+                                <label class="col-3">Thời gian khóa điểm học kì 1
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-6">
+                                    <input type="date" name="hk1" id="hk1" class="form-control"
+                                        value="{{ $info->hk1 }}" />
+                                </div>
+                            </div>
+                            <div class="row mb-3 align-items-center justify-content-center">
+                                <label class="col-3">Thời gian khóa điểm học kì 2
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-6">
+                                    <input type="date" name="hk2" id="hk2" class="form-control"
+                                        value="{{ $info->hk2 }}" />
                                 </div>
                             </div>
 
@@ -55,10 +73,10 @@
                                 <div class="d-flex flex-wrap border-0 pt-6 pb-0">
                                     <div class="d-flex">
                                         <a href="{{ route('nienkhoaManage.indexNienKhoa') }}" @include('layouts.button._button_back')
-                                        </a>
-                                        <div class="btn-group">
-                                            @include('layouts.button._button_save')
-                                        </div>
+                                            </a>
+                                            <div class="btn-group">
+                                                @include('layouts.button._button_save')
+                                            </div>
                                     </div>
                                 </div>
                             </div>

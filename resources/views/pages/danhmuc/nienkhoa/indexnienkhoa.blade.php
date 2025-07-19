@@ -26,9 +26,11 @@
                         <th class="text-center">Tên Niên Khóa</th>
                         <th class="text-center">Thời gian bắt đầu</th>
                         <th class="text-center">Thời gian kết thúc</th>
+                        <th class="text-center">Thời gian khóa điểm học kì 1</th>
+                        <th class="text-center">Thời gian khóa điểm học kì 2</th>
                         <th class="text-center">Thao Tác</th>
                     </tr>
-                </thead>s
+                </thead>
                 <tbody>
                     @foreach ($data as $item => $value)
                         <tr>
@@ -37,6 +39,8 @@
                             <td class="text-center">{{ $value->tennienkhoa }}</td>
                             <td class="text-center">{{ $value->batdau }}</td>
                             <td class="text-center">{{ $value->ketthuc }}</td>
+                            <td class="text-center">{{ $value->hk1 }}</td>
+                            <td class="text-center">{{ $value->hk2 }}</td>
                             <td class="text-center" style="display: flex; justify-content: center">
                                 <table>
                                     <tr>

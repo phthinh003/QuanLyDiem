@@ -3,15 +3,21 @@ $('#danhSachNienKhoa').DataTable({
     columnDefs: [
         {
             target: 0,
-            width: '100px',
+            // width: '100px',
         },
         {
             target: 1,
-            width: '200px'
+            // width: '200px'
         },
         {
             target: 2,
-            width: '200px'
+            // width: '200px'
+        },
+
+        {
+            target: 3,
+            render: DataTable.render.datetime('DD-MM-yyyy'),
+            // width: '250px'
         },
         {
             target: 4,
@@ -19,10 +25,15 @@ $('#danhSachNienKhoa').DataTable({
             // width: '250px',
         },
         {
-            target: 3,
+            target: 5,
             render: DataTable.render.datetime('DD-MM-yyyy'),
-            // width: '250px'
-        }
+            // width: '250px',
+        },
+        {
+            target: 6,
+            render: DataTable.render.datetime('DD-MM-yyyy'),
+            // width: '250px',
+        },
     ],
     "language": {
         // "sProcessing":    "Procesando...",
