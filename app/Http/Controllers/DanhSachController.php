@@ -234,8 +234,9 @@ class DanhSachController extends Controller
         $dataloaidiem = Arr::add($dataloaidiem, count($dataloaidiem), $loaidiem);
         $hocki=3;
         // dd($danhsach);
+        $khoadiem=true;
 
-        return view('pages.canbo.giaovien.danhsachlopday', compact('page_title', 'datalopchunhiem', 'datalopday', 'dataloaidiem', 'danhsach', 'mamonhoc', 'hocki','thongtinlop','filename'));
+        return view('pages.canbo.giaovien.danhsachlopday', compact('page_title', 'datalopchunhiem', 'datalopday', 'dataloaidiem', 'danhsach', 'mamonhoc', 'hocki','thongtinlop','filename','khoadiem'));
     }
     public function danhsachlopchunhiem($malop, $hocki)
     {
