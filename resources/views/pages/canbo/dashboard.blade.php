@@ -26,7 +26,7 @@
         <div class="card-body">
           <div class="card-icon">👩‍🏫</div>
           <h5 class="card-title">Giáo viên</h5>
-          <p class="display-6 fw-bold">{{ $slcanbo }}</p>
+          <p class="display-6 fw-bold">{{ $slcanbo-1 }}</p>
         </div>
       </div>
     </div>

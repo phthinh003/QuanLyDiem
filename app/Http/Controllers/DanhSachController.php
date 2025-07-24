@@ -252,7 +252,9 @@ class DanhSachController extends Controller
         $danhsachlop = LopHoc::from('lophoc')
             ->join('hocsinh', 'lophoc.mahocsinh', 'hocsinh.mahocsinh')
             ->join('lop', 'lop.malop', 'lophoc.malop')
-            ->where('lop.chunhiem', $macanbo)->get();
+            ->where('lop.chunhiem', $macanbo)
+            ->where('lop.malop',$malop)
+            ->get();
         $datamon = MonHoc::from('monhoc')
             ->join('mon', 'monhoc.mamon', 'mon.mamon')
             ->where('malop', $malop)->get();

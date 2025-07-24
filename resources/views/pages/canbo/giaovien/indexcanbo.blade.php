@@ -32,7 +32,7 @@
                 <tbody>
                     @foreach ($data as $item => $value)
                         <tr>
-                            <td class="text-center font-weight-bold">{{ $item + 1 }}</td>
+                            <td class="text-center font-weight-bold">{{ $item }}</td>
                             <td class="text-center">{{ $value->macanbo }}</td>
                             <td class="text-center">{{ $value->hoten }}</td>
                             <td class="text-center">
