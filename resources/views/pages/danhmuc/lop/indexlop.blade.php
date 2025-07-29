@@ -13,9 +13,30 @@
             </div>
             <hr>
             <div class="card-toolbar">
-                {{-- Tao lop moi --}}
-                <a href="{{ route('lopManage.createLop') }}"><button class="btn btn-success">Tạo mới</button></a>
-                <!--end::Button-->
+                <div class="row">
+                    <div class="col-2">
+                        {{-- Tao lop moi --}}
+                        <a href="{{ route('lopManage.createLop') }}"><button class="btn btn-success">Tạo mới</button></a>
+                        <!--end::Button-->
+                    </div>
+                    <div class="col-4">
+
+                        <form method="get" action="{{ route('lopManage.indexLop') }}" id="lietke">
+                            <div class="row">
+                                <div class="col">
+                                    <select class="form-select" name="nienkhoa" id="nienkhoa">
+                                        <option {{ $manienkhoa == 'all' ? 'selected' : '' }} value="all">Tất cả</option>
+                                        @foreach ($nienkhoa as $item => $nk)
+                                            <option {{ $manienkhoa == $nk->manienkhoa ? 'selected' : '' }}
+                                                value="{{ $nk->manienkhoa }}">{{ $nk->tennienkhoa }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col"><button type="submit" class="btn btn-primary">Liệt kê</button></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -38,7 +59,7 @@
                             <td class="text-center">{{ $value->tenlop }}</td>
                             <td class="text-center">
 
-                                {{$value->tennienkhoa}}
+                                {{ $value->tennienkhoa }}
                             </td>
                             <td class="text-center">
                                 {{ $value->hoten }}
