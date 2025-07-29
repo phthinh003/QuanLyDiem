@@ -13,8 +13,32 @@
             </div>
             <hr>
             <div class="card-toolbar">
-                <a href="{{ route('monhocManage.createMonHoc') }}"><button class="btn btn-success">Tạo mới</button></a>
+
                 <!--end::Button-->
+                <div class="row">
+                    <div class="col-2">
+                        {{-- Tao lop moi --}}
+                        <a href="{{ route('monhocManage.createMonHoc') }}"><button class="btn btn-success">Tạo mới</button></a>
+                        <!--end::Button-->
+                    </div>
+                    <div class="col-4">
+
+                        <form method="get" action="{{ route('monhocManage.indexMonHoc') }}" id="lietke">
+                            <div class="row">
+                                <div class="col">
+                                    <select class="form-select" name="nienkhoa" id="nienkhoa">
+                                        <option {{ $manienkhoa == 'all' ? 'selected' : '' }} value="all">Tất cả</option>
+                                        @foreach ($nienkhoa as $item => $nk)
+                                            <option {{ $manienkhoa == $nk->manienkhoa ? 'selected' : '' }}
+                                                value="{{ $nk->manienkhoa }}">{{ $nk->tennienkhoa }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col"><button type="submit" class="btn btn-primary">Liệt kê</button></div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card-body">
@@ -23,6 +47,7 @@
                     <tr>
                         <th class="text-center">STT</th>
                         <th class="text-center">Tên Lớp</th>
+                        <th class="text-center">Niên Khóa</th>
                         <th class="text-center">Môn</th>
                         <th class="text-center">Cán bộ giảng dạy</th>
                         <th class="text-center">Thao Tác</th>
@@ -33,6 +58,7 @@
                         <tr>
                             <td class="text-center font-weight-bold">{{ $item + 1 }}</td>
                             <td class="text-center">{{ $value->tenlop }}</td>
+                            <td class="text-center">{{ $value->tennienkhoa }}</td>
                             <td class="text-center">{{ $value->tenmon }}</td>
                             <td class="text-center">{{ $value->hoten }}</td>
                             <td class="text-center" style="display: flex; justify-content: center">
