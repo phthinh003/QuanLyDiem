@@ -5,7 +5,7 @@
         </div>
 
         <div class="d-flex align-items-center">
-            @if(session('typeacc')=='CB')
+            @if(session('type')==1)
                 <a href="{{ route('canboManage.indexCanboPage') }}">
                     <button class="btn btn-outline-primary">Trang dành cho giáo viên</button></a>
                 @endif

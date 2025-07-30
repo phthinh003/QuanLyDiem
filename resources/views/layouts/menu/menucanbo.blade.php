@@ -44,8 +44,8 @@
             Đăng xuất
         </a>
     </li>
-    @if (session()->has('typeacc'))
-        @if (session('typeacc') == 'CB')
+    @if (session()->has('type'))
+        @if (session('type') == '1')
         <hr>
             <li>
                     <a class="btn btn-outline-danger" href="{{ route('dashboard') }}">
