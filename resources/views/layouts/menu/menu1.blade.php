@@ -3,14 +3,24 @@
         <div class="header_toggle">
             <i class='bx bx-menu' id="header-toggle"></i>
         </div>
+
         <div class="d-flex align-items-center">
+            @if(session('typeacc')=='CB')
+                <a href="{{ route('canboManage.indexCanboPage') }}">
+                    <button class="btn btn-outline-primary">Trang dành cho giáo viên</button></a>
+                @endif
             <div class="header_img">
                 <img src="{{ asset('images/logo1280.png') }}" alt="No image">
+
             </div>
             <div class="w-auto d-flex align-items-center btn-lg px-2">
+
                 <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Xin chào</span>
                 <span
-                    class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">&nbsp;{{ session()->get('userhoten') }}</span>
+                    class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">&nbsp;{{ session()->get('userhoten') }}
+                </span>
+
+
             </div>
         </div>
 

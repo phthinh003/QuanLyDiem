@@ -11,9 +11,11 @@
                     <div class="card-header bg-primary text-white">
                         🏫 Lớp chủ nhiệm: {{ $value->tenlop }}
                     </div>
+
                     <div class="card-body row">
                         <div class="col-md-6">
                             <p><strong>Sĩ số:</strong> 42 học sinh</p>
+                            <p><strong>Niên khóa:</strong> {{ $value->tennienkhoa }}</p>
                         </div>
                         <div class="col-md-6">
                             <p><strong>Kết quả học kỳ:</strong>
@@ -35,6 +37,7 @@
                             <div class="card-body">
                                 <h5 class="card-title">Tên lớp: {{ $value->tenlop }}</h5>
                                 <p>Môn: {{ $value->tenmon }}</p>
+                                <p>Niên khóa: {{ $value->tennienkhoa }}</p>
                                 {{-- <p>Tiết kế tiếp: Thứ 3 - Tiết 2</p> --}}
                                 <a href="{{ route('canboManage.danhsachlopday', ['mamonhoc' => $value->mamonhoc, 'hocky' => 1]) }}"
                                     class="btn btn-success btn-sm">Nhập điểm</a>
