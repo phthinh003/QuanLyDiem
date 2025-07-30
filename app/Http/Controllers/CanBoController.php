@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CanBo;
 use App\Models\Lop;
 use App\Models\MonHoc;
+use Carbon\Carbon;
 use Carbon\Traits\ToStringFormat;
 use Exception;
 use Illuminate\Http\Request;
@@ -151,17 +152,23 @@ class CanBoController extends Controller
         $macanbo=session('userid');
         $canbo=Canbo::find($macanbo);
 
+        $nowdate=Carbon::now();
         // Data lop duoc phan cong cho CanBo chu nhiem
-        $datalopchunhiem=Lop::from('lop')
-                ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
-                ->where('chunhiem',$macanbo)->get();
+        $datalopchunhiem = Lop::from('lop')
+                            ->join('nienkhoa','nienkhoa.manienkhoa','lop.nienkhoa')
+                            ->where('chunhiem', $macanbo)
+                            ->where('ketthuc','>',$nowdate)
+                            ->get();
+
 
         // Data cac lop duoc phan cong cho CanBo giang day
-        $datalopday=MonHoc::from('monhoc')
-                                ->join('lop','lop.malop','monhoc.malop')
-                                ->join('mon','monhoc.mamon','mon.mamon')
-                                ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
-                                ->where('monhoc.macanbo',$macanbo)->get();
+        $datalopday = MonHoc::from('monhoc')
+            ->join('lop', 'lop.malop', 'monhoc.malop')
+            ->join('mon', 'monhoc.mamon', 'mon.mamon')
+            ->join('nienkhoa','nienkhoa.manienkhoa','lop.nienkhoa')
+            ->where('monhoc.macanbo', $macanbo)
+            ->where('ketthuc','>',$nowdate)
+            ->get();
         // foreach($data as $item=>$value){
         //     print($value);
         //  }
