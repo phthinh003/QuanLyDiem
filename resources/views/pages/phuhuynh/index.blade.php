@@ -2,12 +2,12 @@
 @section('content')
 <div class="container py-4">
 
-    <h2 class="mb-4">👨‍👩‍👧 Trang Phụ huynh – {{ $phuhuynh->tenphuhuynh }}</h2>
+    <h2 class="mb-4">👨‍👩‍👧 Xin chào – {{ $phuhuynh->tenphuhuynh }}</h2>
 
     <!-- Học sinh -->
     @foreach ($datalop as $item => $value)
         <div class="card shadow mb-4">
-            <div class="card-header bg-primary text-white">👧 Con: {{ $value->hotenhocsinh }} –
+            <div class="card-header bg-{{ $value->xong==true?'success':'primary' }} text-white">👧 Con: {{ $value->hotenhocsinh }} –
                 <a href="{{ route('phuhuynhManage.diemhocsinhPH', [
                     'mahocsinh' => $value->mahocsinh,
                     'malop' => $value->malop,

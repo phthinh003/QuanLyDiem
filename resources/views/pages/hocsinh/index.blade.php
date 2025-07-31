@@ -6,7 +6,16 @@
             {{-- <img src="https://via.placeholder.com/80" alt="Avatar" class="avatar me-3"> --}}
             <div>
                 <h4 class="mb-1">👨‍🎓 {{ $hocsinh->hotenhocsinh }}</h4>
-                <p class="mb-0">Lớp: 11A3 | Mã HS: HS00123 | Năm học: 2025-2026</p>
+                <p class="mb-0">
+                    @if($hocsinh->lophientai!=null)
+                    Lớp: {{ $hocsinh->lophientai }} |
+                    @endif
+                    Mã HS: {{ $hocsinh->mahocsinh  }}
+                    @if($hocsinh->nkhientai!=null)
+                    | {{ $hocsinh->nkhientai }}
+                    @endif
+
+                </p>
             </div>
         </div>
         <h4 class="mb-3">📚 Các lớp học</h4>

@@ -28,7 +28,7 @@
                                 <li>
 
                                     <a href="{{ route('phuhuynhManage.diemhocsinhPH', ['mahocsinh'=>$lop->mahocsinh,'malop' => $lop->malop, 'hocki' => 1]) }}">
-                                        {{ $lop->tenlop }}
+                                        {{ $lop->tenlop }} - {{ $lop->tennienkhoa }}
                                     </a>
                                 </li>
                             @endforeach
