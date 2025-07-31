@@ -8,7 +8,7 @@
         <ul class="collapse list-unstyled" id="homeSubmenu">
             @foreach ($datalop as $lop)
             <li>
-                <a href="{{ route('hocsinhManage.diemhocsinh', ['malop' => $lop->malop,'hocki'=>1]) }}">{{ $lop->tenlop }}</a>
+                <a href="{{ route('hocsinhManage.diemhocsinh', ['malop' => $lop->malop,'hocki'=>1]) }}">{{ $lop->tenlop }}- {{ $lop->tennienkhoa }}</a>
             </li>
             @endforeach
 

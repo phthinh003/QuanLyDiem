@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\HocSinh;
 use App\Models\LopHoc;
 use App\Models\PhuHuynh;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
@@ -258,7 +259,18 @@ class HSPHController extends Controller
         $hocsinh=Hocsinh::find($mahocsinh);
         $datalop=LopHoc::join('lop','lophoc.malop','lop.malop')
                         ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
-                        ->where('mahocsinh',$mahocsinh)->get();
+                        ->join('canbo','canbo.macanbo','lop.chunhiem')
+                        ->where('mahocsinh',$mahocsinh)
+                        ->orderBy('ketthuc','desc')
+                        ->get();
+        $datenow=Carbon::now();
+        foreach($datalop as $lop){
+            if($lop->ketthuc<$datenow){
+                $lop->xong=true;
+            }else{
+                $lop->xong=false;
+            }
+        }
         return view('pages.hocsinh.index', compact('page_title','datalop','hocsinh'));
     }
     public function indexPhuHuynhPage(){

@@ -473,6 +473,8 @@ class DanhSachController extends Controller
         // dd($thongtinhs);
         //du lieu sidebar
         $datalop = LopHoc::join('lop', 'lophoc.malop', 'lop.malop')
+            ->join('canbo','canbo.macanbo','lop.chunhiem')
+            ->join('nienkhoa','nienkhoa.manienkhoa','lop.nienkhoa')
             ->where('mahocsinh', $mahocsinh)->get();
         //du lieu noi dung
         $dataloaidiem = LoaiDiem::orderBy('heso')->get();
