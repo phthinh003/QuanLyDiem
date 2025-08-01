@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\HocSinh;
 use App\Models\LopHoc;
 use App\Models\PhuHuynh;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
@@ -258,7 +259,21 @@ class HSPHController extends Controller
         $hocsinh=Hocsinh::find($mahocsinh);
         $datalop=LopHoc::join('lop','lophoc.malop','lop.malop')
                         ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
-                        ->where('mahocsinh',$mahocsinh)->get();
+                        ->join('canbo','canbo.macanbo','lop.chunhiem')
+                        ->where('mahocsinh',$mahocsinh)
+                        ->orderBy('ketthuc','desc')
+                        ->get();
+        $datenow=Carbon::now();
+        foreach($datalop as $lop){
+            if($lop->ketthuc<$datenow){
+                $lop->xong=true;
+
+            }else{
+                $lop->xong=false;
+                $hocsinh->lophientai=$lop->tenlop;
+                $hocsinh->nkhientai=$lop->tennienkhoa;
+            }
+        }
         return view('pages.hocsinh.index', compact('page_title','datalop','hocsinh'));
     }
     public function indexPhuHuynhPage(){
@@ -272,7 +287,10 @@ class HSPHController extends Controller
         foreach($dshs as $key=>$hocsinh){
             $lop=[];
             $lophoc=LopHoc::join('lop','lop.malop','lophoc.malop')
-                    ->where('mahocsinh',$hocsinh->mahocsinh)->get();
+                    ->join('nienkhoa','nienkhoa.manienkhoa','lop.nienkhoa')
+                    ->where('mahocsinh',$hocsinh->mahocsinh)
+                    ->orderBy('ketthuc','desc')
+                    ->get();
             foreach($lophoc as $k=>$value){
                 $lop=Arr::add($lop,count($lop),[$value]);
             }
@@ -299,7 +317,17 @@ class HSPHController extends Controller
                         ->join('hocsinh','lophoc.mahocsinh','hocsinh.mahocsinh')
                         ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
                         ->join('canbo','canbo.macanbo','lop.chunhiem')
-                        ->where('maphuhuynh',$maphuhuynh)->get();
+                        ->where('maphuhuynh',$maphuhuynh)
+                        ->orderBy('nienkhoa','desc')
+                        ->get();
+        $datenow=Carbon::now();
+        foreach($datalop as $lop){
+            if($lop->ketthuc<$datenow){
+                $lop->xong=true;
+            }else{
+                $lop->xong=false;
+            }
+        }
         return view('pages.phuhuynh.index', compact('page_title','phuhuynh','menu','datalop'));
     }
     //Lien ket tai khoan

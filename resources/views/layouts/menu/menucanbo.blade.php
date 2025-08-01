@@ -2,44 +2,60 @@
     <li class="{{ request()->is('*canbo') ? 'active' : '' }}">
         <a href="{{ route('canboManage.indexCanboPage') }}">Trang chủ</a>
     </li>
-    @if (count($datalopchunhiem)!=0)
+    @if (count($datalopchunhiem) != 0)
         <li class="{{ request()->is('*danhsachlopchunhiem*') ? 'active' : '' }}">
-        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false"
-            class="dropdown-toggle">Lớp đang chủ nhiệm</a>
-        <ul class="collapse list-unstyled" id="homeSubmenu">
-            @foreach ($datalopchunhiem as $lopchunhiem)
-            <li>
-                <a href="{{ route('canboManage.danhsachlopchunhiem', ['malop' => $lopchunhiem->malop,'hocky' => 1]) }}">{{ $lopchunhiem->tenlop }}</a>
-            </li>
-            @endforeach
+            <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Lớp đang chủ
+                nhiệm</a>
+            <ul class="collapse list-unstyled" id="homeSubmenu">
+                @foreach ($datalopchunhiem as $lopchunhiem)
+                    <li>
+                        <a
+                            href="{{ route('canboManage.danhsachlopchunhiem', ['malop' => $lopchunhiem->malop, 'hocky' => 1]) }}">{{ $lopchunhiem->tenlop }}</a>
+                    </li>
+                @endforeach
 
-        </ul>
-    </li>
+            </ul>
+        </li>
     @endif
 
-@if (count($datalopday)!=0)
-    <li class="{{ request()->is('*danhsachlopday*') ? 'active' : '' }}">
-        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
-            class="dropdown-toggle">Các lớp đang dạy</a>
-        <ul class="collapse list-unstyled" id="pageSubmenu">
-            @foreach ($datalopday as $lopday)
-            <li>
-                <a href="{{ route('canboManage.danhsachlopday', ['mamonhoc' => $lopday->mamonhoc,'hocky' => 1]) }}">{{ $lopday->tenlop }} - {{ $lopday->tenmon }}</a>
-            </li>
-            @endforeach
+    @if (count($datalopday) != 0)
+        <li class="{{ request()->is('*danhsachlopday*') ? 'active' : '' }}">
+            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Các lớp đang
+                dạy</a>
+            <ul class="collapse list-unstyled" id="pageSubmenu">
+                @foreach ($datalopday as $lopday)
+                    <li>
+                        <a
+                            href="{{ route('canboManage.danhsachlopday', ['mamonhoc' => $lopday->mamonhoc, 'hocky' => 1]) }}">{{ $lopday->tenlop }}
+                            - {{ $lopday->tenmon }}</a>
+                    </li>
+                @endforeach
 
-        </ul>
-    </li>
-@endif
+            </ul>
+        </li>
+    @endif
 
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
         {{ csrf_field() }}
     </form>
     <li>
-        <a href="{{ route('logout') }}"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        <a href="{{ route('logout') }}"
+            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             Đăng xuất
         </a>
     </li>
+    @if (session()->has('type'))
+        @if (session('type') == '1')
+        <hr>
+            <li>
+                    <a class="btn btn-outline-danger" href="{{ route('dashboard') }}">
+                        Trang quản trị
+                    </a>
+
+            </li>
+        @endif
+    @endif
+
     {{-- <li>
         <a href="#">Portfolio</a>
     </li>

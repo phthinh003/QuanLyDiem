@@ -14,17 +14,25 @@ use Illuminate\Support\Facades\Validator;
 
 class LopController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $manienkhoa = $request->input('nienkhoa');
         $page_title = "Lớp";
-        $data = Lop::from('lop')
+        $nienkhoa = NienKhoa::all();
+        if ($manienkhoa == "all" || $request->input('nienkhoa')==null)
+            $data = Lop::from('lop')
             ->join('nienkhoa', 'nienkhoa.manienkhoa', 'lop.nienkhoa')
             ->join('canbo', 'canbo.macanbo', 'lop.chunhiem')->get();
+        else $data = Lop::from('lop')
+            ->join('nienkhoa', 'nienkhoa.manienkhoa', 'lop.nienkhoa')
+            ->join('canbo', 'canbo.macanbo', 'lop.chunhiem')
+            ->where('nienkhoa.manienkhoa',$manienkhoa)
+            ->get();
 
         confirmDelete("", "");
 
         // dd(session()->all());
-        return view('pages.danhmuc.lop.indexlop', compact('page_title', 'data'));
+        return view('pages.danhmuc.lop.indexlop', compact('page_title', 'data', 'nienkhoa','manienkhoa'));
     }
     public function create()
     {

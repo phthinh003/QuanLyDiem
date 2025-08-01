@@ -10,6 +10,7 @@ use App\Models\LopHoc;
 use App\Models\MonHoc;
 use App\Models\Mon;
 use App\Models\PhuHuynh;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Date;
@@ -26,13 +27,21 @@ class DanhSachController extends Controller
             ->where('mamonhoc', $mamonhoc)->first();
 
         $malop = $monhoc->malop;
+        $nowdate=Carbon::now();
         //du lieu cho sidebar
         $macanbo = session('userid');
-        $datalopchunhiem = Lop::from('lop')->where('chunhiem', $macanbo)->get();
+        $datalopchunhiem = Lop::from('lop')
+                            ->join('nienkhoa','nienkhoa.manienkhoa','lop.nienkhoa')
+                            ->where('chunhiem', $macanbo)
+                            ->where('ketthuc','>',$nowdate)
+                            ->get();
         $datalopday = MonHoc::from('monhoc')
             ->join('lop', 'lop.malop', 'monhoc.malop')
             ->join('mon', 'monhoc.mamon', 'mon.mamon')
-            ->where('monhoc.macanbo', $macanbo)->get();
+            ->join('nienkhoa','nienkhoa.manienkhoa','lop.nienkhoa')
+            ->where('monhoc.macanbo', $macanbo)
+            ->where('ketthuc','>',$nowdate)
+            ->get();
 
         // du lieu noi dung
         $danhsachlop = LopHoc::from('lophoc')
@@ -117,13 +126,21 @@ class DanhSachController extends Controller
             ->where('mamonhoc', $mamonhoc)->first();
 
         $malop = $monhoc->malop;
+        $nowdate=Carbon::now();
         //du lieu cho sidebar
         $macanbo = session('userid');
-        $datalopchunhiem = Lop::from('lop')->where('chunhiem', $macanbo)->get();
+        $datalopchunhiem = Lop::from('lop')
+                            ->join('nienkhoa','nienkhoa.manienkhoa','lop.nienkhoa')
+                            ->where('chunhiem', $macanbo)
+                            ->where('ketthuc','>',$nowdate)
+                            ->get();
         $datalopday = MonHoc::from('monhoc')
             ->join('lop', 'lop.malop', 'monhoc.malop')
             ->join('mon', 'monhoc.mamon', 'mon.mamon')
-            ->where('monhoc.macanbo', $macanbo)->get();
+            ->join('nienkhoa','nienkhoa.manienkhoa','lop.nienkhoa')
+            ->where('monhoc.macanbo', $macanbo)
+            ->where('ketthuc','>',$nowdate)
+            ->get();
 
         // du lieu noi dung
         $danhsachlop = LopHoc::from('lophoc')
@@ -242,13 +259,21 @@ class DanhSachController extends Controller
     {
         $page_title = "Danh sách lớp ";
 
+        $nowdate=Carbon::now();
         //du lieu cho sidebar
         $macanbo = session('userid');
-        $datalopchunhiem = Lop::from('lop')->where('chunhiem', $macanbo)->get();
+        $datalopchunhiem = Lop::from('lop')
+                            ->join('nienkhoa','nienkhoa.manienkhoa','lop.nienkhoa')
+                            ->where('chunhiem', $macanbo)
+                            ->where('ketthuc','>',$nowdate)
+                            ->get();
         $datalopday = MonHoc::from('monhoc')
             ->join('lop', 'lop.malop', 'monhoc.malop')
             ->join('mon', 'monhoc.mamon', 'mon.mamon')
-            ->where('monhoc.macanbo', $macanbo)->get();
+            ->join('nienkhoa','nienkhoa.manienkhoa','lop.nienkhoa')
+            ->where('monhoc.macanbo', $macanbo)
+            ->where('ketthuc','>',$nowdate)
+            ->get();
         //du lieu hien thi noi dung
         $danhsachlop = LopHoc::from('lophoc')
             ->join('hocsinh', 'lophoc.mahocsinh', 'hocsinh.mahocsinh')
@@ -334,13 +359,21 @@ class DanhSachController extends Controller
     {
         $page_title = "Danh sách lớp ";
 
+        $nowdate=Carbon::now();
         //du lieu cho sidebar
         $macanbo = session('userid');
-        $datalopchunhiem = Lop::from('lop')->where('chunhiem', $macanbo)->get();
+        $datalopchunhiem = Lop::from('lop')
+                            ->join('nienkhoa','nienkhoa.manienkhoa','lop.nienkhoa')
+                            ->where('chunhiem', $macanbo)
+                            ->where('ketthuc','>',$nowdate)
+                            ->get();
         $datalopday = MonHoc::from('monhoc')
             ->join('lop', 'lop.malop', 'monhoc.malop')
             ->join('mon', 'monhoc.mamon', 'mon.mamon')
-            ->where('monhoc.macanbo', $macanbo)->get();
+            ->join('nienkhoa','nienkhoa.manienkhoa','lop.nienkhoa')
+            ->where('monhoc.macanbo', $macanbo)
+            ->where('ketthuc','>',$nowdate)
+            ->get();
         //du lieu hien thi noi dung
         $danhsachlop = LopHoc::from('lophoc')
             ->join('hocsinh', 'lophoc.mahocsinh', 'hocsinh.mahocsinh')
@@ -440,6 +473,8 @@ class DanhSachController extends Controller
         // dd($thongtinhs);
         //du lieu sidebar
         $datalop = LopHoc::join('lop', 'lophoc.malop', 'lop.malop')
+            ->join('canbo','canbo.macanbo','lop.chunhiem')
+            ->join('nienkhoa','nienkhoa.manienkhoa','lop.nienkhoa')
             ->where('mahocsinh', $mahocsinh)->get();
         //du lieu noi dung
         $dataloaidiem = LoaiDiem::orderBy('heso')->get();

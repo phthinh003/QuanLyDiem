@@ -6,26 +6,36 @@
             {{-- <img src="https://via.placeholder.com/80" alt="Avatar" class="avatar me-3"> --}}
             <div>
                 <h4 class="mb-1">👨‍🎓 {{ $hocsinh->hotenhocsinh }}</h4>
-                <p class="mb-0">Lớp: 11A3 | Mã HS: HS00123 | Năm học: 2025-2026</p>
+                <p class="mb-0">
+                    @if($hocsinh->lophientai!=null)
+                    Lớp: {{ $hocsinh->lophientai }} |
+                    @endif
+                    Mã HS: {{ $hocsinh->mahocsinh  }}
+                    @if($hocsinh->nkhientai!=null)
+                    | {{ $hocsinh->nkhientai }}
+                    @endif
+
+                </p>
             </div>
         </div>
-        <h4 class="mb-3">📚 Các lớp đang học</h4>
+        <h4 class="mb-3">📚 Các lớp học</h4>
 
         <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+
             @foreach ($datalop as $item => $value)
                 <div class="col">
-                    <div class="card h-100 border-primary shadow">
+                    <div class="card h-100 border-{{ $value->xong==true?'success':'primary' }} shadow">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <a href="{{ route('hocsinhManage.diemhocsinh', ['malop' => $value->malop, 'hocki' => 1]) }}"
-                                    class="text-decoration-none text-primary">
+                                    class="text-decoration-none text-{{ $value->xong==true?'success':'primary' }}">
                                     {{ $value->tenlop }}
                                 </a>
                             </h5>
-                            <p>Giáo viên: Thầy Bình</p>
-                            <p>Tiết kế tiếp: Thứ 4 - Tiết 2</p>
+                            <p>Giáo viên: {{ $value->hoten }}</p>
+                            <p>{{ $value->tennienkhoa }}</p>
                             <a href="{{ route('hocsinhManage.diemhocsinh', ['malop' => $value->malop, 'hocki' => 1]) }}"
-                                class="btn btn-sm btn-outline-primary">Vào lớp</a>
+                                class="btn btn-sm btn-outline-{{ $value->xong==true?'success':'primary' }}">Vào lớp</a>
                         </div>
                     </div>
                 </div>

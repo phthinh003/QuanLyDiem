@@ -64,6 +64,7 @@ class LoginController extends Controller
                 if ($typeacc=="CB") {
                     session()->put("userhoten", $taikhoan->hoten);
                     session()->put("type", $taikhoan->loai);
+                    session()->put('typeacc',$typeacc);
                 } else if ($typeacc=="HS") {
                     session()->put("userhoten", $taikhoan->hotenhocsinh);
                 } else if ($typeacc=="PH") {

@@ -6,21 +6,36 @@ use App\Models\CanBo;
 use App\Models\Lop;
 use App\Models\Mon;
 use App\Models\MonHoc;
+use App\Models\NienKhoa;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 
 class MonHocController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $manienkhoa = $request->input('nienkhoa');
         $page_title = "Phân công";
-        $data = MonHoc::from('monhoc')
+        $nienkhoa = NienKhoa::all();
+        if ($manienkhoa == "all" || $request->input('nienkhoa')==null)
+            $data = MonHoc::from('monhoc')
             ->join('canbo','canbo.macanbo','monhoc.macanbo')
             ->join('mon','mon.mamon','monhoc.mamon')
-            ->join('lop','lop.malop','monhoc.malop')->get();
+            ->join('lop','lop.malop','monhoc.malop')
+            ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
+            ->get();
+        else $data = MonHoc::from('monhoc')
+            ->join('canbo','canbo.macanbo','monhoc.macanbo')
+            ->join('mon','mon.mamon','monhoc.mamon')
+            ->join('lop','lop.malop','monhoc.malop')
+            ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
+            ->where('manienkhoa',$manienkhoa)
+            ->get();
+
+
         confirmDelete("", "");
-        return view('pages.phanconggiangday.indexmonhoc', compact('page_title', 'data'));
+        return view('pages.phanconggiangday.indexmonhoc', compact('page_title', 'data','nienkhoa','manienkhoa'));
     }
     public function create()
     {
