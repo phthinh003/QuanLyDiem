@@ -150,11 +150,24 @@ class DiemController extends Controller
         $tbm = Diem::tbm($diem->mahocsinh, $diem->mamonhoc, $diem->hocky);
 
         $sodiem=="" ? $diemmoi = null : $diemmoi = number_format($sodiem,2, '.');
+        if ($diem->madiem == null) {
+            $diemhs = Diem::select(['madiem'])
+                ->where('mahocsinh', '=', $diem->mahocsinh)
+                ->where('mamonhoc', '=', $diem->mamonhoc)
+                ->where('hocky', '=', $r->input('hocki'))
+                ->orderBy('madiem', 'desc')
+                ->get()
+                ->first();
+            $madiem = $diemhs->madiem;
+        } else {
+            $madiem = $diem->madiem;
+        }
         return response()->json([
             'success' => true,
             'diem_moi' => $diemmoi,
             'mahocsinh' => $diem->mahocsinh,
             'tbm' => $tbm,
+            'madiem_moi' => $madiem,
         ]);
     }
 

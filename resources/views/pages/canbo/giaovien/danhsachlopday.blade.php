@@ -161,6 +161,7 @@
                             console.log('success');
                             // Cập nhật lại ô điểm - chuẩn hoá số
                             e.target.innerText = data.diem_moi;
+                            e.target.setAttribute("data-id", data.madiem_moi);
                             const id_tbm = "tbm_" + data.mahocsinh;
                             document.getElementById(id_tbm).innerText = data.tbm;
 
