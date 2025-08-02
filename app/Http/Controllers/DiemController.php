@@ -123,7 +123,7 @@ class DiemController extends Controller
         $mamonhoc = $r->input('mamonhoc');
         // Các ID lấy vào có chứa 'HS' đều là điểm mới - Thêm mới hoàn toàn.
         // Các ID chỉ có số là madiem của điểm đó.
-        if (!str_contains($id, "HS")) {
+        if (!str_contains($id, "HS")) { // Diem da co (sua diem)
             $diem = Diem::findOrFail($id);
             if ($sodiem=="") {
                 $diem->delete();
@@ -132,7 +132,7 @@ class DiemController extends Controller
                 $diem->diem = $r->input('diem');
                 $diem->save();
             }
-        } elseif($sodiem != "" && $sodiem != null) {
+        } elseif($sodiem != "" && $sodiem != null) { // Diem moi va diem khong null
             // Lay loai diem $id vd: HS*****_2_1
             $loaidiem = substr($id, strpos($id, '_') + 1, strrpos($id, '_') - strpos($id, '_') - 1);
             $mahocsinh = substr($id, 0, strpos($id, '_'));
@@ -160,7 +160,7 @@ class DiemController extends Controller
                 ->first();
             $madiem = $diemhs->madiem;
         } else {
-            $madiem = $diem->madiem;
+            $madiem = $sodiem == "" ? $diem->mahocsinh . '_' . $diem->loaidiem . '_' : $diem->madiem;
         }
         return response()->json([
             'success' => true,
@@ -171,8 +171,6 @@ class DiemController extends Controller
         ]);
     }
 
-    public function delete($madiem)
-    {
-        //
-    }
+    public function delete($diem)
+    {}
 }
