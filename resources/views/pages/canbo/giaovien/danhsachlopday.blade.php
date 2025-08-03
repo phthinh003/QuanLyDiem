@@ -48,6 +48,7 @@
                     <thead class="thead-light">
                         <tr>
                             <th rowspan="{{ $hocki < 3 ? 2 : 1 }}" class="text-center">STT</th>
+                            <th rowspan="{{ $hocki < 3 ? 2 : 1 }}" class="text-center">Mã số</th>
                             <th rowspan="{{ $hocki < 3 ? 2 : 1 }}" class="text-center">Họ Tên Học Sinh</th>
                             @foreach ($dataloaidiem as $item => $loaidiem)
                                 <th colspan="{{ $hocki < 3 ? $loaidiem->soluong : 1 }}" class="text-center diem"
@@ -83,10 +84,12 @@
                                 @foreach ($value as $key => $v)
                                     @if ($key == 'tenhocsinh')
                                         <td class="text-center">{{ $v }}</td>
+                                    @elseif ($key == 'mahocsinh')
+                                        <td class="text-center">{{ $v }}</td>
                                     @elseif ($key == 'tbm' )
                                         <td class="text-center diem" id="tbm_{{ $value['mahocsinh'] }}">
                                             {{ $v == '' ? '' : number_format((float) $v, 1, '.', '') }}</td>
-                                    @elseif ($key == 'mahocsinh')
+                                    @elseif ($key == 'mahocsinh1')
                                         @if ($hocki < 3)
                                             {{-- <td>akdas</td> --}}
 

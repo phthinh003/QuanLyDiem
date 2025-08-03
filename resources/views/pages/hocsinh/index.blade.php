@@ -44,7 +44,7 @@
             <!-- Lớp khác tương tự -->
         </div>
         <!-- Lịch học hôm nay -->
-        <div class="card shadow mb-4">
+        {{-- <div class="card shadow mb-4">
             <div class="card-header bg-primary text-white">🗓️ Lịch học hôm nay - Thứ 2</div>
             <div class="card-body">
                 <ul class="list-group">
@@ -53,10 +53,10 @@
                     <li class="list-group-item">Tiết 4: Lịch sử - Thầy Tài (Phòng C2)</li>
                 </ul>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Bảng điểm -->
-        <div class="card shadow mb-4">
+        {{-- <div class="card shadow mb-4">
             <div class="card-header bg-success text-white">📊 Kết quả học tập - Học kỳ I</div>
             <div class="card-body">
                 <table class="table table-bordered mb-0">
@@ -90,7 +90,7 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Thông báo -->
         <div class="row">

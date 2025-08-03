@@ -2,22 +2,22 @@ $('#danhSachDiem').DataTable({
     reponsive : "true",
     // scrollX: true,
     columnDefs: [
-        {
-            target: 0,
-            width: '100px',
-        },
-        {
-            target: 1,
-            width: '200px',
-        },
-        {
-            target: 'diem',
-            width: '90px',
-        },
-        {
-            target: -1,
-            width: '100px'
-        },
+        // {
+        //     target: 0,
+        //     width: '100px',
+        // },
+        // {
+        //     target: 1,
+        //     width: '100px',
+        // },
+        // {
+        //     target: 'diem',
+        //     width: '200px',
+        // },
+        // {
+        //     target: -1,
+        //     width: '100px'
+        // },
     ],
 
     "language": {
