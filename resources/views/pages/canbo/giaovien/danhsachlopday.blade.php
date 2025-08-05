@@ -48,6 +48,7 @@
                     <thead class="thead-light">
                         <tr>
                             <th rowspan="{{ $hocki < 3 ? 2 : 1 }}" class="text-center">STT</th>
+                            <th rowspan="{{ $hocki < 3 ? 2 : 1 }}" class="text-center">Mã Học Sinh</th>
                             <th rowspan="{{ $hocki < 3 ? 2 : 1 }}" class="text-center">Họ Tên Học Sinh</th>
                             @foreach ($dataloaidiem as $item => $loaidiem)
                                 <th colspan="{{ $hocki < 3 ? $loaidiem->soluong : 1 }}" class="text-center diem"
@@ -79,28 +80,17 @@
                         @foreach ($danhsach as $item => $value)
                             <tr>
                                 <td class="text-center font-weight-bold">{{ $item + 1 }}</td>
-
                                 @foreach ($value as $key => $v)
-                                    @if ($key == 'tenhocsinh')
+                                    @if ($key == 'mahocsinh')
                                         <td class="text-center">{{ $v }}</td>
-                                    @elseif ($key == 'tbm' )
+                                    @elseif ($key == 'tenhocsinh')
+                                        <td class="text-center">{{ $v }}</td>
+                                    @elseif ($key == 'tbm')
                                         <td class="text-center diem" id="tbm_{{ $value['mahocsinh'] }}">
                                             {{ $v == '' ? '' : number_format((float) $v, 1, '.', '') }}</td>
-                                    @elseif ($key == 'mahocsinh')
-                                        @if ($hocki < 3)
-                                            {{-- <td>akdas</td> --}}
-
-                                            @if ($khoadiem == false)
-                                                <td class="text-center">
-                                                    <a href="{{ route('diemManage.edit', ['hocki' => $hocki, 'mamonhoc' => $mamonhoc, 'mahocsinh' => $v]) }}"
-                                                        class="btn btn-primary" title="Chỉnh sửa">Chỉnh sửa</a>
-                                                </td>
-                                            @endif
-                                        @endif
                                     @elseif($key == 'diem')
                                         @foreach ($v as $keydiem => $diem)
-                                            <td contenteditable="{{ $khoadiem == true ? 'false' : 'true' }}"
-                                                data-id="{{ $keydiem }}" data-field="diem"
+                                            <td data-id="{{ $keydiem }}" data-field="diem"
                                                 class="text-center editable">
                                                 {{-- <input style="border: 0" class="form-control form-control-sm diem-input"
                                                     min="0" max="10" step="0.25" type="number"
@@ -110,6 +100,15 @@
                                         @endforeach
                                     @endif
                                 @endforeach
+                                {{-- Cột thao tác --}}
+                                @if ($hocki < 3)
+                                    @if ($khoadiem == false)
+                                        <td class="text-center">
+                                            <a href="{{ route('diemManage.edit', ['hocki' => $hocki, 'mamonhoc' => $mamonhoc, 'mahocsinh' => $v]) }}"
+                                                class="btn btn-primary" title="Chỉnh sửa">Chỉnh sửa</a>
+                                        </td>
+                                    @endif
+                                @endif
                             </tr>
                         @endforeach
                     </tbody>
@@ -125,71 +124,101 @@
 @endsection
 @section('scripts')
     <script src="{{ asset('js/crud/lopday_datatables.js') }}"></script>
+
+    {{-- Test --}}
     <script>
-        document.querySelectorAll('.editable').forEach(cell => {
-            let oldValue = cell.innerText.trim();
-            cell.addEventListener('focus', () => {
-                oldValue = cell.innerText.trim();
-            });
+        @if ($khoadiem == true ? false : true)
+            document.querySelectorAll('.editable').forEach(cell => {
+                let oldValue = cell.innerText.trim();
 
-            // Khi rời ô (blur) sẽ gửi AJAX
-            cell.addEventListener('blur', e => {
-                const newValue = e.target.innerText.trim();
-                if (parseFloat(oldValue) == parseFloat(newValue) || oldValue == newValue) {
-                    console.log("Không có thay đổi")
-                    e.target.innerText = oldValue;
-                    return;
-                }
-                const id = e.target.dataset.id;
-                const sodiem = e.target.dataset.field;
-                fetch(`/diem-ajax/${id}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            [sodiem]: newValue,
-                            "mamonhoc": {{ $mamonhoc }},
-                            "hocki": {{ $hocki }}
-                        })
-                    })
-                    .then(res => res.json())
-                    .then(data => {
-                        // console.log(data.diem_moi)
-                        if (data.success) {
-                            console.log('success');
-                            // Cập nhật lại ô điểm - chuẩn hoá số
-                            e.target.innerText = data.diem_moi;
+                cell.addEventListener('dblclick', () => {
+                    if (cell.querySelector('input')) return; // đã có input thì không làm gì
 
-                            //Cập nhật data-id thành madiem mới
-                            e.target.setAttribute("data-id", data.madiem_moi);
-                            console.log(data.madiem_moi);
-                            const id_tbm = "tbm_" + data.mahocsinh;
-                            document.getElementById(id_tbm).innerText = data.tbm;
+                    oldValue = cell.innerText.trim();
+                    const input = document.createElement('input');
+                    input.type = 'number';
+                    input.step = '0.01';
+                    input.min = '0';
+                    input.max = '10';
+                    input.value = oldValue;
+                    input.style.width = '100%';
+                    input.style.boxSizing = 'border-box';
+                    input.className = 'form-control'; // nếu dùng Bootstrap
 
-                            e.target.style.background = 'lightgreen';
-                            setTimeout(() => e.target.style.background = '', 3000);
-                        } else {
-                            this.innerText = oldValue; // rollback
-                            alert('Lưu thất bại!');
+                    cell.innerText = '';
+                    cell.appendChild(input);
+                    input.focus();
+                    input.select();
+
+                    const id = cell.dataset.id;
+                    const sodiem = cell.dataset.field;
+
+                    input.addEventListener('blur', () => {
+                        // Kiểm tra thay đổi giá trị
+                        const newValue = input.value.trim();
+                        if (parseFloat(oldValue) == parseFloat(newValue) || oldValue == newValue) {
+                            cell.innerText = oldValue;
+                            return;
+                        }
+
+                        // Kiểm tra min max
+                        if (isNaN(newValue) || newValue < 0 || newValue > 10) {
+                            alert("Điểm phải nằm trong khoảng từ 0 đến 10");
+                            cell.innerText = oldValue;
+                            input.focus();
+                            return;
+                        }
+
+                        fetch(`/diem-ajax/${id}`, {
+                                method: 'PUT',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    [sodiem]: newValue,
+                                    "mamonhoc": {{ $mamonhoc }},
+                                    "hocki": {{ $hocki }}
+                                })
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.success) {
+                                    cell.innerText = data.diem_moi;
+                                    cell.setAttribute("data-id", data.madiem_moi);
+                                    document.getElementById("tbm_" + data.mahocsinh).innerText =
+                                        data.tbm;
+                                    cell.style.background = 'lightgreen';
+                                    setTimeout(() => cell.style.background = '', 3000);
+                                } else {
+                                    cell.innerText = oldValue;
+                                    alert('Lưu thất bại!');
+                                }
+                            })
+                            .catch(() => {
+                                cell.innerText = oldValue;
+                                alert('Lỗi mạng hoặc server!');
+                            });
+                    });
+
+                    input.addEventListener('keydown', e => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            input.blur(); // gọi blur để trigger lưu
+                        } else if (e.key === 'Escape') {
+                            cell.innerText = oldValue; // hủy bỏ chỉnh sửa
                         }
                     });
-                // .catch(err => console.error('Fetch error:', err));
-                // .then(res => res.json())
-                // .then(resp => {
-                //     if (!resp.success) alert('Lưu không thành công!');
-                // })
-                // .catch(() => alert('Lỗi mạng hoặc server'));
-            });
 
-            // Optional: nhấn Enter để blur ngay
-            cell.addEventListener('keydown', e => {
-                if (e.key === 'Enter') {
-                    e.preventDefault(); // không xuống dòng
-                    e.target.blur(); // kích hoạt blur
-                }
+                    // Kiểm tra khi đang nhập
+                    input.addEventListener('input', () => {
+                        const val = input.value;
+                        if (!/^(10(\.0{1,2})?|[0-9](\.\d{1,2})?)$/.test(val)) {
+                            input.value = val.slice(0, -1); // chặn nhập sai
+                        }
+                    });
+                });
             });
-        });
+        @endif
     </script>
 @endsection

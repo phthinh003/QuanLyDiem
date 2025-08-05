@@ -102,7 +102,7 @@ class DanhSachController extends Controller
             }
             ;
 
-            $danhsach = Arr::add($danhsach, count($danhsach), ['tenhocsinh' => $hocsinh->hotenhocsinh, 'diem' => $d, 'tbm' => $tbm, 'mahocsinh' => $hocsinh->mahocsinh]);
+            $danhsach = Arr::add($danhsach, count($danhsach), ['mahocsinh' => $hocsinh->mahocsinh, 'tenhocsinh' => $hocsinh->hotenhocsinh, 'diem' => $d, 'tbm' => $tbm]);
             // dd($danhsach);
         }
         // Khoa diem

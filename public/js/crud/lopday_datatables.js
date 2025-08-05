@@ -8,11 +8,14 @@ $('#danhSachDiem').DataTable({
         },
         {
             target: 1,
-            width: '200px',
+            width: '90px',
         },
         {
             target: 'diem',
             width: '90px',
+            createdCell: function(td) {
+                td.style.minWidth = '100px';
+            }
         },
         {
             target: -1,
