@@ -233,7 +233,7 @@ class DanhSachController extends Controller
                 $tbm = ($tbm1 + 2 * $tbm2) / 3;
             }
 
-            $danhsach = Arr::add($danhsach, count($danhsach), ['tenhocsinh' => $hocsinh->hotenhocsinh, 'diem'=> ['hocki1' => $tbm1, 'hocki2' => $tbm2], 'tbm' => $tbm, 'mahocsinh' => $hocsinh->mahocsinh]);
+            $danhsach = Arr::add($danhsach, count($danhsach), ['mahocsinh' => $hocsinh->mahocsinh,'tenhocsinh' => $hocsinh->hotenhocsinh, 'diem'=> ['hocki1' => $tbm1, 'hocki2' => $tbm2], 'tbm' => $tbm]);
             // dd($danhsach);
         }
         $dataloaidiem = [];
@@ -349,7 +349,7 @@ class DanhSachController extends Controller
             } else
                 $tb = "";
 
-            $danhsach = Arr::add($danhsach, count($danhsach), ['tenhocsinh' => $hocsinh->hotenhocsinh, 'diem' => $d, 'tb' => $tb, 'mahocsinh' => $hocsinh->mahocsinh]);
+            $danhsach = Arr::add($danhsach, count($danhsach), ['mahocsinh' => $hocsinh->mahocsinh,'tenhocsinh' => $hocsinh->hotenhocsinh, 'diem' => $d, 'tb' => $tb]);
 
         }
         // dd($danhsach);
@@ -454,7 +454,7 @@ class DanhSachController extends Controller
             else
                 $tb = "";
 
-            $danhsach = Arr::add($danhsach, count($danhsach), ['tenhocsinh' => $hocsinh->hotenhocsinh, 'diem' => $d, 'tb' => $tb, 'mahocsinh' => $hocsinh->mahocsinh]);
+            $danhsach = Arr::add($danhsach, count($danhsach), ['mahocsinh' => $hocsinh->mahocsinh,'tenhocsinh' => $hocsinh->hotenhocsinh, 'diem' => $d, 'tb' => $tb]);
 
         }
         // dd($danhsach);

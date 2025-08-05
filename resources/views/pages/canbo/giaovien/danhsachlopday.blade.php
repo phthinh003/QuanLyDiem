@@ -88,6 +88,17 @@
                                     @elseif ($key == 'tbm')
                                         <td class="text-center diem" id="tbm_{{ $value['mahocsinh'] }}">
                                             {{ $v == '' ? '' : number_format((float) $v, 1, '.', '') }}</td>
+                                    @elseif ($key == 'mahocsinh')
+                                        @if ($hocki < 3)
+                                            {{-- <td>akdas</td> --}}
+
+                                            @if ($khoadiem == false)
+                                                <td class="text-center">
+                                                    <a href="{{ route('diemManage.edit', ['hocki' => $hocki, 'mamonhoc' => $mamonhoc, 'mahocsinh' => $v]) }}"
+                                                        class="btn btn-primary" title="Chỉnh sửa">Chỉnh sửa</a>
+                                                </td>
+                                            @endif
+                                        @endif
                                     @elseif($key == 'diem')
                                         @foreach ($v as $keydiem => $diem)
                                             <td data-id="{{ $keydiem }}" data-field="diem"

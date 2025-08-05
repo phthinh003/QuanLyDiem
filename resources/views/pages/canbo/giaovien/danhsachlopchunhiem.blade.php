@@ -24,6 +24,7 @@
                 <thead class="thead-light">
                     <tr>
                         <th class="text-center">STT</th>
+                        <th class="text-center">Mã số</th>
                         <th class="text-center">Họ Tên Học Sinh</th>
                         @foreach ($datamon as $item => $mon)
                             <th class="text-center">{{ $mon->tenmon }}</th>
@@ -35,14 +36,15 @@
                     @foreach ($danhsach as $item => $value)
                         <tr>
                             <td class="text-center font-weight-bold">{{ $item + 1 }}</td>
-
                             @foreach ($value as $key => $v)
                                 @if ($key=='tenhocsinh' || $key=='tb')
-                                <td class="text-center">{{ $key=='tb'?$v==""?"":number_format((float)$v, 1, '.', ''):$v }}</td>
+                                <td class="text-center"> {{ $key=='tb'?$v==""?"":number_format((float)$v, 1, '.', ''):$v }}</td>
                                 @elseif($key=='diem')
                                     @foreach ($v as $diemkey=> $diem)
                                         <td class="text-center">{{ $diem==""?"": number_format((float)$diem, 1, '.', '') }}</td>
                                     @endforeach
+                                @elseif($key=='mahocsinh')
+                                    <td class="text-center">{{ $v }}</td>
                                 @endif
                             @endforeach
                         </tr>
