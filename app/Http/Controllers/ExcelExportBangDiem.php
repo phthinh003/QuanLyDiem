@@ -51,6 +51,6 @@ class ExcelExportBangDiem extends Controller
             $danhsach = Arr::add($danhsach, count($danhsach), $tbm);
             $data = Arr::add($data, count($data), $danhsach);
         }
-        return Excel::download(new BangDiemExport($data), $malop . ".xlsx");
+        return Excel::download(new BangDiemExport($data, $monhoc->loaimon), $malop . ".xlsx");
     }
 }
