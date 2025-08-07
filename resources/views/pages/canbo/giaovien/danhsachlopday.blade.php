@@ -79,6 +79,7 @@
                     <tbody>
                         @foreach ($danhsach as $item => $value)
                             <tr>
+
                                 <td class="text-center font-weight-bold">{{ $item + 1 }}</td>
                                 @foreach ($value as $key => $v)
                                     @if ($key == 'mahocsinh')
@@ -87,18 +88,8 @@
                                         <td class="text-center">{{ $v }}</td>
                                     @elseif ($key == 'tbm')
                                         <td class="text-center diem" id="tbm_{{ $value['mahocsinh'] }}">
-                                            {{ $v == '' ? '' : number_format((float) $v, 1, '.', '') }}</td>
-                                    @elseif ($key == 'mahocsinh')
-                                        @if ($hocki < 3)
-                                            {{-- <td>akdas</td> --}}
-
-                                            @if ($khoadiem == false)
-                                                <td class="text-center">
-                                                    <a href="{{ route('diemManage.edit', ['hocki' => $hocki, 'mamonhoc' => $mamonhoc, 'mahocsinh' => $v]) }}"
-                                                        class="btn btn-primary" title="Chỉnh sửa">Chỉnh sửa</a>
-                                                </td>
-                                            @endif
-                                        @endif
+                                            {{ $v == '' ? '' : number_format((float) $v, 1, '.', '') }}
+                                        </td>
                                     @elseif($key == 'diem')
                                         @foreach ($v as $keydiem => $diem)
                                             <td data-id="{{ $keydiem }}" data-field="diem"
@@ -115,7 +106,7 @@
                                 @if ($hocki < 3)
                                     @if ($khoadiem == false)
                                         <td class="text-center">
-                                            <a href="{{ route('diemManage.edit', ['hocki' => $hocki, 'mamonhoc' => $mamonhoc, 'mahocsinh' => $v]) }}"
+                                            <a href="{{ route('diemManage.edit', ['hocki' => $hocki, 'mamonhoc' => $mamonhoc, 'mahocsinh' => $value['mahocsinh']]) }}"
                                                 class="btn btn-primary" title="Chỉnh sửa">Chỉnh sửa</a>
                                         </td>
                                     @endif
