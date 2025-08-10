@@ -1,7 +1,7 @@
 @extends('layouts.canbo.layoutcanbo')
 @section('content')
     <div class="container py-4">
-        <h2 class="mb-4">👨‍🏫 Trang chủ Giáo viên - Thầy {{ session('userhoten') }}</h2>
+        <h2 class="mb-4">👨‍🏫 Trang chủ Giáo viên - Cán bộ {{ session('userhoten') }}</h2>
 
         <!-- Lớp chủ nhiệm -->
         @if (count($datalopchunhiem) != 0)
