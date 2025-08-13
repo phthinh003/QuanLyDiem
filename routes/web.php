@@ -45,6 +45,7 @@ Route::group(['middleware' => ['App\Http\Middleware\CheckPermission']], function
         });
         // EXCEL EXPORT Bang Diem Lop
         Route::get('/download/{mamon}/{malop}/{hocky}', 'App\Http\Controllers\ExcelExportBangDiem@exportBangDiemLop')->name('excelExport');
+        Route::get('/download/{malop}/{hocky}', 'App\Http\Controllers\ExportWordController@xuatPhieuDiemTatCa')->name('wordExport');
     });
 
     //Phan Quyen - Ban Giam Hieu

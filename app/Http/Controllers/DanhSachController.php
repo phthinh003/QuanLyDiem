@@ -296,7 +296,7 @@ class DanhSachController extends Controller
                 ['Tên lớp'=>$lop->tenlop,
                 'Giáo viên chủ nhiệm'=>$lop->hoten,
                 'Sỉ số'=>count($danhsachlop),
-                'Niên khóa'=>$lop->tennienkhoa
+                'Niên khóa'=>$lop->tennienkhoa,
             ]);
         $dataloaidiem = LoaiDiem::orderBy('heso')->get();
         $danhsach = [];
@@ -353,7 +353,7 @@ class DanhSachController extends Controller
 
         }
         // dd($danhsach);
-        return view('pages.canbo.giaovien.danhsachlopchunhiem', compact('page_title', 'datalopchunhiem', 'datalopday', 'datamon', 'danhsachlop', 'danhsach', 'malop','thongtinlop'));
+        return view('pages.canbo.giaovien.danhsachlopchunhiem', compact('page_title', 'datalopchunhiem', 'datalopday', 'datamon', 'danhsachlop', 'danhsach', 'malop','thongtinlop','hocki'));
     }
     public function bangdiemcanamlopchunhiem($malop)
     {

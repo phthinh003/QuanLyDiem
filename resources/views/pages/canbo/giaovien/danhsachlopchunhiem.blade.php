@@ -15,8 +15,16 @@
                     <button class="btn {{ request()->is('*1') ? 'btn-success' : '' }}">Học Kì 1</button></a>
                 <a href="{{ route('canboManage.danhsachlopchunhiem', ['malop' => $malop, 'hocky' => 2]) }}">
                     <button class="btn {{ request()->is('*2') ? 'btn-success' : '' }}">Học Kì 2</button></a>
+
                     <a href="{{ route('canboManage.bangdiemcanamlopchunhiem', ['malop' => $malop]) }}">
                         <button class="btn {{ request()->is('*3') ? 'btn-success' : '' }}">Cả Năm</button></a>
+
+                {{--  --}}
+                @isset($hocki)
+                    <a href="{{ route('canboManage.wordExport', [$malop, $hocki]) }}">
+                    <button class="btn btn-primary">Xuất phiếu điểm</button></a>
+                @endisset
+
             </div>
         </div>
         <div class="card-body">
