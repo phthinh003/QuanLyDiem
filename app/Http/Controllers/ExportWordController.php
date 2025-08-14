@@ -45,7 +45,7 @@ class ExportWordController extends Controller
 
             $tableHeader->addRow();
             $cellLeft = $tableHeader->addCell(10000);
-            $cellLeft->addText("BỘ GIÁO DỤC VÀ ĐÀO TẠO", ['bold' => true, 'allCaps' => true], ['align' => 'center']);
+            $cellLeft->addText("SỞ GIÁO DỤC VÀ ĐÀO TẠO", ['bold' => true, 'allCaps' => true], ['align' => 'center']);
             $cellLeft->addText("TRƯỜNG TRUNG HỌC PHỔ THÔNG TÂY ĐÔ", ['bold' => true, 'allCaps' => true], ['align' => 'center']);
 
             $cellRight = $tableHeader->addCell(10000);
