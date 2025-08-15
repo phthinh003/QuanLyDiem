@@ -19,7 +19,10 @@
                         </div>
                         <div class="col-md-6">
                             <p><strong>Kết quả học kỳ:</strong>
-                                <a href="{{ route('canboManage.danhsachlopchunhiem', ['malop' => $value->malop, 'hocky' => 1]) }}">Xem chi tiết</a></p>
+                                <a
+                                    href="{{ route('canboManage.danhsachlopchunhiem', ['malop' => $value->malop, 'hocky' => 1]) }}">Xem
+                                    chi tiết</a>
+                            </p>
                         </div>
 
                     </div>
@@ -48,6 +51,36 @@
                 @endforeach
             </div>
         @endif
+        <!-- Form gửi thông báo -->
+        <div class="card shadow mb-4">
+            <div class="card-header bg-info text-white">📨 Gửi thông báo tới học sinh</div>
+            <div class="card-body">
+                <form action="" method="POST">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="malop" class="form-label">Chọn lớp</label>
+                        <select name="malop" id="malop" class="form-select" required>
+                            <option value="">-- Chọn lớp --</option>
+                            @foreach ($datalopchunhiem as $lop)
+                                <option value="{{ $lop->malop }}">{{ $lop->tenlop }} ({{ $lop->tennienkhoa }})</option>
+                            @endforeach
+                            @foreach ($datalopday as $lop)
+                                <option value="{{ $lop->malop }}">{{ $lop->tenlop }} ({{ $lop->tennienkhoa }})
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Nội dung thông báo</label>
+                        <textarea name="message" id="message" class="form-control" rows="3" required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Gửi thông báo</button>
+                </form>
+            </div>
+        </div>
+
         <!-- Lịch dạy hôm nay -->
         <div class="card shadow mb-4">
             <div class="card-header bg-light">🗓️ Lịch dạy hôm nay (Thứ 2 - 17/07/2025)</div>
@@ -79,9 +112,12 @@
                     <div class="card-header bg-light">📢 Thông báo từ BGH</div>
                     <div class="card-body">
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Lịch thi giữa kỳ bắt đầu từ 24/07</li>
-                            <li class="list-group-item">Họp tổ Toán vào thứ 5 tuần này</li>
-                            <li class="list-group-item">Nhắc nhở điểm danh đúng giờ</li>
+                            @foreach ($thongbao as $tb)
+                                <li class="list-group-item">
+                                    📢 <strong>{{ $tb->tieude }}</strong> <br>
+                                    <small class="text-muted">{{ $tb->noidung }}</small>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>

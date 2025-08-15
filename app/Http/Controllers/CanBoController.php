@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CanBo;
 use App\Models\Lop;
 use App\Models\MonHoc;
+use App\Models\ThongBao;
 use Carbon\Carbon;
 use Carbon\Traits\ToStringFormat;
 use Exception;
@@ -169,10 +170,11 @@ class CanBoController extends Controller
             ->where('monhoc.macanbo', $macanbo)
             ->where('ketthuc','>',$nowdate)
             ->get();
-        // foreach($data as $item=>$value){
-        //     print($value);
-        //  }
-        return view('pages.canbo.giaovien.danhchocanbo', compact('page_title','datalopchunhiem','datalopday','canbo'));
+        $thongbao = ThongBao::where('loainguoinhan', 'giaovien')
+            ->orWhere('loainguoinhan', 'all')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return view('pages.canbo.giaovien.danhchocanbo', compact('page_title','datalopchunhiem','datalopday','canbo','thongbao'));
     }
 
     // Kiem tra du lieu dau vao

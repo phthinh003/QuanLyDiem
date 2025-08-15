@@ -150,5 +150,12 @@ Route::group(['middleware' => ['App\Http\Middleware\CheckPermission']], function
             Route::get('/lophoc/store/{mahocsinh}/{malop}', 'App\Http\Controllers\LopController@storelophoc')->name('storeLophoc');
             Route::delete('/lophoc/delete/{malophoc}', 'App\Http\Controllers\LopController@deletelophoc')->name('deleteLophoc');
         });
+    Route::prefix('thongbao')->group(function () {
+    Route::get('/', 'App\Http\Controllers\ThongBaoController@index')->name('thongbao.index');
+    // Route::get('/create', 'App\Http\Controllers\ThongBaoController@create')->name('thongbao.create');
+    Route::post('/', 'App\Http\Controllers\ThongBaoController@store')->name('thongbao.store');
+    // Route::get('/{id}', 'App\Http\Controllers\ThongBaoController@show')->name('thongbao.show');
+    Route::delete('/{id}', 'App\Http\Controllers\ThongBaoController@destroy')->name('thongbao.destroy');
+});
     });
 });
