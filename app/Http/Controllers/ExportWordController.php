@@ -6,9 +6,7 @@ use App\Models\Diem;
 use App\Models\HocSinh;
 use App\Models\Lop;
 use App\Models\Mon;
-use Illuminate\Http\Request;
 use PhpOffice\PhpWord\PhpWord;
-use PhpOffice\PhpWord\Shared\Converter;
 use PhpOffice\PhpWord\SimpleType\Jc;
 
 class ExportWordController extends Controller
@@ -68,102 +66,206 @@ class ExportWordController extends Controller
             $section->addText("Họ và tên: {$hs->hotenhocsinh}");
             $section->addText("Lớp: {$lop->tenlop}");
             $section->addText($lop->tennienkhoa);
-            $section->addText("Học kì:{$hk}");
+            if($hk<3) $section->addText("Học kì:{$hk}");
             $section->addTextBreak(1);
-
             // Dữ liệu điểm
-            // Tạo bảng điểm ngang
-            $table = $section->addTable([
-                'borderSize' => 6,
-                'borderColor' => '000000',
-                'cellMargin' => 80,
-                'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::CENTER
-            ]);
+            if ($hk < 3) {
+                // Tạo bảng điểm ngang
+                $table = $section->addTable([
+                    'borderSize' => 6,
+                    'borderColor' => '000000',
+                    'cellMargin' => 80,
+                    'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::CENTER
+                ]);
+                // Lấy danh sách môn học của học sinh
+                $monHocList = Mon::all();
 
-            // Lấy danh sách môn học của học sinh
-            $monHocList = Mon::all();
+                // ===== Hàng 1: Tiêu đề cột (Môn học) =====
+                $table->addRow();
+                $table->addCell(3000, ['bgColor' => 'cccccc'])->addText('Môn học', ['bold' => true]);
+                $diemtb = [];
+                foreach ($monHocList as $mon) {
+                    // dd($mon);
+                    $diem = Diem::join('monhoc', 'diem.mamonhoc', 'monhoc.mamonhoc')
+                        ->join('loaidiem', 'diem.loaidiem', 'loaidiem.maloaidiem')
+                        ->where('diem.mahocsinh', $hs->mahocsinh)
+                        ->where('mamon', $mon->mamon)
+                        ->where('malop', $malop)
+                        ->where('hocky', $hk)
+                        ->select('diem', 'heso')
+                        ->get();
+                    $i = 0;
+                    $s = 0;
+                    foreach ($diem as $d) {
+                        $s += $d->diem * $d->heso;
+                        $i += $d->heso;
+                    }
+                    if ($i > 0) {
+                        $diemtb[] = $s / $i;
+                    } else $diemtb[] = '';
 
-            // ===== Hàng 1: Tiêu đề cột (Môn học) =====
-            $table->addRow();
-            $table->addCell(3000, ['bgColor' => 'cccccc'])->addText('Môn học', ['bold' => true]);
-            $diemtb = [];
-            foreach ($monHocList as $mon) {
-                // dd($mon);
-                $diem = Diem::join('monhoc', 'diem.mamonhoc', 'monhoc.mamonhoc')
-                    ->join('loaidiem', 'diem.loaidiem', 'loaidiem.maloaidiem')
-                    ->where('diem.mahocsinh', $hs->mahocsinh)
-                    ->where('mamon', $mon->mamon)
-                    ->where('malop', $malop)
-                    ->where('hocky', $hk)
-                    ->select('diem', 'heso')
-                    ->get();
-                $i = 0;
-                $s = 0;
-                foreach ($diem as $d) {
-                    $s += $d->diem * $d->heso;
-                    $i += $d->heso;
+                    $table->addCell(1500, ['bgColor' => 'cccccc'])->addText($mon->tenmon, ['bold' => true]);
                 }
-                if ($i > 0) {
-                    $diemtb[] = $s / $i;
-                } else $diemtb[] = '';
+                // ===== Hàng 2: Điểm TB =====
 
-                $table->addCell(1500, ['bgColor' => 'cccccc'])->addText($mon->tenmon, ['bold' => true]);
+                $tot = 0;
+                $kha = 0;
+
+                $nottot = false;
+                $notkha = false;
+                $notdat = false;
+                $diem = 0;
+                $table->addRow();
+                $table->addCell(3000)->addText('Điểm TB', ['bold' => true]);
+                foreach ($diemtb as $dtb) {
+                    if ($dtb != '') {
+                        $diem += $dtb;
+
+                        // so luong diem
+                        if ($dtb >= 8) $tot++;
+                        if ($dtb >= 6.5) $kha++;
+
+                        // diem liet
+                        if ($dtb < 6.5) $nottot = true;
+                        if ($dtb < 5) $notkha = true;
+                        if ($dtb < 3.5) $notdat = true;
+                        // ghi diem vao word
+                        $table->addCell(1500)->addText(number_format($dtb, 1));
+                    } else
+                        // ghi diem vao word
+                        $table->addCell(1500)->addText("");
+                }
+                $table->addRow(10, [
+                    'bordercolor' => 'ffffff',
+                ]);
+                $table->addCell(1500, ['bordersize' => 0, 'borderColor' => 'ffffff']);
+                $table->addRow();
+                $table->addCell(1500, ['bgColor' => 'cccccc'])->addText('Trung bình học kì', ['bold' => true]);
+                $table->addCell(1500)->addText(number_format($diem / count($diemtb), 1), ['bold' => true]);
+
+                if ($notdat == true) $xeploai = "Chưa đạt";
+                else {
+                    $xeploai = "Đạt";
+                    if ($nottot == false && $tot >= 6) $xeploai = "Tốt";
+                    else if ($notkha == false && $kha >= 6) $xeploai = "Khá";
+                }
+                $table->addRow();
+                $table->addCell(1500, ['bgColor' => 'cccccc'])->addText('Xếp loại', ['bold' => true]);
+                $table->addCell(1500)->addText($xeploai, ['bold' => true]);
+
+                $section->addTextBreak(1);
+                $section->addText("Nhận xét: ", ['italic' => true]);
+                $section->addTextBreak(2);
+            } else {
+                // Tạo bảng điểm ngang
+                $table = $section->addTable([
+                    'borderSize' => 6,
+                    'borderColor' => '000000',
+                    'cellMargin' => 80,
+                    'alignment' => \PhpOffice\PhpWord\SimpleType\JcTable::CENTER
+                ]);
+                // Lấy danh sách môn học của học sinh
+                $monHocList = Mon::all();
+
+                // ===== Hàng 1: Tiêu đề cột (Môn học) =====
+                $table->addRow();
+                $table->addCell(3000, ['bgColor' => 'cccccc'])->addText('Môn học', ['bold' => true]);
+                $diemtb = [];
+                foreach ($monHocList as $mon) {
+                    // dd($mon);
+                    $diem1 = Diem::join('monhoc', 'diem.mamonhoc', 'monhoc.mamonhoc')
+                        ->join('loaidiem', 'diem.loaidiem', 'loaidiem.maloaidiem')
+                        ->where('diem.mahocsinh', $hs->mahocsinh)
+                        ->where('mamon', $mon->mamon)
+                        ->where('malop', $malop)
+                        ->where('hocky', 1)
+                        ->select('diem', 'heso')
+                        ->get();
+                    $i = 0;
+                    $s = 0;
+                    foreach ($diem1 as $d) {
+                        $s += $d->diem * $d->heso;
+                        $i += $d->heso;
+                    }
+                    if ($i > 0) {
+                        $diemtb1 = $s / $i;
+                    } else $diemtb1 = '';
+                    $diem2 = Diem::join('monhoc', 'diem.mamonhoc', 'monhoc.mamonhoc')
+                        ->join('loaidiem', 'diem.loaidiem', 'loaidiem.maloaidiem')
+                        ->where('diem.mahocsinh', $hs->mahocsinh)
+                        ->where('mamon', $mon->mamon)
+                        ->where('malop', $malop)
+                        ->where('hocky', 2)
+                        ->select('diem', 'heso')
+                        ->get();
+                    $i = 0;
+                    $s = 0;
+                    foreach ($diem2 as $d) {
+                        $s += $d->diem * $d->heso;
+                        $i += $d->heso;
+                    }
+                    if ($i > 0) {
+                        $diemtb2 = $s / $i;
+                    } else $diemtb2 = '';
+                    if($diemtb1!='' && $diemtb2!=''){
+                        $diemtb[]=($diemtb1+$diemtb2*2)/3;
+                    }else{
+                        $diemtb[]='';
+                    }
+
+                    $table->addCell(1500, ['bgColor' => 'cccccc'])->addText($mon->tenmon, ['bold' => true]);
+                }
+                // ===== Hàng 2: Điểm TB =====
+
+                $tot = 0;
+                $kha = 0;
+
+                $nottot = false;
+                $notkha = false;
+                $notdat = false;
+                $diem = 0;
+                $table->addRow();
+                $table->addCell(3000)->addText('Điểm TB', ['bold' => true]);
+                foreach ($diemtb as $dtb) {
+                    if ($dtb != '') {
+                        $diem += $dtb;
+
+                        // so luong diem
+                        if ($dtb >= 8) $tot++;
+                        if ($dtb >= 6.5) $kha++;
+
+                        // diem liet
+                        if ($dtb < 6.5) $nottot = true;
+                        if ($dtb < 5) $notkha = true;
+                        if ($dtb < 3.5) $notdat = true;
+                        // ghi diem vao word
+                        $table->addCell(1500)->addText(number_format($dtb, 1));
+                    } else
+                        // ghi diem vao word
+                        $table->addCell(1500)->addText("");
+                }
+                $table->addRow(10, [
+                    'bordercolor' => 'ffffff',
+                ]);
+                $table->addCell(1500, ['bordersize' => 0, 'borderColor' => 'ffffff']);
+                $table->addRow();
+                $table->addCell(1500, ['bgColor' => 'cccccc'])->addText('Trung bình cả năm', ['bold' => true]);
+                $table->addCell(1500)->addText(number_format($diem / count($diemtb), 1), ['bold' => true]);
+
+                if ($notdat == true) $xeploai = "Chưa đạt";
+                else {
+                    $xeploai = "Đạt";
+                    if ($nottot == false && $tot >= 6) $xeploai = "Tốt";
+                    else if ($notkha == false && $kha >= 6) $xeploai = "Khá";
+                }
+                $table->addRow();
+                $table->addCell(1500, ['bgColor' => 'cccccc'])->addText('Xếp loại', ['bold' => true]);
+                $table->addCell(1500)->addText($xeploai, ['bold' => true]);
+
+                $section->addTextBreak(1);
+                $section->addText("Nhận xét: ", ['italic' => true]);
+                $section->addTextBreak(2);
             }
-
-            // dd($diemtb,$hs->hotenhocsinh);
-
-            // ===== Hàng 2: Điểm TB =====
-
-            $tot = 0;
-            $kha = 0;
-
-            $nottot = false;
-            $notkha = false;
-            $notdat = false;
-            $diem = 0;
-            $table->addRow();
-            $table->addCell(3000)->addText('Điểm TB', ['bold' => true]);
-            foreach ($diemtb as $dtb) {
-                if ($dtb != '') {
-                    $diem += $dtb;
-
-                    // so luong diem
-                    if ($dtb >= 8) $tot++;
-                    if ($dtb >= 6.5) $kha++;
-
-                    // diem liet
-                    if ($dtb < 6.5) $nottot = true;
-                    if ($dtb < 5) $notkha = true;
-                    if ($dtb < 3.5) $notdat = true;
-                    // ghi diem vao word
-                    $table->addCell(1500)->addText(number_format($dtb, 1));
-                } else
-                // ghi diem vao word
-                $table->addCell(1500)->addText("");
-            }
-            $table->addRow(10, [
-                'bordercolor' => 'ffffff',
-            ]);
-            $table->addCell(1500, ['bordersize' => 0, 'borderColor' => 'ffffff']);
-            $table->addRow();
-            $table->addCell(1500, ['bgColor' => 'cccccc'])->addText('Trung bình học kì', ['bold' => true]);
-            $table->addCell(1500)->addText(number_format($diem / count($diemtb), 1), ['bold' => true]);
-
-            if ($notdat == true) $xeploai = "Chưa đạt";
-            else {
-                $xeploai = "Đạt";
-                if ($nottot == false && $tot >= 6) $xeploai = "Tốt";
-                else if ($notkha == false && $kha >= 6) $xeploai = "Khá";
-            }
-
-            $table->addRow();
-            $table->addCell(1500, ['bgColor' => 'cccccc'])->addText('Xếp loại', ['bold' => true]);
-            $table->addCell(1500)->addText($xeploai, ['bold' => true]);
-
-
-            $section->addTextBreak(1);
-            $section->addText("Nhận xét: ", ['italic' => true]);
-            $section->addTextBreak(2);
 
             // Ký tên
             $section->addText(

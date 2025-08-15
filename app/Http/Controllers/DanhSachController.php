@@ -280,6 +280,7 @@ class DanhSachController extends Controller
             ->join('lop', 'lop.malop', 'lophoc.malop')
             ->where('lop.chunhiem', $macanbo)
             ->where('lop.malop',$malop)
+            ->select('hocsinh.mahocsinh','lop.malop','hotenhocsinh')
             ->get();
         $datamon = MonHoc::from('monhoc')
             ->join('mon', 'monhoc.mamon', 'mon.mamon')
@@ -378,7 +379,10 @@ class DanhSachController extends Controller
         $danhsachlop = LopHoc::from('lophoc')
             ->join('hocsinh', 'lophoc.mahocsinh', 'hocsinh.mahocsinh')
             ->join('lop', 'lop.malop', 'lophoc.malop')
-            ->where('lop.chunhiem', $macanbo)->get();
+            ->where('lop.malop',$malop)
+            ->where('lop.chunhiem', $macanbo)
+            ->select('hocsinh.mahocsinh','lop.malop','hotenhocsinh')
+            ->get();
         $datamon = MonHoc::from('monhoc')
             ->join('mon', 'monhoc.mamon', 'mon.mamon')
             ->where('malop', $malop)->get();
@@ -458,7 +462,8 @@ class DanhSachController extends Controller
 
         }
         // dd($danhsach);
-        return view('pages.canbo.giaovien.danhsachlopchunhiem', compact('page_title', 'datalopchunhiem', 'datalopday', 'datamon', 'danhsachlop', 'danhsach', 'malop','thongtinlop'));
+        $hocki=3;
+        return view('pages.canbo.giaovien.danhsachlopchunhiem', compact('page_title', 'datalopchunhiem', 'datalopday', 'datamon', 'danhsachlop', 'danhsach', 'malop','thongtinlop','hocki'));
     }
 
     public function diemhocsinh($malop, $hocki)
