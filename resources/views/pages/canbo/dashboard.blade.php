@@ -151,7 +151,7 @@
                     labels: ['Khối 10', 'Khối 11', 'Khối 12'],
                     datasets: [{
                         label: 'Tỉ lệ học sinh',
-                        data: [{{ $a }}, {{ $b }}, {{ $c }}],
+                        data: [{{ $k10 }}, {{ $k11 }}, {{ $k12 }}],
                         backgroundColor: ['#0d6efd', '#198754', '#ffc107']
                     }]
                 },

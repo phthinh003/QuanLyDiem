@@ -90,9 +90,12 @@
                 <div class="card-header bg-warning">📢 Thông báo mới</div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Họp phụ huynh ngày 25/07</li>
-                        <li class="list-group-item">Báo cáo giữa kỳ đã cập nhật</li>
-                        <li class="list-group-item">Thi HK1 bắt đầu từ 28/07</li>
+                        @foreach ($thongbao as $tb)
+                                <li class="list-group-item">
+                                    📢 <strong>{{ $tb->tieude }}</strong> <br>
+                                    <small class="text-muted">{{ $tb->noidung }}</small>
+                                </li>
+                            @endforeach
                     </ul>
                 </div>
             </div>

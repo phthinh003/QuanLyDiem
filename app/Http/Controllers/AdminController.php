@@ -19,10 +19,10 @@ class AdminController extends Controller
             ->orWhere('loainguoinhan', 'all')
             ->orderBy('created_at', 'desc')
             ->get();
-        $a=60;
-        $b=30;
-        $c=10;
+        $k10=60;
+        $k11=30;
+        $k12=10;
         return view('pages.canbo.dashboard',
-        compact('page_title','slcanbo','slhocsinh','slphuhuynh','a','b','c','thongbao'));
+        compact('page_title','slcanbo','slhocsinh','slphuhuynh','k10','k11','k12','thongbao'));
     }
 }

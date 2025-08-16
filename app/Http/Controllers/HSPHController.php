@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\HocSinh;
 use App\Models\LopHoc;
 use App\Models\PhuHuynh;
+use App\Models\ThongBao;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -263,6 +264,10 @@ class HSPHController extends Controller
                         ->where('mahocsinh',$mahocsinh)
                         ->orderBy('ketthuc','desc')
                         ->get();
+        $thongbao = ThongBao::where('loainguoinhan', 'hocsinh')
+            ->orWhere('loainguoinhan', 'all')
+            ->orderBy('created_at', 'desc')
+            ->get();
         $datenow=Carbon::now();
         foreach($datalop as $lop){
             if($lop->ketthuc<$datenow){
@@ -274,7 +279,7 @@ class HSPHController extends Controller
                 $hocsinh->nkhientai=$lop->tennienkhoa;
             }
         }
-        return view('pages.hocsinh.index', compact('page_title','datalop','hocsinh'));
+        return view('pages.hocsinh.index', compact('page_title','datalop','hocsinh','thongbao'));
     }
     public function indexPhuHuynhPage(){
         $page_title = "Trang chủ";
@@ -296,22 +301,10 @@ class HSPHController extends Controller
             }
             $menu=Arr::add($menu,count($menu),['hocsinh'=>$hocsinh,'lop'=>$lop]);
         }
-        // dd($menu);
-        // foreach($menu as $item){
-        //     foreach($item as $key=>$value){
-        //         if($key=='hocsinh'){
-        //             print($value.'----------');
-
-        //         }else{
-        //             foreach($value as $k=>$v1){
-        //                 foreach($v1 as $k1=>$v){
-        //                 print($v->malop);
-        //                 }
-        //             }
-        //             print("\n");
-        //         }
-        //     }
-        // }
+        $thongbao = ThongBao::where('loainguoinhan', 'phuhuynh')
+            ->orWhere('loainguoinhan', 'all')
+            ->orderBy('created_at', 'desc')
+            ->get();
         // du lieu noi dung
         $datalop=Lophoc::join('lop','lop.malop','lophoc.malop')
                         ->join('hocsinh','lophoc.mahocsinh','hocsinh.mahocsinh')
@@ -328,7 +321,7 @@ class HSPHController extends Controller
                 $lop->xong=false;
             }
         }
-        return view('pages.phuhuynh.index', compact('page_title','phuhuynh','menu','datalop'));
+        return view('pages.phuhuynh.index', compact('page_title','phuhuynh','menu','datalop','thongbao'));
     }
     //Lien ket tai khoan
     public function editlk($mahocsinh)
