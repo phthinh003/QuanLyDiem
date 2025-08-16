@@ -62,7 +62,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="card shadow mb-3">
                     <div class="card-header bg-light">🔔 Thông báo nội bộ</div>
                     <div class="card-body">
