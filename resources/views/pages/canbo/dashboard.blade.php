@@ -13,40 +13,40 @@
         <!-- Thống kê tổng quan -->
         <div class="row g-4 mb-4 text-center">
             <div class="col-md-3">
-                <div class="card border-primary shadow h-100">
+                <a href="{{ route('hocsinhManage.index') }}" class="card border-primary shadow h-100">
                     <div class="card-body">
                         <div class="card-icon">👨‍🎓</div>
                         <h5 class="card-title">Học sinh</h5>
                         <p class="display-6 fw-bold">{{ $slhocsinh }}</p>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-md-3">
-                <div class="card border-success shadow h-100">
+                <a href="{{ route('canboManage.indexCanbo') }}" class="card border-success shadow h-100">
                     <div class="card-body">
                         <div class="card-icon">👩‍🏫</div>
                         <h5 class="card-title">Giáo viên</h5>
                         <p class="display-6 fw-bold">{{ $slcanbo - 1 }}</p>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-md-3">
-                <div class="card border-warning shadow h-100">
+                <a href="{{ route('phuhuynhManage.index') }}" class="card border-warning shadow h-100">
                     <div class="card-body">
                         <div class="card-icon">🧑‍🤝‍🧑</div>
                         <h5 class="card-title">Phụ huynh</h5>
                         <p class="display-6 fw-bold">{{ $slphuhuynh }}</p>
                     </div>
-                </div>
+                </a>
             </div>
             <div class="col-md-3">
-                <div class="card border-info shadow h-100">
+                <a href="{{ route('lopManage.indexLop') }}" class="card border-info shadow h-100">
                     <div class="card-body">
                         <div class="card-icon">🏫</div>
                         <h5 class="card-title">Lớp học</h5>
-                        <p class="display-6 fw-bold">15</p>
+                        <p class="display-6 fw-bold">{{ $sllop }}</p>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
 
@@ -150,7 +150,7 @@
                 data: {
                     labels: ['Khối 10', 'Khối 11', 'Khối 12'],
                     datasets: [{
-                        label: 'Tỉ lệ học sinh',
+                        label: 'Số lượng học sinh',
                         data: [{{ $k10 }}, {{ $k11 }}, {{ $k12 }}],
                         backgroundColor: ['#0d6efd', '#198754', '#ffc107']
                     }]
