@@ -49,7 +49,24 @@
 
                                 @default
                             @endswitch
-                            <td>{{ $tb->loainguoinhan }}</td>
+                            @switch($tb->loainguoinhan)
+                                @case('hocsinh')
+                                    <td>Học Sinh</td>
+                                @break
+
+                                @case('phuhuynh')
+                                    <td>Phụ Huynh</td>
+                                @break
+
+                                @case('giaovien')
+                                    <td>Giáo Viên</td>
+                                @break
+                                @case('all')
+                                    <td>Tất cả</td>
+                                @break
+
+                                @default
+                            @endswitch
                             <td>{{ $tb->created_at->format('d/m/Y H:i') }}</td>
                             <td class="text-center" style="display: flex; justify-content: center">
                                 <a href="{{ route('thongbao.destroy', $tb->id) }}" id="delete"
@@ -90,6 +107,7 @@
                             <select name="loainguoinhan" class="form-select" required>
                                 <option value="giaovien">Giáo viên</option>
                                 <option value="hocsinh">Học sinh</option>
+                                <option value="phuhuynh">Phụ huynh</option>
                                 <option value="tatca">Tất cả</option>
                             </select>
                         </div>
@@ -137,6 +155,23 @@
                         default:
                             nguoigui = "Khác";
                     }
+                    let loainguoinhan = "";
+                    switch (res.loainguoinhan) {
+                        case "hocsinh":
+                            loainguoinhan = "Học Sinh";
+                            break;
+                        case "phuhuynh":
+                            loainguoinhan = "Phụ Huynh";
+                            break;
+                        case "giaovien":
+                            loainguoinhan = "Giáo Viên";
+                            break;
+                        case "all":
+                            loainguoinhan = "Tất cả";
+                            break;
+                        default:
+                            loainguoinhan = "Khác";
+                    }
 
                     let date = new Date(res.created_at);
                     let formattedDate = ("0" + date.getDate()).slice(-2) + "/" +
@@ -150,7 +185,7 @@
                 <td>${res.tieude}</td>
                 <td>${res.noidung}</td>
                 <td>${nguoigui}</td>
-                <td>${res.loainguoinhan}</td>
+                <td>${loainguoinhan}</td>
                 <td>${formattedDate}</td>
                 <td class="text-center" style="display: flex; justify-content: center">
                                 <a href="/thongbao/destroy/${res.id}"
