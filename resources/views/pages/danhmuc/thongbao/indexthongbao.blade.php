@@ -22,6 +22,7 @@
                 <thead>
                     <tr>
                         <th>Tiêu đề</th>
+                        <th>Nội dung</th>
                         <th>Loại người gửi</th>
                         <th>Người nhận</th>
                         <th>Ngày tạo</th>
@@ -32,6 +33,7 @@
                     @foreach ($thongbao as $tb)
                         <tr>
                             <td>{{ $tb->tieude }}</td>
+                            <td>{{ $tb->noidung }}</td>
                             @switch($tb->loainguoigui)
                                 @case('bangiamhieu')
                                     <td>Ban Giám Hiệu</td>
@@ -146,6 +148,7 @@
                     $("#listThongBao").prepend(`
             <tr id="tb_${res.id}">
                 <td>${res.tieude}</td>
+                <td>${res.noidung}</td>
                 <td>${nguoigui}</td>
                 <td>${res.loainguoinhan}</td>
                 <td>${formattedDate}</td>
