@@ -1,4 +1,14 @@
 @extends('layouts.canbo.layoutcanbo')
+@section('styles')
+    <style>
+        textarea.form-control {
+            height: auto !important;
+            min-height: 0;
+            resize: vertical;
+        }
+    </style>
+@endsection
+
 @section('content')
     <div class="container py-4">
         <h2 class="mb-4">👨‍🏫 Trang chủ Giáo viên - Cán bộ {{ session('userhoten') }}</h2>
@@ -51,29 +61,62 @@
                 @endforeach
             </div>
         @endif
+        <div class="card shadow mb-4">
+            <div class="card-header bg-light">📢 Thông báo</div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush" id="listThongBao">
+                    @foreach ($thongbao->take(3) as $tb)
+                        <li class="list-group-item">
+                            📢 <strong>{{ $tb->tieude }} </strong> | từ
+                            @if ($tb->loainguoigui == 'bangiamhieu')
+                                <span class="fw-normal text-muted">Ban giám hiệu</span>
+                            @elseif ($tb->loainguoigui == 'hethong')
+                                <span class="fw-normal text-muted">Hệ thống</span>
+                            @endif
+                            <br>
+                            <small class="text-muted">{{ $tb->noidung }}</small>
+                        </li>
+                    @endforeach
+                </ul>
+
+                {{-- Nút xem thêm --}}
+                <div class="text-center mt-2">
+                    <button id="loadMoreBtn" class="btn btn-sm btn-outline-primary" data-page="2">
+                        Xem thêm
+                    </button>
+                </div>
+            </div>
+        </div>
         <!-- Form gửi thông báo -->
         <div class="card shadow mb-4">
             <div class="card-header bg-info text-white">📨 Gửi thông báo tới học sinh</div>
             <div class="card-body">
-                <form action="" method="POST">
-                    @csrf
+                <form action="{{ route('thongbao.store') }}" method="POST">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="loainguoigui" value="giaovien" />
+                    <input type="hidden" name="loainguoinhan" value="hocsinh" />
+                    <input type="hidden" name="nguoigui" value="{{ session('userid') }}" />
                     <div class="mb-3">
-                        <label for="malop" class="form-label">Chọn lớp</label>
-                        <select name="malop" id="malop" class="form-select" required>
-                            <option value="">-- Chọn lớp --</option>
+                        <label for="nguoinhan" class="form-label">Chọn lớp</label>
+                        <select name="nguoinhan" id="nguoinhan" class="form-control" required>
                             @foreach ($datalopchunhiem as $lop)
-                                <option value="{{ $lop->malop }}">{{ $lop->tenlop }} ({{ $lop->tennienkhoa }})</option>
+                                <option value="{{ $lop->malop }}">{{ $lop->tenlop }} (lớp chủ nhiệm)
+                                    ({{ $lop->tennienkhoa }})</option>
                             @endforeach
                             @foreach ($datalopday as $lop)
-                                <option value="{{ $lop->malop }}">{{ $lop->tenlop }} ({{ $lop->tennienkhoa }})
+                                <option value="{{ $lop->malop }}">{{ $lop->tenlop }} - {{ $lop->tenmon }}
+                                    ({{ $lop->tennienkhoa }})
                                 </option>
                             @endforeach
                         </select>
                     </div>
-
+                    <div class="mb-3">
+                        <label for="tieude" class="form-label">Tiêu đề</label>
+                        <input type="text" name="tieude" id="tieude" class="form-control" required />
+                    </div>
                     <div class="mb-3">
                         <label for="message" class="form-label">Nội dung thông báo</label>
-                        <textarea name="message" id="message" class="form-control" rows="3" required></textarea>
+                        <textarea name="noidung" id="noidung" class="form-control" rows="3" required></textarea>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Gửi thông báo</button>
@@ -83,89 +126,58 @@
 
         <!-- Lịch dạy hôm nay -->
         <div class="card shadow mb-4">
-            <div class="card-header bg-light">🗓️ Lịch dạy hôm nay (Thứ 2 - 17/07/2025)</div>
+            <div class="card-header bg-light">Các thông báo đã gửi</div>
             <div class="card-body">
                 <ul class="list-group">
-                    <li class="list-group-item">Tiết 1: Lớp 10A2 - Môn Toán (Phòng A1)</li>
-                    <li class="list-group-item">Tiết 3: Lớp 11B1 - Môn Toán (Phòng B2)</li>
-                    <li class="list-group-item text-muted">Tiết 5: Trống</li>
+                    @foreach ($mythongbao->take(3) as $tb)
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div>
+                                📢 <strong>{{ $tb->tieude }}</strong> | tới
+                                {{ $tb->tenlop }}
+                                <br>
+                                <small class="text-muted">{{ $tb->noidung }}</small>
+                            </div>
+
+                            {{-- Form xoá --}}
+                            <a href="{{ route('thongbao.destroy', $tb->id) }}" id="delete"
+                                    class="btn btn-sm btn-icon btn-danger" data-confirm-delete="true" title="xoá">
+                                    <i class="la la-trash"></i>Xoá
+                                </a>
+                        </li>
+                    @endforeach
                 </ul>
-            </div>
-        </div>
-
-        <!-- Nhắc việc + thông báo -->
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card shadow mb-4">
-                    <div class="card-header bg-warning">📝 Công việc cần làm</div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Ghi điểm giữa kỳ lớp 10A2</li>
-                            <li class="list-group-item">Duyệt đơn xin nghỉ của học sinh</li>
-                            <li class="list-group-item">Chuẩn bị báo cáo GVCN</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card shadow mb-4">
-                    <div class="card-header bg-light">📢 Thông báo</div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush" id="listThongBao">
-                            @foreach ($thongbao->take(3) as $tb)
-                                <li class="list-group-item">
-                                    📢 <strong>{{ $tb->tieude }} </strong> | từ
-                                    @if ($tb->loainguoigui == 'bangiamhieu')
-                                        <span class="fw-normal text-muted">Ban giám hiệu</span>
-                                    @elseif ($tb->loainguoigui == 'hethong')
-                                        <span class="fw-normal text-muted">Hệ thống</span>
-                                    @endif
-                                    <br>
-                                    <small class="text-muted">{{ $tb->noidung }}</small>
-                                </li>
-                            @endforeach
-                        </ul>
-
-                        {{-- Nút xem thêm --}}
-                        <div class="text-center mt-2">
-                            <button id="loadMoreBtn" class="btn btn-sm btn-outline-primary" data-page="2">
-                                Xem thêm
-                            </button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                $("#loadMoreBtn").on("click", function() {
-                    let page = $(this).data("page");
-                    let loainguoinhan = 'giaovien';
+    <script>
+        $(document).ready(function() {
+            $("#loadMoreBtn").on("click", function() {
+                let page = $(this).data("page");
+                let loainguoinhan = 'giaovien';
 
-                    $.ajax({
-                        url: "{{ route('thongbao.load', ['page' => 'PAGE', 'loainguoinhan' => 'TYPE']) }}"
-                            .replace('PAGE', page)
-                            .replace('TYPE', loainguoinhan),
-                        type: "GET",
-                        success: function(res) {
-                            if (res.length > 0) {
-                                res.forEach(function(tb) {
-                                    $("#listThongBao").append(
-                                        `<li class="list-group-item">
+                $.ajax({
+                    url: "{{ route('thongbao.load', ['page' => 'PAGE', 'loainguoinhan' => 'TYPE']) }}"
+                        .replace('PAGE', page)
+                        .replace('TYPE', loainguoinhan),
+                    type: "GET",
+                    success: function(res) {
+                        if (res.length > 0) {
+                            res.forEach(function(tb) {
+                                $("#listThongBao").append(
+                                    `<li class="list-group-item">
                                 📢 <strong>${tb.tieude}</strong><br>
                                 <small class="text-muted">${tb.noidung}</small>
                              </li>`
-                                    );
-                                });
-                                $("#loadMoreBtn").data("page", page + 1);
-                            } else {
-                                $("#loadMoreBtn").text("Hết thông báo").prop("disabled", true);
-                            }
+                                );
+                            });
+                            $("#loadMoreBtn").data("page", page + 1);
+                        } else {
+                            $("#loadMoreBtn").text("Hết thông báo").prop("disabled", true);
                         }
-                    });
+                    }
                 });
             });
-        </script>
+        });
+    </script>
 @endsection

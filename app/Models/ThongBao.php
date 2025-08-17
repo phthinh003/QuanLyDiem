@@ -16,6 +16,7 @@ class ThongBao extends Model
         'noidung',
         'nguoigui',
         'loainguoigui',
+        'nguoinhan',
         'loainguoinhan',
     ];
 

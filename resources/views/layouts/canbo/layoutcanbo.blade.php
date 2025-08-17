@@ -50,7 +50,7 @@
         </div>
     </div>
 
-
+@include('sweetalert::alert')
 
     <script src="{{ asset('js/canbojs/jquery.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('js/canbojs/main.js') }}" type="text/javascript"></script>

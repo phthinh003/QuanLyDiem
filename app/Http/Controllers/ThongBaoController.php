@@ -15,7 +15,7 @@ class ThongBaoController extends Controller
             ->get();
         confirmDelete("", "");
 
-        return view('pages.danhmuc.thongbao.indexthongbao', compact('thongbao'));
+        return view('pages.danhmuc.thongbao.indexthongbao', compact('thongbao', 'page_title'));
     }
     public function loadMore($page, $loainguoinhan)
     {
@@ -43,16 +43,21 @@ class ThongBaoController extends Controller
             'tieude' => 'required|string|max:255',
             'noidung' => 'required|string',
             'loainguoinhan' => 'required|string',
+        ], [
+            'tieude.required' => 'Bạn phải nhập tiêu đề thông báo',
+            'tieude.max' => 'Tiêu đề không được quá 255 ký tự',
+            'noidung.required' => 'Nội dung không được để trống',
+            'loainguoinhan.required' => 'Bạn phải chọn người nhận',
         ]);
 
         $thongbao = new ThongBao();
         $thongbao->tieude = $request->tieude;
         $thongbao->noidung = $request->noidung;
+        if(isset($request->nguoinhan)) $thongbao->nguoinhan=$request->nguoinhan;
         $thongbao->nguoigui = $request->nguoigui;
         $thongbao->loainguoigui = $request->loainguoigui;
         $thongbao->loainguoinhan = $request->loainguoinhan;
         $thongbao->save();
-
         toastr()->success('Đã gửi thông báo' . ' thành công!', 'Thành công!');
 
         return redirect()->back();

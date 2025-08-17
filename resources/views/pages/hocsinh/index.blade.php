@@ -7,12 +7,12 @@
             <div>
                 <h4 class="mb-1">👨‍🎓 {{ $hocsinh->hotenhocsinh }}</h4>
                 <p class="mb-0">
-                    @if($hocsinh->lophientai!=null)
-                    Lớp: {{ $hocsinh->lophientai }} |
+                    @if ($hocsinh->lophientai != null)
+                        Lớp: {{ $hocsinh->lophientai }} |
                     @endif
-                    Mã HS: {{ $hocsinh->mahocsinh  }}
-                    @if($hocsinh->nkhientai!=null)
-                    | {{ $hocsinh->nkhientai }}
+                    Mã HS: {{ $hocsinh->mahocsinh }}
+                    @if ($hocsinh->nkhientai != null)
+                        | {{ $hocsinh->nkhientai }}
                     @endif
 
                 </p>
@@ -24,18 +24,18 @@
 
             @foreach ($datalop as $item => $value)
                 <div class="col">
-                    <div class="card h-100 border-{{ $value->xong==true?'success':'primary' }} shadow">
+                    <div class="card h-100 border-{{ $value->xong == true ? 'success' : 'primary' }} shadow">
                         <div class="card-body">
                             <h5 class="card-title">
                                 <a href="{{ route('hocsinhManage.diemhocsinh', ['malop' => $value->malop, 'hocki' => 1]) }}"
-                                    class="text-decoration-none text-{{ $value->xong==true?'success':'primary' }}">
+                                    class="text-decoration-none text-{{ $value->xong == true ? 'success' : 'primary' }}">
                                     {{ $value->tenlop }}
                                 </a>
                             </h5>
                             <p>Giáo viên: {{ $value->hoten }}</p>
                             <p>{{ $value->tennienkhoa }}</p>
                             <a href="{{ route('hocsinhManage.diemhocsinh', ['malop' => $value->malop, 'hocki' => 1]) }}"
-                                class="btn btn-sm btn-outline-{{ $value->xong==true?'success':'primary' }}">Vào lớp</a>
+                                class="btn btn-sm btn-outline-{{ $value->xong == true ? 'success' : 'primary' }}">Vào lớp</a>
                         </div>
                     </div>
                 </div>
@@ -94,7 +94,7 @@
 
         <!-- Thông báo -->
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="card shadow mb-4">
                     <div class="card-header bg-warning">📢 Thông báo mới</div>
                     <div class="card-body">
@@ -106,6 +106,8 @@
                                         <span class="fw-normal text-muted">Ban giám hiệu</span>
                                     @elseif ($tb->loainguoigui == 'hethong')
                                         <span class="fw-normal text-muted">Hệ thống</span>
+                                    @elseif ($tb->loainguoigui == 'giaovien')
+                                        <span class="fw-normal text-muted">Giáo viên: {{ $tb->hoten }}</span>
                                     @endif
                                     <br>
                                     <small class="text-muted">{{ $tb->noidung }}</small>
@@ -122,59 +124,67 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Công việc cần làm -->
-            <div class="col-md-6">
-                <div class="card shadow mb-4">
-                    <div class="card-header bg-light">📝 Việc cần làm</div>
-                    <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">BTVN Toán – Trang 55</li>
-                            <li class="list-group-item">Ôn tập Anh Văn Unit 7-8</li>
-                            <li class="list-group-item">Soạn bài “Tuyên ngôn Độc lập”</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Shortcut -->
-        <div class="text-center mt-4">
+        {{-- <div class="text-center mt-4">
             <a href="#" class="btn btn-outline-primary me-2">📅 Thời khóa biểu</a>
             <a href="#" class="btn btn-outline-success me-2">📊 Xem điểm</a>
             <a href="#" class="btn btn-outline-secondary">📨 Gửi câu hỏi cho GV</a>
-        </div>
+        </div> --}}
 
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                $("#loadMoreBtn").on("click", function() {
-                    let page = $(this).data("page");
-                    let loainguoinhan = 'hocsinh';
+    <script>
+        $(document).ready(function() {
+            $("#loadMoreBtn").on("click", function() {
+                let page = $(this).data("page");
+                let loainguoinhan = 'hocsinh';
 
-                    $.ajax({
-                        url: "{{ route('thongbao.load', ['page' => 'PAGE', 'loainguoinhan' => 'TYPE']) }}"
-                            .replace('PAGE', page)
-                            .replace('TYPE', loainguoinhan),
-                        type: "GET",
-                        success: function(res) {
-                            if (res.length > 0) {
-                                res.forEach(function(tb) {
-                                    $("#listThongBao").append(
-                                        `<li class="list-group-item">
-                                📢 <strong>${tb.tieude}</strong><br>
-                                <small class="text-muted">${tb.noidung}</small>
-                             </li>`
-                                    );
-                                });
-                                $("#loadMoreBtn").data("page", page + 1);
-                            } else {
-                                $("#loadMoreBtn").text("Hết thông báo").prop("disabled", true);
-                            }
+                $.ajax({
+                    url: "{{ route('thongbao.load', ['page' => 'PAGE', 'loainguoinhan' => 'TYPE']) }}"
+                        .replace('PAGE', page)
+                        .replace('TYPE', loainguoinhan),
+                    type: "GET",
+                    success: function(res) {
+                        if (res.length > 0) {
+                            res.forEach(function(tb) {
+                                let sender = "";
+                                switch (tb.loainguoigui) {
+                                    case "bangiamhieu":
+                                        sender = "Ban giám hiệu";
+                                        break;
+                                    case "hethong":
+                                        sender = "Hệ thống";
+                                        break;
+                                    case "giaovien":
+                                        sender = "Giáo viên: " + tb.hoten;
+                                        break;
+                                    default:
+                                        sender = "Khác";
+                                }
+
+                                $("#listThongBao").append(
+                                    `<li class="list-group-item">
+                        📢 <strong>${tb.tieude}</strong> | từ
+                        <span class="fw-normal text-muted">${sender}</span>
+                        <br>
+                        <small class="text-muted">${tb.noidung}</small>
+                    </li>`
+                                );
+                            });
+
+                            $("#loadMoreBtn").data("page", page + 1);
+                        } else {
+                            $("#loadMoreBtn").text("Hết thông báo").prop("disabled", true);
                         }
-                    });
+                    },
+                    error: function() {
+                        alert("Không thể tải thêm thông báo!");
+                    }
                 });
+
             });
-        </script>
+        });
+    </script>
 @endsection

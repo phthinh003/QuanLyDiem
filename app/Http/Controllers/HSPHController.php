@@ -79,15 +79,15 @@ class HSPHController extends Controller
 
     public function edit_HS($id)
     {
-        $page_title = "Chỉnh Sửa Thông tin học sinh - MSHS: ".$id;
+        $page_title = "Chỉnh Sửa Thông tin học sinh - MSHS: " . $id;
         $info = HocSinh::find($id);
-        if($info->maphuhuynh!=null){
-            $phuhuynh=PhuHuynh::find($info->maphuhuynh);
-        }else{
-            $phuhuynh=null;
+        if ($info->maphuhuynh != null) {
+            $phuhuynh = PhuHuynh::find($info->maphuhuynh);
+        } else {
+            $phuhuynh = null;
         }
         confirmDelete("", "");
-        return view('pages.hocsinh_phuhuynh.hocsinh.edit', compact('page_title', 'info','phuhuynh'));
+        return view('pages.hocsinh_phuhuynh.hocsinh.edit', compact('page_title', 'info', 'phuhuynh'));
     }
 
     public function update_HS(Request $request)
@@ -202,7 +202,7 @@ class HSPHController extends Controller
 
     public function edit_PH($id)
     {
-        $page_title = "Phụ huynh - Chỉnh Sửa Thông tin - Mã Số: ".$id;
+        $page_title = "Phụ huynh - Chỉnh Sửa Thông tin - Mã Số: " . $id;
         $info = PhuHuynh::find($id);
         return view('pages.hocsinh_phuhuynh.phuhuynh.edit', compact('page_title', 'info'));
     }
@@ -254,84 +254,94 @@ class HSPHController extends Controller
         }
     }
 
-    public function indexHocSinhPage(){
+    public function indexHocSinhPage()
+    {
         $page_title = "Bảng điểm cá nhân";
-        $mahocsinh=session('userid');
-        $hocsinh=Hocsinh::find($mahocsinh);
-        $datalop=LopHoc::join('lop','lophoc.malop','lop.malop')
-                        ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
-                        ->join('canbo','canbo.macanbo','lop.chunhiem')
-                        ->where('mahocsinh',$mahocsinh)
-                        ->orderBy('ketthuc','desc')
-                        ->get();
-        $thongbao = ThongBao::where('loainguoinhan', 'hocsinh')
-            ->orWhere('loainguoinhan', 'all')
-            ->orderBy('created_at', 'desc')
+        $mahocsinh = session('userid');
+        $hocsinh = Hocsinh::find($mahocsinh);
+        $datalop = LopHoc::join('lop', 'lophoc.malop', 'lop.malop')
+            ->join('nienkhoa', 'lop.nienkhoa', 'nienkhoa.manienkhoa')
+            ->join('canbo', 'canbo.macanbo', 'lop.chunhiem')
+            ->where('mahocsinh', $mahocsinh)
+            ->orderBy('ketthuc', 'desc')
             ->get();
-        $datenow=Carbon::now();
-        foreach($datalop as $lop){
-            if($lop->ketthuc<$datenow){
-                $lop->xong=true;
 
-            }else{
-                $lop->xong=false;
-                $hocsinh->lophientai=$lop->tenlop;
-                $hocsinh->nkhientai=$lop->tennienkhoa;
+        $datenow = Carbon::now();
+        foreach ($datalop as $lop) {
+            if ($lop->ketthuc < $datenow) {
+                $lop->xong = true;
+            } else {
+                $lop->xong = false;
+                $hocsinh->lophientai = $lop->tenlop;
+                $malop = $lop->malop;
+                $hocsinh->nkhientai = $lop->tennienkhoa;
             }
         }
-        return view('pages.hocsinh.index', compact('page_title','datalop','hocsinh','thongbao'));
+        $thongbao = ThongBao::join('canbo', 'canbo.macanbo', 'thongbao.nguoigui')
+            ->whereIn('loainguoinhan', ['hocsinh', 'all'])
+            ->where(function ($query) use ($malop) {
+                $query->whereNull('nguoinhan')
+                    ->orWhere('nguoinhan', $malop);
+            })
+            ->select('id', 'tieude', 'noidung', 'nguoigui', 'hoten', 'loainguoigui')
+            ->orderBy('created_at','desc')
+            ->get();
+            // dd($thongbao);
+
+        return view('pages.hocsinh.index', compact('page_title', 'datalop', 'hocsinh', 'thongbao'));
     }
-    public function indexPhuHuynhPage(){
+    public function indexPhuHuynhPage()
+    {
         $page_title = "Trang chủ";
         //du lieu sidebar
-        $maphuhuynh=session('userid');
-        $phuhuynh=PhuHuynh::find($maphuhuynh);
-        $dshs=HocSinh::where('maphuhuynh',$maphuhuynh)->get();
-        $menu=[];
+        $maphuhuynh = session('userid');
+        $phuhuynh = PhuHuynh::find($maphuhuynh);
+        $dshs = HocSinh::where('maphuhuynh', $maphuhuynh)->get();
+        $menu = [];
         // dd($dshs);
-        foreach($dshs as $key=>$hocsinh){
-            $lop=[];
-            $lophoc=LopHoc::join('lop','lop.malop','lophoc.malop')
-                    ->join('nienkhoa','nienkhoa.manienkhoa','lop.nienkhoa')
-                    ->where('mahocsinh',$hocsinh->mahocsinh)
-                    ->orderBy('ketthuc','desc')
-                    ->get();
-            foreach($lophoc as $k=>$value){
-                $lop=Arr::add($lop,count($lop),[$value]);
+        foreach ($dshs as $key => $hocsinh) {
+            $lop = [];
+            $lophoc = LopHoc::join('lop', 'lop.malop', 'lophoc.malop')
+                ->join('nienkhoa', 'nienkhoa.manienkhoa', 'lop.nienkhoa')
+                ->where('mahocsinh', $hocsinh->mahocsinh)
+                ->orderBy('ketthuc', 'desc')
+                ->get();
+            foreach ($lophoc as $k => $value) {
+                $lop = Arr::add($lop, count($lop), [$value]);
             }
-            $menu=Arr::add($menu,count($menu),['hocsinh'=>$hocsinh,'lop'=>$lop]);
+            $menu = Arr::add($menu, count($menu), ['hocsinh' => $hocsinh, 'lop' => $lop]);
         }
         $thongbao = ThongBao::where('loainguoinhan', 'phuhuynh')
             ->orWhere('loainguoinhan', 'all')
             ->orderBy('created_at', 'desc')
             ->get();
         // du lieu noi dung
-        $datalop=Lophoc::join('lop','lop.malop','lophoc.malop')
-                        ->join('hocsinh','lophoc.mahocsinh','hocsinh.mahocsinh')
-                        ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
-                        ->join('canbo','canbo.macanbo','lop.chunhiem')
-                        ->where('maphuhuynh',$maphuhuynh)
-                        ->orderBy('nienkhoa','desc')
-                        ->get();
-        $datenow=Carbon::now();
-        foreach($datalop as $lop){
-            if($lop->ketthuc<$datenow){
-                $lop->xong=true;
-            }else{
-                $lop->xong=false;
+        $datalop = Lophoc::join('lop', 'lop.malop', 'lophoc.malop')
+            ->join('hocsinh', 'lophoc.mahocsinh', 'hocsinh.mahocsinh')
+            ->join('nienkhoa', 'lop.nienkhoa', 'nienkhoa.manienkhoa')
+            ->join('canbo', 'canbo.macanbo', 'lop.chunhiem')
+            ->where('maphuhuynh', $maphuhuynh)
+            ->orderBy('nienkhoa', 'desc')
+            ->get();
+        $datenow = Carbon::now();
+        foreach ($datalop as $lop) {
+            if ($lop->ketthuc < $datenow) {
+                $lop->xong = true;
+            } else {
+                $lop->xong = false;
             }
         }
-        return view('pages.phuhuynh.index', compact('page_title','phuhuynh','menu','datalop','thongbao'));
+        return view('pages.phuhuynh.index', compact('page_title', 'phuhuynh', 'menu', 'datalop', 'thongbao'));
     }
     //Lien ket tai khoan
     public function editlk($mahocsinh)
     {
-        $page_title = "Chỉnh Sửa Thông tin học sinh - MSHS: ".$mahocsinh;
+        $page_title = "Chỉnh Sửa Thông tin học sinh - MSHS: " . $mahocsinh;
         $info = HocSinh::find($mahocsinh);
         $data = PhuHuynh::all();
-        return view('pages.hocsinh_phuhuynh.hocsinh.lienketphuhuynh', compact('page_title', 'info','data'));
+        return view('pages.hocsinh_phuhuynh.hocsinh.lienketphuhuynh', compact('page_title', 'info', 'data'));
     }
-    public function storelk($mahocsinh,$maphuhuynh)
+    public function storelk($mahocsinh, $maphuhuynh)
     {
         try {
             $hocsinh = HocSinh::find($mahocsinh);
@@ -342,7 +352,7 @@ class HSPHController extends Controller
             // Hiển thị thông báo thêm thành công
             toastr()->success('Liên kết thành công!', 'Thành công!');
 
-            return redirect()->route('hocsinhManage.edit',['mahocsinh'=>$mahocsinh]);
+            return redirect()->route('hocsinhManage.edit', ['mahocsinh' => $mahocsinh]);
         } catch (Exception $e) {
             echo 'Có lỗi phát sinh: ', $e->getMessage(), "\n";
         }
@@ -352,11 +362,11 @@ class HSPHController extends Controller
     {
         try {
             $hocsinh = HocSinh::find($mahocsinh);
-            $hocsinh->maphuhuynh=null;
+            $hocsinh->maphuhuynh = null;
             $hocsinh->save();
             // dd($hocsinh);
             toastr()->success('Xoá liên kết thành công!', 'Thành công!');
-            return redirect()->route('hocsinhManage.edit',['mahocsinh'=>$mahocsinh]);
+            return redirect()->route('hocsinhManage.edit', ['mahocsinh' => $mahocsinh]);
         } catch (QueryException $e) {
             // Lỗi dữ liệu được sử dụng (cha-con)
             if ($e->errorInfo[1] == 1451) {
@@ -388,7 +398,7 @@ class HSPHController extends Controller
             ];
 
             // Them du lieu thi kiem them mat khau
-            if ($type_process=="them") {
+            if ($type_process == "them") {
                 $rules += [
                     'matkhau' => 'required'
                 ];
@@ -425,7 +435,7 @@ class HSPHController extends Controller
             ];
 
             // Them du lieu thi kiem them mat khau
-            if ($type_process=="them") {
+            if ($type_process == "them") {
                 $rules += [
                     'matkhau' => 'required'
                 ];

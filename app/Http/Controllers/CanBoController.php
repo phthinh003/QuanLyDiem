@@ -152,7 +152,7 @@ class CanBoController extends Controller
         $page_title = "Cán bộ";
         $macanbo=session('userid');
         $canbo=Canbo::find($macanbo);
-
+        confirmDelete("", "");
         $nowdate=Carbon::now();
         // Data lop duoc phan cong cho CanBo chu nhiem
         $datalopchunhiem = Lop::from('lop')
@@ -174,7 +174,14 @@ class CanBoController extends Controller
             ->orWhere('loainguoinhan', 'all')
             ->orderBy('created_at', 'desc')
             ->get();
-        return view('pages.canbo.giaovien.danhchocanbo', compact('page_title','datalopchunhiem','datalopday','canbo','thongbao'));
+        $mythongbao=ThongBao::where('nguoigui',$macanbo)
+                    ->leftjoin('lop','lop.malop','thongbao.nguoinhan')
+                    ->where('loainguoigui','giaovien')
+                    ->orderBy('created_at','desc')
+                    ->select('tieude','noidung','id','tenlop')
+                    ->get();
+
+        return view('pages.canbo.giaovien.danhchocanbo', compact('page_title','datalopchunhiem','datalopday','canbo','thongbao','mythongbao'));
     }
 
     // Kiem tra du lieu dau vao
