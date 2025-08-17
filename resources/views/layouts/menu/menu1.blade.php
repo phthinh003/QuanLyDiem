@@ -84,6 +84,11 @@
                         <i class='bx bx-bookmark nav_icon'></i>
                         <span class="nav_name">Loại Điểm</span>
                     </a>
+                    <a title="Thông báo" id="loaidiem" href="{{ route('thongbao.index') }}"
+                        class="nav_link {{ request()->is('thongbao*') ? 'active' : '' }}">
+                        <i class='bx bx-bookmark nav_icon'></i>
+                        <span class="nav_name">Thông Báo</span>
+                    </a>
                 </div>
             </div>
             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

@@ -8,14 +8,26 @@ use Illuminate\Http\Request;
 class ThongBaoController extends Controller
 {
     // Lấy danh sách thông báo theo loại người nhận
-    public function index($loainguoinhan)
+    public function index()
     {
+        $page_title = "Thông Báo";
+        $thongbao = ThongBao::orderBy('created_at', 'desc')
+            ->get();
+        confirmDelete("", "");
+
+        return view('pages.danhmuc.thongbao.indexthongbao', compact('thongbao'));
+    }
+    public function loadMore($page, $loainguoinhan)
+    {
+        $perPage = 3; // số thông báo mỗi lần load
         $thongbao = ThongBao::where('loainguoinhan', $loainguoinhan)
             ->orWhere('loainguoinhan', 'all')
             ->orderBy('created_at', 'desc')
+            ->skip(($page - 1) * $perPage)
+            ->take($perPage)
             ->get();
 
-        return view('thongbao.index', compact('thongbao'));
+        return response()->json($thongbao);
     }
 
     // Form tạo thông báo
@@ -33,12 +45,12 @@ class ThongBaoController extends Controller
             'loainguoinhan' => 'required|string',
         ]);
 
-        $thongbao=new ThongBao();
-        $thongbao->tieude=$request->tieude;
-        $thongbao->noidung=$request->noidung;
-        $thongbao->nguoigui=$request->nguoigui;
-        $thongbao->loainguoigui=$request->loainguoigui;
-        $thongbao->loainguoinhan=$request->loainguoinhan;
+        $thongbao = new ThongBao();
+        $thongbao->tieude = $request->tieude;
+        $thongbao->noidung = $request->noidung;
+        $thongbao->nguoigui = $request->nguoigui;
+        $thongbao->loainguoigui = $request->loainguoigui;
+        $thongbao->loainguoinhan = $request->loainguoinhan;
         $thongbao->save();
 
         toastr()->success('Đã gửi thông báo' . ' thành công!', 'Thành công!');
@@ -58,5 +70,17 @@ class ThongBaoController extends Controller
     {
         ThongBao::destroy($id);
         return redirect()->back()->with('success', 'Đã xóa thông báo');
+    }
+    public function storeajax(Request $request)
+    {
+        $tb = ThongBao::create($request->all());
+        return response()->json($tb);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $tb = ThongBao::findOrFail($id);
+        $tb->update($request->all());
+        return response()->json($tb);
     }
 }

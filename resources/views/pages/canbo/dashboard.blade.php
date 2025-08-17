@@ -64,18 +64,33 @@
             </div>
             <div class="col-md-6">
                 <div class="card shadow mb-3">
-                    <div class="card-header bg-light">🔔 Thông báo nội bộ</div>
+                    <div class="card-header bg-light">🔔 Thông báo</div>
                     <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            @foreach ($thongbao as $tb)
+                        <ul class="list-group list-group-flush" id="listThongBao">
+                            {{-- Load thông báo trang đầu tiên bằng PHP --}}
+                            @foreach ($thongbao->take(3) as $tb)
                                 <li class="list-group-item">
-                                    📢 <strong>{{ $tb->tieude }}</strong> <br>
+                                    📢 <strong>{{ $tb->tieude }} </strong> | từ
+                                    @if ($tb->loainguoigui == 'bangiamhieu')
+                                        <span class="fw-normal text-muted">Ban giám hiệu</span>
+                                    @elseif ($tb->loainguoigui == 'hethong')
+                                        <span class="fw-normal text-muted">Hệ thống</span>
+                                    @endif
+                                    <br>
                                     <small class="text-muted">{{ $tb->noidung }}</small>
                                 </li>
                             @endforeach
                         </ul>
+
+                        {{-- Nút xem thêm --}}
+                        <div class="text-center mt-2">
+                            <button id="loadMoreBtn" class="btn btn-sm btn-outline-primary" data-page="2">
+                                Xem thêm
+                            </button>
+                        </div>
                     </div>
                 </div>
+
 
                 <!-- Shortcut -->
                 <div class="d-grid gap-2">
@@ -100,9 +115,9 @@
                         @csrf
                         <div class="modal-body">
                             <input type="hidden" name="loainguoigui" id="loainguoigui" class="form-control"
-                                    value="bangiamhieu">
+                                value="bangiamhieu">
                             <input type="hidden" name="nguoigui" id="nguoigui" class="form-control"
-                                    value="{{ session('userid') }}">
+                                value="{{ session('userid') }}">
                             <!-- Tiêu đề -->
                             <div class="mb-3">
                                 <label for="title" class="form-label fw-bold">Tiêu đề</label>
@@ -166,4 +181,36 @@
             });
         </script>
         <!--Container Main end-->
+        {{-- jQuery AJAX --}}
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $("#loadMoreBtn").on("click", function() {
+                    let page = $(this).data("page");
+                    let loainguoinhan = 'giaovien';
+
+                    $.ajax({
+                        url: "{{ route('thongbao.load', ['page' => 'PAGE', 'loainguoinhan' => 'TYPE']) }}"
+                            .replace('PAGE', page)
+                            .replace('TYPE', loainguoinhan),
+                        type: "GET",
+                        success: function(res) {
+                            if (res.length > 0) {
+                                res.forEach(function(tb) {
+                                    $("#listThongBao").append(
+                                        `<li class="list-group-item">
+                                📢 <strong>${tb.tieude}</strong><br>
+                                <small class="text-muted">${tb.noidung}</small>
+                             </li>`
+                                    );
+                                });
+                                $("#loadMoreBtn").data("page", page + 1);
+                            } else {
+                                $("#loadMoreBtn").text("Hết thông báo").prop("disabled", true);
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
     @endsection
