@@ -98,14 +98,27 @@
                 <div class="card shadow mb-4">
                     <div class="card-header bg-warning">📢 Thông báo mới</div>
                     <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                             @foreach ($thongbao as $tb)
+                        <ul class="list-group list-group-flush" id="listThongBao">
+                            @foreach ($thongbao->take(3) as $tb)
                                 <li class="list-group-item">
-                                    📢 <strong>{{ $tb->tieude }}</strong> <br>
+                                    📢 <strong>{{ $tb->tieude }} </strong> | từ
+                                    @if ($tb->loainguoigui == 'bangiamhieu')
+                                        <span class="fw-normal text-muted">Ban giám hiệu</span>
+                                    @elseif ($tb->loainguoigui == 'hethong')
+                                        <span class="fw-normal text-muted">Hệ thống</span>
+                                    @endif
+                                    <br>
                                     <small class="text-muted">{{ $tb->noidung }}</small>
                                 </li>
                             @endforeach
                         </ul>
+
+                        {{-- Nút xem thêm --}}
+                        <div class="text-center mt-2">
+                            <button id="loadMoreBtn" class="btn btn-sm btn-outline-primary" data-page="2">
+                                Xem thêm
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -133,4 +146,35 @@
         </div>
 
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $("#loadMoreBtn").on("click", function() {
+                    let page = $(this).data("page");
+                    let loainguoinhan = 'hocsinh';
+
+                    $.ajax({
+                        url: "{{ route('thongbao.load', ['page' => 'PAGE', 'loainguoinhan' => 'TYPE']) }}"
+                            .replace('PAGE', page)
+                            .replace('TYPE', loainguoinhan),
+                        type: "GET",
+                        success: function(res) {
+                            if (res.length > 0) {
+                                res.forEach(function(tb) {
+                                    $("#listThongBao").append(
+                                        `<li class="list-group-item">
+                                📢 <strong>${tb.tieude}</strong><br>
+                                <small class="text-muted">${tb.noidung}</small>
+                             </li>`
+                                    );
+                                });
+                                $("#loadMoreBtn").data("page", page + 1);
+                            } else {
+                                $("#loadMoreBtn").text("Hết thông báo").prop("disabled", true);
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
 @endsection

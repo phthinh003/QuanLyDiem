@@ -67,7 +67,6 @@
                     <div class="card-header bg-light">🔔 Thông báo</div>
                     <div class="card-body">
                         <ul class="list-group list-group-flush" id="listThongBao">
-                            {{-- Load thông báo trang đầu tiên bằng PHP --}}
                             @foreach ($thongbao->take(3) as $tb)
                                 <li class="list-group-item">
                                     📢 <strong>{{ $tb->tieude }} </strong> | từ

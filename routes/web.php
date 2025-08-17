@@ -150,14 +150,15 @@ Route::group(['middleware' => ['App\Http\Middleware\CheckPermission']], function
             Route::get('/lophoc/store/{mahocsinh}/{malop}', 'App\Http\Controllers\LopController@storelophoc')->name('storeLophoc');
             Route::delete('/lophoc/delete/{malophoc}', 'App\Http\Controllers\LopController@deletelophoc')->name('deleteLophoc');
         });
-        Route::prefix('thongbao')->group(function () {
+
+    });
+    Route::prefix('thongbao')->group(function () {
             Route::get('/', 'App\Http\Controllers\ThongBaoController@index')->name('thongbao.index');
             // Route::get('/create', 'App\Http\Controllers\ThongBaoController@create')->name('thongbao.create');
-            Route::post('/', 'App\Http\Controllers\ThongBaoController@store')->name('thongbao.store');
+            Route::post('/thongbao', 'App\Http\Controllers\ThongBaoController@store')->name('thongbao.store');
             Route::post('/', 'App\Http\Controllers\ThongBaoController@storeajax')->name('thongbao.storeajax');
             // Route::get('/{id}', 'App\Http\Controllers\ThongBaoController@show')->name('thongbao.show');
             Route::delete('/destroy/{id}', 'App\Http\Controllers\ThongBaoController@destroy')->name('thongbao.destroy');
-            Route::get('/thongbao/load/{page}/{loainguoinhan}', 'App\Http\Controllers\ThongBaoController@loadmore')->name('thongbao.load');
+            Route::get('/load/{page}/{loainguoinhan}', 'App\Http\Controllers\ThongBaoController@loadmore')->name('thongbao.load');
         });
-    });
 });
