@@ -26,66 +26,15 @@
                         'malop' => $value->malop,
                         'hocki' => 1,
                     ]) }}"
-                        class="btn btn-outline-light btn-sm">🔍 Xem lớp học</a>
-                    <a href="#" class="btn btn-light btn-sm">📨 Gửi liên hệ GVCN</a>
+                        class="btn btn-light btn-sm">🔍 Xem lớp học</a>
                 </div>
             </div>
         </div>
     @endforeach
 
-
-    <!-- Bảng điểm -->
-    <div class="card shadow mb-4">
-        <div class="card-header bg-success text-white">📊 Kết quả học tập</div>
-        <div class="card-body">
-            <table class="table table-bordered mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th>Môn</th>
-                        <th>Giữa kỳ</th>
-                        <th>Cuối kỳ</th>
-                        <th>Trung bình</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Toán</td>
-                        <td>8.0</td>
-                        <td>9.0</td>
-                        <td>8.5</td>
-                    </tr>
-                    <tr>
-                        <td>Ngữ văn</td>
-                        <td>7.0</td>
-                        <td>7.5</td>
-                        <td>7.25</td>
-                    </tr>
-                    <tr>
-                        <td>Tiếng Anh</td>
-                        <td>8.5</td>
-                        <td>8.5</td>
-                        <td>8.5</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Điểm danh -->
     <div class="row">
-        <div class="col-md-6">
-            <div class="card shadow mb-4">
-                <div class="card-header bg-info text-white">📅 Chuyên cần</div>
-                <div class="card-body">
-                    <p><strong>Số ngày đi học:</strong> 125</p>
-                    <p><strong>Nghỉ có phép:</strong> 3</p>
-                    <p><strong>Nghỉ không phép:</strong> 1</p>
-                </div>
-            </div>
-        </div>
-
         <!-- Thông báo -->
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="card shadow mb-4">
                 <div class="card-header bg-warning">📢 Thông báo mới</div>
                 <div class="card-body">
@@ -114,14 +63,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Nút tiện ích -->
-    <div class="text-center mt-4">
-        <a href="#" class="btn btn-outline-primary me-2">📄 Xem phiếu điểm</a>
-        <a href="#" class="btn btn-outline-secondary me-2">📅 Lịch học của con</a>
-        <a href="#" class="btn btn-outline-success">📨 Gửi yêu cầu</a>
-    </div>
-
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
