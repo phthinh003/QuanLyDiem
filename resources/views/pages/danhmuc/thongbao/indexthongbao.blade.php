@@ -108,7 +108,7 @@
                                 <option value="giaovien">Giáo viên</option>
                                 <option value="hocsinh">Học sinh</option>
                                 <option value="phuhuynh">Phụ huynh</option>
-                                <option value="tatca">Tất cả</option>
+                                <option value="all">Tất cả</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Lưu</button>
