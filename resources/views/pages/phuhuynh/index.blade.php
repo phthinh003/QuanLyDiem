@@ -3,35 +3,6 @@
 <div class="container py-4">
 
     <h2 class="mb-4">👨‍👩‍👧 Xin chào – {{ $phuhuynh->tenphuhuynh }}</h2>
-
-    <!-- Học sinh -->
-    @foreach ($datalop as $item => $value)
-        <div class="card shadow mb-4">
-            <div class="card-header bg-{{ $value->xong==true?'success':'primary' }} text-white">👧 Con: {{ $value->hotenhocsinh }} –
-                <a href="{{ route('phuhuynhManage.diemhocsinhPH', [
-                    'mahocsinh' => $value->mahocsinh,
-                    'malop' => $value->malop,
-                    'hocki' => 1,
-                ]) }}"
-                    class="text-white">{{ $value->tenlop }}</a>
-            </div>
-            <div class="card-body row align-items-center">
-                <div class="col-md-4">
-                    <p><strong>Năm học:</strong> {{ $value->tennienkhoa }}</p>
-                    <p><strong>Giáo viên chủ nhiệm:</strong> {{ $value->hoten }}</p>
-                </div>
-                <div class="col-md-6 text-end">
-                    <a href="{{ route('phuhuynhManage.diemhocsinhPH', [
-                        'mahocsinh' => $value->mahocsinh,
-                        'malop' => $value->malop,
-                        'hocki' => 1,
-                    ]) }}"
-                        class="btn btn-light btn-sm">🔍 Xem lớp học</a>
-                </div>
-            </div>
-        </div>
-    @endforeach
-
     <div class="row">
         <!-- Thông báo -->
         <div class="col-md-12">
@@ -63,6 +34,35 @@
             </div>
         </div>
     </div>
+    <!-- Học sinh -->
+    @foreach ($datalop as $item => $value)
+        <div class="card shadow mb-4">
+            <div class="card-header bg-{{ $value->xong==true?'success':'primary' }} text-white">👧 Con: {{ $value->hotenhocsinh }} –
+                <a href="{{ route('phuhuynhManage.diemhocsinhPH', [
+                    'mahocsinh' => $value->mahocsinh,
+                    'malop' => $value->malop,
+                    'hocki' => 1,
+                ]) }}"
+                    class="text-white">{{ $value->tenlop }}</a>
+            </div>
+            <div class="card-body row align-items-center">
+                <div class="col-md-4">
+                    <p><strong>Năm học:</strong> {{ $value->tennienkhoa }}</p>
+                    <p><strong>Giáo viên chủ nhiệm:</strong> {{ $value->hoten }}</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <a href="{{ route('phuhuynhManage.diemhocsinhPH', [
+                        'mahocsinh' => $value->mahocsinh,
+                        'malop' => $value->malop,
+                        'hocki' => 1,
+                    ]) }}"
+                        class="btn btn-light btn-sm">🔍 Xem lớp học</a>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
