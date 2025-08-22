@@ -21,22 +21,40 @@ class Diem extends Model
     ];
     public $timestamps = false;
 
-    public static function tbm($mahocsinh, $mamonhoc, $hocky) {
+    public static function tbm($mahocsinh, $mamonhoc, $hocky)
+    {
+        $monhoc = MonHoc::where('mamonhoc', '=', $mamonhoc)->firstOr();
+        $mon = Mon::where('mamon', '=', $monhoc->mamon)->firstOr();
         $diemhs = Diem::from('diem')
-                    ->join('loaidiem', 'maloaidiem', '=', 'loaidiem')
-                    ->where('mahocsinh',  $mahocsinh)
-                    ->where('mamonhoc',  $mamonhoc)
-                    ->where('hocky' ,  $hocky)
-                    ->get();
-        // Tổng điểm (tổng diem[i]*heso[i])
-        $tongdiem = 0;
-        $heso = 0;
-        foreach ($diemhs as $diem) {
-            $tongdiem += $diem->diem * $diem->heso;
-            $heso += $diem->heso;
-        }
+            ->join('loaidiem', 'maloaidiem', '=', 'loaidiem')
+            ->where('mahocsinh', $mahocsinh)
+            ->where('mamonhoc', $mamonhoc)
+            ->where('hocky', $hocky)
+            ->get();
 
-        $tbm = number_format($tongdiem/$heso, 1, '.');
+        if ($diemhs->count() == 0)
+            $tbm = "";
+        else {
+            if ($mon->kieudiem == 0) {
+                // Điểm số
+                $tongdiem = 0;
+                $heso = 0;
+                // Tổng điểm (tổng diem[i]*heso[i])
+                foreach ($diemhs as $diem) {
+                    $tongdiem += $diem->diem * $diem->heso;
+                    $heso += $diem->heso;
+                }
+
+                $tbm = number_format($tongdiem / $heso, 1, '.');
+            } else {
+                // Điểm đánh giá
+                if ($diemhs->contains('cd'))
+                    $tbm = "Chưa đạt";
+                else
+                    $tbm = "Đạt";
+            }
+        }
+        // dd($tbm);
         return $tbm;
     }
 }

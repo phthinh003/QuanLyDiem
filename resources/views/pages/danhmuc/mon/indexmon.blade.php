@@ -24,6 +24,7 @@
                         <th class="text-center">STT</th>
                         <th class="text-center">Mã Môn</th>
                         <th class="text-center">Tên Môn</th>
+                        <th class="text-center">Kiểu điểm</th>
                         <th class="text-center">Thao Tác</th>
                     </tr>
                 </thead>
@@ -33,6 +34,7 @@
                             <td class="text-center font-weight-bold">{{ $item + 1 }}</td>
                             <td class="text-center">{{ $value->mamon }}</td>
                             <td class="text-center">{{ $value->tenmon }}</td>
+                            <td class="text-center">{{ $value->kieudiem == 0 ? "Số" : "Đánh giá" }}</td>
                             <td class="text-center" style="display: flex; justify-content: center">
                                 <table>
                                     <tr>

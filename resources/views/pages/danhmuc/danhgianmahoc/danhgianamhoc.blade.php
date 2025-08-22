@@ -2,7 +2,7 @@
 @section('content')
     <div class="card pt-2 mt-2">
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
-            {{ $page_title }}
+            Thêm mới thông tin loại điểm
             @if ($errors->any())
                 <div class="alert alert-danger pt-6 pb-0">
                     <ul>
@@ -15,38 +15,26 @@
             <hr>
         </div>
         <div class="card-body">
-            <form method="post" action="{{ route('monManage.updateMon') }}" class="form" name="formEditMon"
-                id="formeditmon">
+            <form method="post" action="{{ route('loaidiemManage.storeLoaiDiem') }}" class="form" name="formCreateLoaiDiem"
+                id="formcreateloaidiem">
                 {{ csrf_field() }}
                 <div class="row">
                     <div class="col-xl-2"></div>
                     <div class="col-xl-8">
                         <div class="my-5">
-                            <input type="hidden" name="mamon" id="mamon" value="{{ $info->mamon }}">
                             <div class="row mb-3 align-items-center justify-content-center">
-                                <label class="col-3">Tên Môn
+                                <label class="col-3">Loại điểm
                                     <span class="text-danger">*</span>
                                 </label>
                                 <div class="col-6">
-                                    <input type="text" name="tenmon" id="tenmon" class="form-control"
-                                        placeholder="Nhập tên môn" value="{{ $info->tenmon }}" />
-                                </div>
-                            </div>
-                            <div class="row mb-3 align-items-center justify-content-center">
-                                <label class="col-3">Kiểu điểm
-                                    <span class="text-danger">*</span>
-                                </label>
-                                <div class="col-6">
-                                    <select class="form-control" name="kieudiem" id="kieudiem">
-                                        <option value="0" @selected($info->kieudiem == 0)>Điểm số</option>
-                                        <option value="1" @selected($info->kieudiem == 1)>Điểm chữ</option>
-                                    </select>
+                                    <input type="text" name="tenloaidiem" id="tenloaidiem" class="form-control"
+                                        placeholder="Nhập tên loại điểm" />
                                 </div>
                             </div>
                             <div class="modal-footer mt-5 me-5">
-                                <div class="d-flex flex-wrap border-0 pt-6 pb-0">
+                                <div class="flex-wrap border-0 pt-6 pb-0">
                                     <div class="d-flex">
-                                        <a href="{{ route('monManage.indexMon') }}" @include('layouts.button._button_back')
+                                        <a href="{{ route('loaidiemManage.indexLoaiDiem') }}" @include('layouts.button._button_back')
                                         </a>
                                         <div class="btn-group">
                                             @include('layouts.button._button_save')

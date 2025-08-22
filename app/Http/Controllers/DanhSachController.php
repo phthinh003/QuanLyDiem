@@ -22,7 +22,7 @@ class DanhSachController extends Controller
     {
         $page_title = "Danh sách lớp ";
 
-        $monhoc = Monhoc::select('monhoc.*', 'mon.loaimon')
+        $monhoc = Monhoc::select('monhoc.*', 'mon.loaimon', 'mon.kieudiem')
             ->join('mon', 'mon.mamon', 'monhoc.mamon')
             ->where('mamonhoc', $mamonhoc)->first();
 
@@ -55,6 +55,7 @@ class DanhSachController extends Controller
         $thongtinlop=
                 [
                 'mamon'=>$tt->mamon,
+                'kieudiem'=>$tt->kieudiem,
                 'malop' => $tt->malop,
                 'tenlop'=>$tt->tenlop,
                 'canbo'=>$tt->hoten,
@@ -67,8 +68,6 @@ class DanhSachController extends Controller
         $danhsach = [];
         foreach ($danhsachlop as $item => $hocsinh) {
             $d = [];
-            $tongdiem = 0;
-            $tonghesodiem = 0;
             // dd($dataloaidiem);
             foreach ($dataloaidiem as $item => $loaidiem) {
                 $diemhs = Diem::from('diem')
@@ -80,27 +79,16 @@ class DanhSachController extends Controller
                 $i = $loaidiem->soluong;
                 $j = 0;
                 foreach ($diemhs as $item => $diem) {
-                    $d = Arr::add($d, $diem->madiem, $diem->diem);
+                    $d = Arr::add($d, $diem->madiem, $monhoc->kieudiem == 0 ? number_format((float) $diem->diem, 2, '.', '') : $diem->diem);
                     $j++;
-                    $tongdiem += $loaidiem->heso * $diem->diem;
-                    $tonghesodiem += (int) $loaidiem->heso;
                 }
-// echo "<script>console.log('".$loaidiem->maloaidiem." ".$loaidiem->soluong."'".")</script>";
                 for ($e = $j; $e < $i; $e++) {
-//
-// echo "<script>console.log('".."'".")</script>";
 // echo "<script>console.log('".'new_' . $loaidiem->maloaidiem . '_' . $e-$j+1 ."'".")</script>";
                     $d = Arr::add($d, $hocsinh->mahocsinh.'_' . $loaidiem->maloaidiem . '_' . $e-$j+1, "");
                 }
             }
 
-            if ($tonghesodiem != 0) {
-                $tbm = $tongdiem / $tonghesodiem;
-                $tbm = round($tbm, 2);
-            } else {
-                $tbm = "";
-            }
-            ;
+            $tbm = Diem::tbm($hocsinh->mahocsinh, $mamonhoc, $hocki);
 
             $danhsach = Arr::add($danhsach, count($danhsach), ['mahocsinh' => $hocsinh->mahocsinh, 'tenhocsinh' => $hocsinh->hotenhocsinh, 'diem' => $d, 'tbm' => $tbm]);
             // dd($danhsach);

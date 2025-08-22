@@ -88,7 +88,7 @@
                                         <td class="text-center">{{ $v }}</td>
                                     @elseif ($key == 'tbm')
                                         <td class="text-center diem" id="tbm_{{ $value['mahocsinh'] }}">
-                                            {{ $v == '' ? '' : number_format((float) $v, 1, '.', '') }}
+                                            {{ $v }}
                                         </td>
                                     @elseif($key == 'diem')
                                         @foreach ($v as $keydiem => $diem)
@@ -97,7 +97,7 @@
                                                 {{-- <input style="border: 0" class="form-control form-control-sm diem-input"
                                                     min="0" max="10" step="0.25" type="number"
                                                     value="{{ $diem != '' ? number_format((float) $diem, 2, '.', '') : '' }}"> --}}
-                                                {{ $diem != '' ? number_format((float) $diem, 2, '.', '') : '' }}
+                                                {{ $diem }}
                                             </td>
                                         @endforeach
                                     @endif
@@ -134,91 +134,141 @@
                 let oldValue = cell.innerText.trim();
 
                 cell.addEventListener('dblclick', () => {
-                    if (cell.querySelector('input')) return; // đã có input thì không làm gì
+                    @if ($thongtinlop['kieudiem'] == 0)
+                        if (cell.querySelector('input')) return; // đã có input thì không làm gì
 
-                    oldValue = cell.innerText.trim();
-                    const input = document.createElement('input');
-                    input.type = 'number';
-                    input.step = '0.01';
-                    input.min = '0';
-                    input.max = '10';
-                    input.value = oldValue;
-                    input.style.width = '100%';
-                    input.style.boxSizing = 'border-box';
-                    input.className = 'form-control'; // nếu dùng Bootstrap
+                        oldValue = cell.innerText.trim();
+                        const input = document.createElement('input');
+                        input.type = 'number';
+                        input.step = '0.01';
+                        input.min = '0';
+                        input.max = '10';
+                        input.value = oldValue;
+                        input.style.width = '100%';
+                        input.style.boxSizing = 'border-box';
+                        input.className = 'form-control';
 
-                    cell.innerText = '';
-                    cell.appendChild(input);
-                    input.focus();
-                    input.select();
+                        cell.innerText = '';
+                        cell.appendChild(input);
+                        input.focus();
+                        input.select();
 
-                    const id = cell.dataset.id;
-                    const sodiem = cell.dataset.field;
+                        const id = cell.dataset.id;
+                        const sodiem = cell.dataset.field;
 
-                    input.addEventListener('blur', () => {
-                        // Kiểm tra thay đổi giá trị
-                        const newValue = input.value.trim();
-                        if (parseFloat(oldValue) == parseFloat(newValue) || oldValue == newValue) {
-                            cell.innerText = oldValue;
-                            return;
-                        }
-
-                        // Kiểm tra min max
-                        if (isNaN(newValue) || newValue < 0 || newValue > 10) {
-                            alert("Điểm phải nằm trong khoảng từ 0 đến 10");
-                            cell.innerText = oldValue;
-                            input.focus();
-                            return;
-                        }
-
-                        fetch(`/diem-ajax/${id}`, {
-                                method: 'PUT',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                },
-                                body: JSON.stringify({
-                                    [sodiem]: newValue,
-                                    "mamonhoc": {{ $mamonhoc }},
-                                    "hocki": {{ $hocki }}
-                                })
-                            })
-                            .then(res => res.json())
-                            .then(data => {
-                                if (data.success) {
-                                    cell.innerText = data.diem_moi;
-                                    cell.setAttribute("data-id", data.madiem_moi);
-                                    document.getElementById("tbm_" + data.mahocsinh).innerText =
-                                        data.tbm;
-                                    cell.style.background = 'lightgreen';
-                                    setTimeout(() => cell.style.background = '', 3000);
-                                } else {
-                                    cell.innerText = oldValue;
-                                    alert('Lưu thất bại!');
-                                }
-                            })
-                            .catch(() => {
+                        input.addEventListener('blur', () => {
+                            // Kiểm tra thay đổi giá trị
+                            const newValue = input.value.trim();
+                            if (parseFloat(oldValue) == parseFloat(newValue) || oldValue ==
+                                newValue) {
                                 cell.innerText = oldValue;
-                                alert('Lỗi mạng hoặc server!');
-                            });
-                    });
+                                return;
+                            }
 
-                    input.addEventListener('keydown', e => {
-                        if (e.key === 'Enter') {
-                            e.preventDefault();
-                            input.blur(); // gọi blur để trigger lưu
-                        } else if (e.key === 'Escape') {
-                            cell.innerText = oldValue; // hủy bỏ chỉnh sửa
-                        }
-                    });
+                            // Kiểm tra min max
+                            if (isNaN(newValue) || newValue < 0 || newValue > 10) {
+                                alert("Điểm phải nằm trong khoảng từ 0 đến 10");
+                                cell.innerText = oldValue;
+                                input.focus();
+                                return;
+                            }
 
-                    // Kiểm tra khi đang nhập
-                    input.addEventListener('input', () => {
-                        const val = input.value;
-                        if (!/^(10(\.0{1,2})?|[0-9](\.\d{1,2})?)$/.test(val)) {
-                            input.value = val.slice(0, -1); // chặn nhập sai
-                        }
-                    });
+                            fetch(`/diem-ajax/${id}`, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    },
+                                    body: JSON.stringify({
+                                        [sodiem]: newValue,
+                                        "mamonhoc": {{ $mamonhoc }},
+                                        "hocki": {{ $hocki }}
+                                    })
+                                })
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        cell.innerText = data.diem_moi;
+                                        cell.setAttribute("data-id", data.madiem_moi);
+                                        document.getElementById("tbm_" + data.mahocsinh)
+                                            .innerText =
+                                            data.tbm;
+                                        cell.style.background = 'lightgreen';
+                                        setTimeout(() => cell.style.background = '', 3000);
+                                    } else {
+                                        cell.innerText = oldValue;
+                                        alert('Lưu thất bại!');
+                                    }
+                                })
+                                .catch(() => {
+                                    cell.innerText = oldValue;
+                                    alert('Lỗi mạng hoặc server!');
+                                });
+                        });
+
+                        input.addEventListener('keydown', e => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                input.blur(); // gọi blur để trigger lưu
+                            } else if (e.key === 'Escape') {
+                                cell.innerText = oldValue; // hủy bỏ chỉnh sửa
+                            }
+                        });
+
+                        // Kiểm tra khi đang nhập
+                        input.addEventListener('input', () => {
+                            const val = input.value;
+                            if (!/^(10(\.0{1,2})?|[0-9](\.\d{1,2})?)$/.test(val)) {
+                                input.value = val.slice(0, -1); // chặn nhập sai
+                            }
+                        });
+                    @else
+                        // Nếu đã có select thì không tạo lại
+                        if (cell.querySelector("select")) return;
+
+                        // Giá trị hiện tại trong ô
+                        let currentValue = cell.getAttribute("data-value") || "";
+
+                        // Tạo select
+                        let select = document.createElement("select");
+                        select.name = "diem";
+                        select.className = 'form-control';
+                        select.width = '100%';
+
+                        // Các option
+                        let options = [{
+                                value: "",
+                                text: "Chọn"
+                            },
+                            {
+                                value: "cd",
+                                text: "Chưa đạt"
+                            },
+                            {
+                                value: "d",
+                                text: "Đạt"
+                            }
+                        ];
+
+                        options.forEach(opt => {
+                            let option = document.createElement("option");
+                            option.value = opt.value;
+                            option.textContent = opt.text;
+                            if (opt.value === currentValue) option.selected = true;
+                            select.appendChild(option);
+                        });
+
+                        // Xóa nội dung cũ và add select vào
+                        cell.innerHTML = "";
+                        cell.appendChild(select);
+                        select.focus();
+
+                        select.addEventListener("blur", function() {
+                            let val = select.value;
+                            let text = select.options[select.selectedIndex].text;
+                            cell.innerHTML = text;
+                        });
+                    @endif
                 });
             });
         @endif

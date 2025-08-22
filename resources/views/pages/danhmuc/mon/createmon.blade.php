@@ -40,7 +40,26 @@
                                         placeholder="Nhập tên môn" />
                                 </div>
                             </div>
-
+                            {{-- <div class="row mb-3 align-items-center justify-content-center">
+                                <label class="col-3">Loại môn
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-6">
+                                    <input type="text" name="loaimon" id="loaimon" class="form-control"
+                                        placeholder="Nhập loại môn" />
+                                </div>
+                            </div> --}}
+                            <div class="row mb-3 align-items-center justify-content-center">
+                                <label class="col-3">Kiểu điểm
+                                    <span class="text-danger">*</span>
+                                </label>
+                                <div class="col-6">
+                                    <select class="form-control" name="kieudiem" id="kieudiem">
+                                        <option value="0">Điểm số</option>
+                                        <option value="1">Điểm chữ</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="modal-footer mt-5 me-5">
                                 <div class="flex-wrap border-0 pt-6 pb-0">
                                     <div class="d-flex">

@@ -1,21 +1,9 @@
-$('#danhSachMon').DataTable({
+$('#danhSachCanBo').DataTable({
     reponsive : "true",
     columnDefs: [
         {
             target: 0,
             width: '100px',
-        },
-        {
-            target: 1,
-            width: '300px',
-        },
-        {
-            target: -1,
-            width: '250px',
-        },
-        {
-            target: -2,
-            width: '250px'
         }
     ],
     "language": {

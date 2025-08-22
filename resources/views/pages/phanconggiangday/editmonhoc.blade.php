@@ -61,7 +61,7 @@
                             <div class="modal-footer mt-5 me-5">
                                 <div class="d-flex flex-wrap border-0 pt-6 pb-0">
                                     <div class="d-flex">
-                                        <a href="{{ route('monManage.indexMon') }}" @include('layouts.button._button_back')
+                                        <a href="{{ route('monhocManage.indexMonHoc') }}" @include('layouts.button._button_back')
                                         </a>
                                         <div class="btn-group">
                                             @include('layouts.button._button_save')
