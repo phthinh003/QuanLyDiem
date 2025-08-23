@@ -48,13 +48,16 @@ class Diem extends Model
                 $tbm = number_format($tongdiem / $heso, 1, '.');
             } else {
                 // Điểm đánh giá
-                if ($diemhs->contains('cd'))
-                    $tbm = "Chưa đạt";
-                else
-                    $tbm = "Đạt";
+                $tbm = "Đạt";
+                foreach ($diemhs as $diem) {
+                    if ($diem->diem == 'cd') {
+                        $tbm = "Chưa đạt";
+                        break;
+                    }
+                }
             }
         }
-        // dd($tbm);
+        // dd($diemhs);
         return $tbm;
     }
 }

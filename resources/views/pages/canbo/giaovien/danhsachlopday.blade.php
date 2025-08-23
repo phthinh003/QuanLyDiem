@@ -92,12 +92,26 @@
                                         </td>
                                     @elseif($key == 'diem')
                                         @foreach ($v as $keydiem => $diem)
-                                            <td data-id="{{ $keydiem }}" data-field="diem"
+                                            <td data-id="{{ $keydiem }}" data-field="diem" data-value="{{ $diem }}"
                                                 class="text-center editable">
                                                 {{-- <input style="border: 0" class="form-control form-control-sm diem-input"
                                                     min="0" max="10" step="0.25" type="number"
                                                     value="{{ $diem != '' ? number_format((float) $diem, 2, '.', '') : '' }}"> --}}
-                                                {{ $diem }}
+                                                @if ($thongtinlop['kieudiem'] == 0)
+                                                    {{ number_format($diem, 2, '.', "") }}
+                                                @else
+                                                    {{-- {{  dd($diem) }} --}}
+                                                    @switch($diem)
+                                                        @case('d')
+                                                            Đạt
+                                                            @break
+                                                        @case('cd')
+                                                            Chưa đạt
+                                                        @break
+                                                        @default
+
+                                                    @endswitch
+                                                @endif
                                             </td>
                                         @endforeach
                                     @endif
@@ -227,7 +241,7 @@
                         if (cell.querySelector("select")) return;
 
                         // Giá trị hiện tại trong ô
-                        let currentValue = cell.getAttribute("data-value") || "";
+                        let oldValue = cell.getAttribute("data-value") || "";
 
                         // Tạo select
                         let select = document.createElement("select");
@@ -254,7 +268,7 @@
                             let option = document.createElement("option");
                             option.value = opt.value;
                             option.textContent = opt.text;
-                            if (opt.value === currentValue) option.selected = true;
+                            if (opt.value === oldValue) option.selected = true;
                             select.appendChild(option);
                         });
 
@@ -263,10 +277,55 @@
                         cell.appendChild(select);
                         select.focus();
 
+                        // Lấy mã học sinh
+                        const id = cell.dataset.id;
+                        const sodiem = cell.dataset.field;
+
                         select.addEventListener("blur", function() {
-                            let val = select.value;
+                            let newValue = select.value;
                             let text = select.options[select.selectedIndex].text;
-                            cell.innerHTML = text;
+
+                            // Không thực hiện thay đổi
+                            if (oldValue == newValue) {
+                                cell.innerText = text;
+                                return;
+                            }
+
+                            let tendiem = {null:'', 'cd':'Chưa đạt', 'd':'Đạt'};
+                            // cell.innerHTML = text;
+
+                            fetch(`/diem-ajax/${id}`, {
+                                    method: 'PUT',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                    },
+                                    body: JSON.stringify({
+                                        [sodiem]: newValue,
+                                        "mamonhoc": {{ $mamonhoc }},
+                                        "hocki": {{ $hocki }}
+                                    })
+                                })
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.success) {
+                                        cell.innerText = tendiem[data.diem_moi];
+                                        cell.setAttribute("data-id", data.madiem_moi);
+                                        cell.setAttribute("data-value", data.diem_moi);
+                                        document.getElementById("tbm_" + data.mahocsinh)
+                                            .innerText =
+                                            data.tbm;
+                                        cell.style.background = 'lightgreen';
+                                        setTimeout(() => cell.style.background = '', 3000);
+                                    } else {
+                                        cell.innerText = oldValue;
+                                        alert('Lưu thất bại!');
+                                    }
+                                })
+                                .catch(() => {
+                                    cell.innerText = oldValue;
+                                    alert('Lỗi mạng hoặc server!');
+                                });
                         });
                     @endif
                 });

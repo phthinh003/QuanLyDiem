@@ -149,7 +149,8 @@ class DiemController extends Controller
         //Lấy tbm
         $tbm = Diem::tbm($diem->mahocsinh, $diem->mamonhoc, $diem->hocky);
 
-        $sodiem=="" ? $diemmoi = null : $diemmoi = number_format($sodiem,2, '.');
+        $sodiem=="" ? $diemmoi = null : $diemmoi = $sodiem;
+
         if ($diem->madiem == null) {
             $diemhs = Diem::select(['madiem'])
                 ->where('mahocsinh', '=', $diem->mahocsinh)
@@ -170,7 +171,4 @@ class DiemController extends Controller
             'madiem_moi' => $madiem,
         ]);
     }
-
-    public function delete($diem)
-    {}
 }
