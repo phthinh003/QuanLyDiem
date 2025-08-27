@@ -194,7 +194,6 @@ class CanBoController extends Controller
                 'diachi' => 'required',
                 'sdt' => 'required',
                 'loai' => 'required',
-                'matkhau' => 'required',
             ];
 
             $customMessages = [
@@ -205,7 +204,6 @@ class CanBoController extends Controller
                 'diachi.required' => "Địa chỉ không được để trống.",
                 'sdt.required' => "Số điện thoại không được để trống.",
                 'loai.required' => "Loại không được để trống.",
-                'matkhau.required' => "Mật khẩu không được để trống."
             ];
 
             // Them du lieu thi kiem them mat khau

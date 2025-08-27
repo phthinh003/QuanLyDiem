@@ -47,12 +47,19 @@
                                     <label class="col-md-3 col-form-label text-right font-weight-bold">
                                         {{ $value['tenloaidiem'] }}
                                     </label>
-                                    <div class="col-md-6">
+                                    <div class="col-md-8">
                                         <div class="form-row">
                                             @foreach ($value['diem'] as $key => $value2)
                                                 <div class="col">
-                                                    <input type="number" name="{{ $key }}"
-                                                        class="form-control form-input-diem" min="0" max="10" step="0.01" value="{{ $value2 }}" placeholder="Nhập điểm" />
+                                                    @if ($monhoc->kieudiem == 1)
+                                                        <select name="{{ $key }}" class="form-control">
+                                                            <option value="d" {{ $value2 == 'd' ? "selected" : "" }}>Đạt</option>
+                                                            <option value="cd" {{ $value2 == 'cd' ? "selected" : "" }}>Chưa đạt</option>
+                                                        </select>
+                                                    @else
+                                                        <input type="number" name="{{ $key }}"
+                                                            class="form-control form-input-diem" min="0" max="10" step="0.01" value="{{ $value2 }}" placeholder="Nhập điểm" />
+                                                    @endif
                                                 </div>
                                             @endforeach
                                         </div>
