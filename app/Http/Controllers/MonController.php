@@ -59,16 +59,6 @@ class MonController extends Controller
     public function update(Request $request)
     {
         try {
-            // Kiểm tra dữ liệu
-            $validator = $this->validator($request);
-            if ($validator->fails()) {
-                toastr()->error('Có dữ liệu không hợp lệ!', 'Lỗi!');
-                return redirect()
-                    ->back()
-                    ->withErrors($validator->errors())
-                    ->withInput();
-            }
-
             $mon = Mon::find($request->mamon);
 
             $mon->fill($request->toArray());
