@@ -98,9 +98,12 @@
                                                     min="0" max="10" step="0.25" type="number"
                                                     value="{{ $diem != '' ? number_format((float) $diem, 2, '.', '') : '' }}"> --}}
                                                 @if ($thongtinlop['kieudiem'] == 0)
-                                                    {{ number_format($diem, 2, '.', "") }}
+                                                    {{ $diem }}
                                                 @else
                                                     {{-- {{  dd($diem) }} --}}
+                                                    @if ($hocki == 3)
+                                                        {{ $diem }}
+                                                    @endif
                                                     @switch($diem)
                                                         @case('d')
                                                             Đạt
@@ -242,6 +245,7 @@
 
                         // Giá trị hiện tại trong ô
                         let oldValue = cell.getAttribute("data-value") || "";
+                        let oldText = cell.innerText;
 
                         // Tạo select
                         let select = document.createElement("select");
@@ -287,7 +291,7 @@
 
                             // Không thực hiện thay đổi
                             if (oldValue == newValue) {
-                                cell.innerText = text;
+                                cell.innerText = oldValue;
                                 return;
                             }
 

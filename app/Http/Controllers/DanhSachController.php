@@ -142,6 +142,7 @@ class DanhSachController extends Controller
         $thongtinlop=
             [
                 'mamonhoc'=>$tt->mamonhoc,
+                'kieudiem' => $tt->kieudiem,
                 'malop'=>$tt->malop,
                 'tenlop'=>$tt->tenlop,
                 'canbo'=>$tt->hoten,
@@ -153,75 +154,81 @@ class DanhSachController extends Controller
         $dataloaidiem = LoaiDiem::whereIn('loaimon', [$monhoc->loaimon, 3])->orderBy('heso')->get();
         $danhsach = [];
         foreach ($danhsachlop as $item => $hocsinh) {
-            $d = [];
-            $tongdiem = 0;
-            $tonghesodiem = 0;
-            // dd($dataloaidiem);
-            foreach ($dataloaidiem as $item => $loaidiem) {
-                $diemhs = Diem::from('diem')
-                    ->where('mahocsinh', $hocsinh->mahocsinh)
-                    ->where('mamonhoc', $mamonhoc)
-                    ->where('loaidiem', $loaidiem->maloaidiem)
-                    ->where('hocky',1)
-                    ->get();
-                // $i = $loaidiem->soluong;
-                // $j = 0;
-                foreach ($diemhs as $item => $diem) {
-                    // $d = Arr::add($d, $diem->loaidiem . '_' . $j, $diem->diem);
-                    // $j++;
-                    $tongdiem += $loaidiem->heso * $diem->diem;
-                    $tonghesodiem += (int) $loaidiem->heso;
-                }
-                // if ($j != 0)
-                //     $j--;
-                // for ($e = $j; $e < $i; $e++) {
-                //     $d = Arr::add($d, $loaidiem->maloaidiem . '_' . $e, "");
-                // }
-            }
-            if ($tonghesodiem != 0) {
-                $tbm1 = $tongdiem / $tonghesodiem;
-                $tbm1 = round($tbm1, 2);
-            } else {
-                $tbm1 = "";
-            }
-            $tongdiem = 0;
-            $tonghesodiem = 0;
-            // dd($dataloaidiem);
-            foreach ($dataloaidiem as $item => $loaidiem) {
-                $diemhs = Diem::from('diem')
-                    ->where('mahocsinh', $hocsinh->mahocsinh)
-                    ->where('mamonhoc', $mamonhoc)
-                    ->where('loaidiem', $loaidiem->maloaidiem)
-                    ->where('hocky',2)
-                    ->get();
-                // $i = $loaidiem->soluong;
-                // $j = 0;
-                foreach ($diemhs as $item => $diem) {
-                    // $d = Arr::add($d, $diem->loaidiem . '_' . $j, $diem->diem);
-                    // $j++;
-                    $tongdiem += $loaidiem->heso * $diem->diem;
-                    $tonghesodiem += (int) $loaidiem->heso;
-                }
-                // if ($j != 0)
-                //     $j--;
-                // for ($e = $j; $e < $i; $e++) {
-                //     $d = Arr::add($d, $loaidiem->maloaidiem . '_' . $e, "");
-                // }
-            }
+            $tbm_hk1 = Diem::tbm($hocsinh->mahocsinh, $mamonhoc, 1);
+            $tbm_hk2 = Diem::tbm($hocsinh->mahocsinh, $mamonhoc, 2);
+            // $d = [];
+            // $tongdiem = 0;
+            // $tonghesodiem = 0;
+            // // dd($dataloaidiem);
+            // foreach ($dataloaidiem as $item => $loaidiem) {
+            //     $diemhs = Diem::from('diem')
+            //         ->where('mahocsinh', $hocsinh->mahocsinh)
+            //         ->where('mamonhoc', $mamonhoc)
+            //         ->where('loaidiem', $loaidiem->maloaidiem)
+            //         ->where('hocky',1)
+            //         ->get();
+            //     // $i = $loaidiem->soluong;
+            //     // $j = 0;
+            //     foreach ($diemhs as $item => $diem) {
+            //         // $d = Arr::add($d, $diem->loaidiem . '_' . $j, $diem->diem);
+            //         // $j++;
+            //         $tongdiem += $loaidiem->heso * $diem->diem;
+            //         $tonghesodiem += (int) $loaidiem->heso;
+            //     }
+            //     // if ($j != 0)
+            //     //     $j--;
+            //     // for ($e = $j; $e < $i; $e++) {
+            //     //     $d = Arr::add($d, $loaidiem->maloaidiem . '_' . $e, "");
+            //     // }
+            // }
+            // if ($tonghesodiem != 0) {
+            //     $tbm1 = $tongdiem / $tonghesodiem;
+            //     $tbm1 = round($tbm1, 2);
+            // } else {
+            //     $tbm1 = "";
+            // }
+            // $tongdiem = 0;
+            // $tonghesodiem = 0;
+            // // dd($dataloaidiem);
+            // foreach ($dataloaidiem as $item => $loaidiem) {
+            //     $diemhs = Diem::from('diem')
+            //         ->where('mahocsinh', $hocsinh->mahocsinh)
+            //         ->where('mamonhoc', $mamonhoc)
+            //         ->where('loaidiem', $loaidiem->maloaidiem)
+            //         ->where('hocky',2)
+            //         ->get();
+            //     // $i = $loaidiem->soluong;
+            //     // $j = 0;
+            //     foreach ($diemhs as $item => $diem) {
+            //         // $d = Arr::add($d, $diem->loaidiem . '_' . $j, $diem->diem);
+            //         // $j++;
+            //         $tongdiem += $loaidiem->heso * $diem->diem;
+            //         $tonghesodiem += (int) $loaidiem->heso;
+            //     }
+            //     // if ($j != 0)
+            //     //     $j--;
+            //     // for ($e = $j; $e < $i; $e++) {
+            //     //     $d = Arr::add($d, $loaidiem->maloaidiem . '_' . $e, "");
+            //     // }
+            // }
 
-            if ($tonghesodiem != 0) {
-                $tbm2 = $tongdiem / $tonghesodiem;
-                $tbm2 = round($tbm2, 2);
-            } else {
-                $tbm2 = "";
-            }
-            if ($tbm1 == "" || $tbm2 == "") {
+            // if ($tonghesodiem != 0) {
+            //     $tbm2 = $tongdiem / $tonghesodiem;
+            //     $tbm2 = round($tbm2, 2);
+            // } else {
+            //     $tbm2 = "";
+            // }
+            if ($tbm_hk1 == "" || $tbm_hk2 == "") {
                 $tbm = "";
             } else {
-                $tbm = ($tbm1 + 2 * $tbm2) / 3;
+                if ($tt->kieudiem == 0)
+                    $tbm = ($tbm_hk1 + 2 * $tbm_hk2) / 3;
+                else {
+                    $tbm = $tbm_hk2 == 'Đạt' ? "Đạt" : "Chưa Đạt";
+                }
             }
 
-            $danhsach = Arr::add($danhsach, count($danhsach), ['mahocsinh' => $hocsinh->mahocsinh,'tenhocsinh' => $hocsinh->hotenhocsinh, 'diem'=> ['hocki1' => $tbm1, 'hocki2' => $tbm2], 'tbm' => $tbm]);
+            $danhsach = Arr::add($danhsach, count($danhsach), ['mahocsinh' => $hocsinh->mahocsinh,'tenhocsinh' => $hocsinh->hotenhocsinh, 'diem'=> ['hocki1' => $tbm_hk1, 'hocki2' => $tbm_hk2], 'tbm' => $tbm]);
             // dd($danhsach);
         }
         $dataloaidiem = [];
