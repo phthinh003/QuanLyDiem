@@ -318,7 +318,7 @@ class DanhSachController extends Controller
                         $sldiem++;
                         $tb += $tbm;
                     } else {
-                        $tbm = $tbm2 == 'd' ? 'Đạt' : 'Chưa đạt';
+                        $tbm = $tbm2;
                     }
                 }
                 $d = Arr::add($d, $mon->mamon, $tbm);
