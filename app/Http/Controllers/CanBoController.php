@@ -190,18 +190,22 @@ class CanBoController extends Controller
             $rules = [
                 'hoten' => 'required',
                 'ngaysinh' => 'required|before:today',
+                'gioitinh' => 'required',
                 'diachi' => 'required',
                 'sdt' => 'required',
                 'loai' => 'required',
+                'matkhau' => 'required',
             ];
 
             $customMessages = [
                 'hoten.required' => "Họ tên không được để trống.",
                 'ngaysinh.required' => "Ngày sinh không được để trống.",
                 'ngaysinh.before' => "Ngày sinh phải trước ngày hôm nay.",
+                'gioitinh.required' => "Giới tính chưa được chọn",
                 'diachi.required' => "Địa chỉ không được để trống.",
                 'sdt.required' => "Số điện thoại không được để trống.",
                 'loai.required' => "Loại không được để trống.",
+                'matkhau.required' => "Mật khẩu không được để trống."
             ];
 
             // Them du lieu thi kiem them mat khau

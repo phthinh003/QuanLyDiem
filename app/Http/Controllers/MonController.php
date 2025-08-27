@@ -104,11 +104,13 @@ class MonController extends Controller
             $rules = [
                 'mamon' => 'required',
                 'tenmon' => 'required',
+                'kieudiem' => 'required',
             ];
 
             $customMessages = [
                 'mamon.required' => "Mã môn không được để trống.",
                 'tenmon.required' => "Tên môn không được để trống.",
+                'kieudiem.required' => "Kiểu điểm không được để trống"
             ];
 
             $validator = Validator::make($request->all(), $rules, $customMessages);
