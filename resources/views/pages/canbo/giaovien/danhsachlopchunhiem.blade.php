@@ -49,7 +49,9 @@
                                 <td class="text-center"> {{ $key=='tb'?$v==""?"":number_format((float)$v, 1, '.', ''):$v }}</td>
                                 @elseif($key=='diem')
                                     @foreach ($v as $diemkey=> $diem)
-                                        <td class="text-center">{{ $diem==""?"": number_format((float)$diem, 1, '.', '') }}</td>
+                                        <td class="text-center">
+                                            {{ $diem }}
+                                        </td>
                                     @endforeach
                                 @elseif($key=='mahocsinh')
                                     <td class="text-center">{{ $v }}</td>
