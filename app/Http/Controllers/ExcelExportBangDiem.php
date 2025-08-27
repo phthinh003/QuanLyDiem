@@ -23,9 +23,6 @@ class ExcelExportBangDiem extends Controller
             $danhsach = [];
             $danhsach = Arr::add($danhsach, count($danhsach), count($data) + 1);
             $danhsach = Arr::add($danhsach, count($danhsach), $hocsinh->hotenhocsinh);
-            $tbm = 0;
-            $tongdiem = 0;
-            $tongheso = 0;
             foreach ($dataloaidiem as $item => $loaidiem) {
                 $diemhs = Diem::from('diem')
                     ->where('mahocsinh', $hocsinh->mahocsinh)
@@ -38,16 +35,17 @@ class ExcelExportBangDiem extends Controller
                 echo "<script>console.log('soluong: ".$i."')</script>";
                 foreach ($diemhs as $key => $value) {
                     $j++;
-                    $tongdiem += $value->diem * $loaidiem->heso;
-                    $tongheso += $loaidiem->heso;
-                    $danhsach = Arr::add($danhsach, count($danhsach), $value->diem);
+                    if ($monhoc->kieudiem == 0)
+                        $danhsach = Arr::add($danhsach, count($danhsach), number_format((float) $value->diem, 2, '.', ''));
+                    else
+                        $danhsach = Arr::add($danhsach, count($danhsach), $value->diem == 'd' ? 'Đạt' : "Chưa đạt");
                 }
                 for ($e = $j; $e < $i; $e++) {
                     $danhsach = Arr::add($danhsach, count($danhsach), "");
                 }
 
             }
-            $tbm = $tongheso == 0 ? "" : number_format($tongdiem / $tongheso, 1, '.');
+            $tbm = Diem::tbm($hocsinh->mahocsinh, $mamonhoc, $hocky);
             $danhsach = Arr::add($danhsach, count($danhsach), $tbm);
             $data = Arr::add($data, count($data), $danhsach);
         }

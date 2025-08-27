@@ -96,7 +96,7 @@ class BangDiemExport implements FromArray, WithHeadings, WithEvents
                         'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
                         'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
                     ],
-                    'font' => ['bold' => true],
+                    'font' => ['bold' => true,],
                 ]);
 
                 // Thêm border toàn bảng
@@ -112,6 +112,7 @@ class BangDiemExport implements FromArray, WithHeadings, WithEvents
                             'color' => ['argb' => 'FF000000'],
                         ],
                     ],
+                    'font' => ['name' => 'Times New Roman'],
                 ]);
 
                 // Căn giữa số thứ tự
