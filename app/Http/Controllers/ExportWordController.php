@@ -185,7 +185,7 @@ class ExportWordController extends Controller
                             $sldiem++;
                             $tb += ((float)$diemtb1 + (float)$diemtb2 * 2) / 3;
                         } else {
-                            $diemtb[] = $diemtb2 == 'd' ? 'Đạt' : 'Chưa đạt';
+                            $diemtb[] = $diemtb2;
                         }
                     }
 
