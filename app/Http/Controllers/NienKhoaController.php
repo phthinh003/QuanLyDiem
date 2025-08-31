@@ -24,6 +24,16 @@ class NienKhoaController extends Controller
     public function store(Request $request)
     {
         try {
+            // Kiểm tra dữ liệu
+            $validator = $this->validator($request);
+            if ($validator->fails()) {
+                toastr()->error('Có dữ liệu không hợp lệ!', 'Lỗi!');
+                return redirect()
+                    ->back()
+                    ->withErrors($validator->errors())
+                    ->withInput();
+            }
+
             $nienkhoa = new NienKhoa();
             $nienkhoa->tennienkhoa=$request->tennienkhoa;
             $nienkhoa->batdau=$request->batdau;
@@ -81,6 +91,31 @@ class NienKhoaController extends Controller
             }
         } catch (Exception $e) {
             echo 'Có lỗi phát sinh: ', $e->getMessage(), "\n";
+        }
+    }
+
+    public function validator(Request $request) {
+        try {
+            $rules = [
+                'tennienkhoa' => 'required',
+                'batdau' => 'required',
+                'ketthuc' => 'required',
+                'hk1' => 'required',
+                'hk2' => 'required',
+            ];
+
+            $customMessages = [
+                'tennienkhoa.required' => "Tên niên khoá không được để trống.",
+                'batdau.required' => "Thời gian bắt đầu không được để trống.",
+                'ketthuc.required' => "Thời gian kết thúc không được để trống.",
+                'hk1' => "Thời gian kết thúc học kỳ 1 không được để trống",
+                'hk2' => "Thời gian kết thúc học kỳ 2 không được để trống"
+            ];
+
+            $validator = \Validator::make($request->all(), $rules, $customMessages);
+            return $validator;
+        } catch (Exception $e) {
+            echo $e->getMessage();
         }
     }
 }

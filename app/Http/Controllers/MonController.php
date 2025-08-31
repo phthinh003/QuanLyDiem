@@ -25,6 +25,13 @@ class MonController extends Controller
     public function store(Request $request)
     {
         try {
+            $mon = Mon::find($request->mamon);
+            if ($mon != null) {
+                toastr()->error('Mã môn đã tồn tại!', 'Lỗi!');
+                return redirect()
+                    ->back()
+                    ->withInput();
+            }
             // Kiểm tra dữ liệu
             $validator = $this->validator($request);
             if ($validator->fails()) {
