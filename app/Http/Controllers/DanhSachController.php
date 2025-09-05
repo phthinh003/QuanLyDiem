@@ -472,12 +472,17 @@ class DanhSachController extends Controller
         foreach ($dshs as $key => $hocsinh) {
             $lop = [];
             $lophoc = LopHoc::join('lop', 'lop.malop', 'lophoc.malop')
-                ->where('mahocsinh', $hocsinh->mahocsinh)->get();
+                ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
+                ->where('mahocsinh', $hocsinh->mahocsinh)
+                ->select('mahocsinh','tenlop','lop.malop','tennienkhoa')
+                ->orderBy('tenlop','desc')
+                ->get();
             foreach ($lophoc as $k => $value) {
                 $lop = Arr::add($lop, count($lop), [$value]);
             }
             $menu = Arr::add($menu, count($menu), ['hocsinh' => $hocsinh, 'lop' => $lop]);
         }
+        // dd($menu);
 
         //du lieu noi dung
         $dataloaidiem = LoaiDiem::orderBy('heso')->get();
@@ -499,10 +504,14 @@ class DanhSachController extends Controller
                 $i = $loaidiem->soluong;
                 $j = 0;
                 foreach ($diemhs as $item => $diem) {
-                    $d = Arr::add($d, $diem->loaidiem . '_' . $j, $diem->diem);
+                    if ($mon->kieudiem == 0)
+                        $d = Arr::add($d, $diem->loaidiem . '_' . $j, $diem->diem);
+                    else {
+                        // dd($diem);
+                        if ($diem->diem == "d") $d = Arr::add($d, $diem->loaidiem . '_' . $j, "Đạt");
+                        else $d = Arr::add($d, $diem->loaidiem . '_' . $j, "Chưa Đạt");
+                    }
                     $j++;
-                    $tongdiem += $loaidiem->heso * $diem->diem;
-                    $tonghesodiem += (int) $loaidiem->heso;
                 }
                 if ($j != 0)
                     $j--;
@@ -510,11 +519,7 @@ class DanhSachController extends Controller
                     $d = Arr::add($d, $loaidiem->maloaidiem . '_' . $e, "");
                 }
             }
-            if ($tonghesodiem != 0) {
-                $tbm = $tongdiem / $tonghesodiem;
-            } else {
-                $tbm = "";
-            }
+            $tbm = Diem::tbm($mahocsinh, $mon->mamonhoc, $hocki);
             $danhsach = Arr::add($danhsach, count($danhsach), ['tenmon' => $mon->tenmon, 'diem' => $d, 'tbm' => $tbm]);
         }
         $loaidiem = new LoaiDiem();
@@ -541,7 +546,11 @@ class DanhSachController extends Controller
         foreach ($dshs as $key => $hocsinh) {
             $lop = [];
             $lophoc = LopHoc::join('lop', 'lop.malop', 'lophoc.malop')
-                ->where('mahocsinh', $hocsinh->mahocsinh)->get();
+                ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
+                ->where('mahocsinh', $hocsinh->mahocsinh)
+                ->select('mahocsinh','tenlop','lop.malop','tennienkhoa')
+                ->orderBy('tenlop','desc')
+                ->get();
             foreach ($lophoc as $k => $value) {
                 $lop = Arr::add($lop, count($lop), [$value]);
             }
@@ -553,54 +562,18 @@ class DanhSachController extends Controller
             ->where('malop', $malop)->get();
         $danhsach = [];
         foreach ($dsmon as $item => $mon) {
-            $tongdiem = 0;
-            $tonghesodiem = 0;
-            // dd($dataloaidiem);
-            foreach ($dataloaidiem as $item => $loaidiem) {
-                $diemhs = Diem::from('diem')
-                    ->where('mahocsinh', $mahocsinh)
-                    ->where('mamonhoc', $mon->mamonhoc)
-                    ->where('loaidiem', $loaidiem->maloaidiem)
-                    ->where('hocky', 1)
-                    ->get();
-                foreach ($diemhs as $item => $diem) {
-                    $tongdiem += $loaidiem->heso * $diem->diem;
-                    $tonghesodiem += (int) $loaidiem->heso;
-                }
-            }
-            if ($tonghesodiem != 0) {
-                $tbm1 = $tongdiem / $tonghesodiem;
-            } else {
-                $tbm1 = "";
-            };
-            $tongdiem = 0;
-            $tonghesodiem = 0;
-            foreach ($dataloaidiem as $item => $loaidiem) {
-                $diemhs = Diem::from('diem')
-                    ->where('mahocsinh', $mahocsinh)
-                    ->where('mamonhoc', $mon->mamonhoc)
-                    ->where('loaidiem', $loaidiem->maloaidiem)
-                    ->where('hocky', 2)
-                    ->get();
-                $i = $loaidiem->soluong;
-                $j = 0;
-                foreach ($diemhs as $item => $diem) {
-                    $j++;
-                    $tongdiem += $loaidiem->heso * $diem->diem;
-                    $tonghesodiem += (int) $loaidiem->heso;
-                }
-                if ($j != 0)
-                    $j--;
-            }
-            if ($tonghesodiem != 0) {
-                $tbm2 = $tongdiem / $tonghesodiem;
-            } else {
-                $tbm2 = "";
-            };
+            $tbm1 = Diem::tbm($mahocsinh, $mon->mamonhoc, 1);
+            $tbm2 = Diem::tbm($mahocsinh, $mon->mamonhoc, 2);
             if ($tbm1 == "" || $tbm2 == "") {
                 $tbcm = "";
-            } else
-                $tbcm = ($tbm1 + 2 * $tbm2) / '3';
+            } else {
+                if ($mon->kieudiem == 0) {
+                    $tbm = ($tbm1 + 2 * $tbm2) / 3;
+                    $tbcm = number_format($tbm, 1, '.', '');
+                } else {
+                    $tbcm = $tbm2;
+                }
+            }
             $danhsach = Arr::add($danhsach, count($danhsach), ['tenmon' => $mon->tenmon, 'hocki1' => $tbm1, 'hocki2' => $tbm2, 'canam' => $tbcm]);
         }
         $dataloaidiem = [];
