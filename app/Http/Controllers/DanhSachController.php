@@ -97,9 +97,11 @@ class DanhSachController extends Controller
         $date1 = Date::now();
         $khoadiem = false;
         if ($hocki == 1) {
-            if ($date1 > $tt->hk1) $khoadiem = true;
+            if ($date1 > $tt->hk1)
+                $khoadiem = true;
         } elseif ($hocki == 2) {
-            if ($date1 > $tt->hk2) $khoadiem = true;
+            if ($date1 > $tt->hk2)
+                $khoadiem = true;
         }
         session()->put('khoadiem', $khoadiem);
         // dd($khoadiem);
@@ -245,7 +247,8 @@ class DanhSachController extends Controller
             // dd($dataloaidiem);
             foreach ($datamon as $kmon => $mon) {
                 $tbm = Diem::tbm($hocsinh->mahocsinh, $mon->mamonhoc, $hocki);
-                if ($tbm != '' && $mon->kieudiem == 0) $tong += $tbm;
+                if ($tbm != '' && $mon->kieudiem == 0)
+                    $tong += $tbm;
                 $d = Arr::add($d, $mon->mamon, $tbm);
             }
             $sldiem = count(array_filter($d, function ($value) {
@@ -360,14 +363,17 @@ class DanhSachController extends Controller
             ->join('nienkhoa', 'nienkhoa.manienkhoa', 'lop.nienkhoa')
             ->where('mahocsinh', $mahocsinh)->get();
         //du lieu noi dung
-        $dataloaidiem = LoaiDiem::orderBy('heso')->get();
+        $dataloaidiem = LoaiDiem::whereRaw('soluong = (
+                SELECT MAX(l2.soluong)
+                FROM loaidiem l2
+                WHERE l2.heso = loaidiem.heso
+            )')->orderBy('heso')
+            ->get();
         $dsmon = MonHoc::from('monhoc')->join('mon', 'monhoc.mamon', 'mon.mamon')
             ->where('malop', $malop)->get();
         $danhsach = [];
         foreach ($dsmon as $item => $mon) {
             $d = [];
-            $tongdiem = 0;
-            $tonghesodiem = 0;
             // dd($dataloaidiem);
             foreach ($dataloaidiem as $item => $loaidiem) {
                 $diemhs = Diem::from('diem')
@@ -383,8 +389,10 @@ class DanhSachController extends Controller
                         $d = Arr::add($d, $diem->loaidiem . '_' . $j, $diem->diem);
                     else {
                         // dd($diem);
-                        if ($diem->diem == "d") $d = Arr::add($d, $diem->loaidiem . '_' . $j, "Đạt");
-                        else $d = Arr::add($d, $diem->loaidiem . '_' . $j, "Chưa Đạt");
+                        if ($diem->diem == "d")
+                            $d = Arr::add($d, $diem->loaidiem . '_' . $j, "Đạt");
+                        else
+                            $d = Arr::add($d, $diem->loaidiem . '_' . $j, "Chưa Đạt");
                     }
                     $j++;
                 }
@@ -474,10 +482,10 @@ class DanhSachController extends Controller
         foreach ($dshs as $key => $hocsinh) {
             $lop = [];
             $lophoc = LopHoc::join('lop', 'lop.malop', 'lophoc.malop')
-                ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
+                ->join('nienkhoa', 'lop.nienkhoa', 'nienkhoa.manienkhoa')
                 ->where('mahocsinh', $hocsinh->mahocsinh)
-                ->select('mahocsinh','tenlop','lop.malop','tennienkhoa')
-                ->orderBy('tenlop','desc')
+                ->select('mahocsinh', 'tenlop', 'lop.malop', 'tennienkhoa')
+                ->orderBy('tenlop', 'desc')
                 ->get();
             foreach ($lophoc as $k => $value) {
                 $lop = Arr::add($lop, count($lop), [$value]);
@@ -487,14 +495,17 @@ class DanhSachController extends Controller
         // dd($menu);
 
         //du lieu noi dung
-        $dataloaidiem = LoaiDiem::orderBy('heso')->get();
+        $dataloaidiem = LoaiDiem::whereRaw('soluong = (
+                SELECT MAX(l2.soluong)
+                FROM loaidiem l2
+                WHERE l2.heso = loaidiem.heso
+            )')->orderBy('heso')
+            ->get();
         $dsmon = MonHoc::from('monhoc')->join('mon', 'monhoc.mamon', 'mon.mamon')
             ->where('malop', $malop)->get();
         $danhsach = [];
         foreach ($dsmon as $item => $mon) {
             $d = [];
-            $tongdiem = 0;
-            $tonghesodiem = 0;
             // dd($dataloaidiem);
             foreach ($dataloaidiem as $item => $loaidiem) {
                 $diemhs = Diem::from('diem')
@@ -510,8 +521,10 @@ class DanhSachController extends Controller
                         $d = Arr::add($d, $diem->loaidiem . '_' . $j, $diem->diem);
                     else {
                         // dd($diem);
-                        if ($diem->diem == "d") $d = Arr::add($d, $diem->loaidiem . '_' . $j, "Đạt");
-                        else $d = Arr::add($d, $diem->loaidiem . '_' . $j, "Chưa Đạt");
+                        if ($diem->diem == "d")
+                            $d = Arr::add($d, $diem->loaidiem . '_' . $j, "Đạt");
+                        else
+                            $d = Arr::add($d, $diem->loaidiem . '_' . $j, "Chưa Đạt");
                     }
                     $j++;
                 }
@@ -548,10 +561,10 @@ class DanhSachController extends Controller
         foreach ($dshs as $key => $hocsinh) {
             $lop = [];
             $lophoc = LopHoc::join('lop', 'lop.malop', 'lophoc.malop')
-                ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
+                ->join('nienkhoa', 'lop.nienkhoa', 'nienkhoa.manienkhoa')
                 ->where('mahocsinh', $hocsinh->mahocsinh)
-                ->select('mahocsinh','tenlop','lop.malop','tennienkhoa')
-                ->orderBy('tenlop','desc')
+                ->select('mahocsinh', 'tenlop', 'lop.malop', 'tennienkhoa')
+                ->orderBy('tenlop', 'desc')
                 ->get();
             foreach ($lophoc as $k => $value) {
                 $lop = Arr::add($lop, count($lop), [$value]);
