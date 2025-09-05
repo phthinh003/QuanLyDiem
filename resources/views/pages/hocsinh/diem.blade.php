@@ -32,7 +32,13 @@
                         <th class="text-center">STT</th>
                         <th class="text-center">Tên Môn</th>
                         @foreach ($dataloaidiem as $item => $loaidiem)
-                            <th class="text-center" colspan="{{ $loaidiem->soluong }}">{{ $loaidiem->tenloaidiem }}</th>
+                            <th class="text-center" colspan="{{ $loaidiem->soluong }}">
+                                @if ($loaidiem->tenloaidiem == 'TBM')
+                                    {{ $loaidiem->tenloaidiem }}
+                                @else
+                                    Điểm Hệ Số {{ $loaidiem->heso }}
+                                @endif
+                            </th>
                         @endforeach
                     </tr>
                 </thead>
