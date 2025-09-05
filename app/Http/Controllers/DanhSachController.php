@@ -159,8 +159,10 @@ class DanhSachController extends Controller
             if ($tbm_hk1 == "" || $tbm_hk2 == "") {
                 $tbm = "";
             } else {
-                if ($tt->kieudiem == 0)
+                if ($tt->kieudiem == 0){
                     $tbm = ($tbm_hk1 + 2 * $tbm_hk2) / 3;
+                    $tbm = number_format($tbm, 1, '.', '');
+                }
                 else {
                     $tbm = $tbm_hk2 == 'Đạt' ? "Đạt" : "Chưa Đạt";
                 }
@@ -291,7 +293,7 @@ class DanhSachController extends Controller
         $lop=Lop::from('lop')
         ->join('canbo','lop.chunhiem','canbo.macanbo')
         ->join('nienkhoa','lop.nienkhoa','nienkhoa.manienkhoa')
-        ->where("chunhiem",$macanbo)->first();
+        ->where('malop', $malop)->first();
         $thongtinlop=[];
         $thongtinlop=Arr::add($thongtinlop,count($thongtinlop),
             ['Tên lớp'=>$lop->tenlop,
@@ -316,6 +318,7 @@ class DanhSachController extends Controller
                     if ($mon->kieudiem == 0) {
                         $tbm = ($tbm1 + 2 * $tbm2) / 3;
                         $sldiem++;
+                        $tbm = number_format($tbm, 1, '.', '');
                         $tb += $tbm;
                     } else {
                         $tbm = $tbm2;
