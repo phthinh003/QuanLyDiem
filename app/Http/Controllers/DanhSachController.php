@@ -416,6 +416,8 @@ class DanhSachController extends Controller
         $thongtinhs = Arr::add($thongtinhs, count($thongtinhs), ['Họ và tên' => $hs->hotenhocsinh, 'Lớp' => $lop->tenlop, 'Niên khóa' => $lop->tennienkhoa]);
         //du lieu sidebar
         $datalop = LopHoc::join('lop', 'lophoc.malop', 'lop.malop')
+            ->join('canbo', 'canbo.macanbo', 'lop.chunhiem')
+            ->join('nienkhoa', 'nienkhoa.manienkhoa', 'lop.nienkhoa')
             ->where('mahocsinh', $mahocsinh)->get();
         //du lieu noi dung
         $dataloaidiem = LoaiDiem::orderBy('heso')->get();
