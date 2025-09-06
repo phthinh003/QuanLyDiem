@@ -38,11 +38,15 @@ Route::group(['middleware' => ['App\Http\Middleware\CheckPermission']], function
         ///Route dang nhap bang tai khoan can bo
         Route::group(['middleware' => ['checklogincanbo::class']], function () {
             Route::get('/htql/canbo', 'App\Http\Controllers\CanBoController@indexpagecanbo')->name('indexCanboPage');
-            Route::get('/htql/canbo/danhsachlopday/{mamonhoc}/{hocky}', 'App\Http\Controllers\DanhSachController@danhsachlopday')->name('danhsachlopday');
-            Route::get('/htql/canbo/danhsachlopchunhiem/{malop}/{hocky}', 'App\Http\Controllers\DanhSachController@danhsachlopchunhiem')->name('danhsachlopchunhiem');
-            Route::get('/htql/canbo/danhsachlopchunhiem/bangdiem/{malop}/3', 'App\Http\Controllers\DanhSachController@bangdiemcanamlopchunhiem')->name('bangdiemcanamlopchunhiem');
-            Route::get('/htql/canbo/danhsachlopday/bangdiem/{mamonhoc}/3', 'App\Http\Controllers\DanhSachController@bangdiemcanamlopday')->name('bangdiemcanamlopday');
+            Route::get('/htql/canbo/dayhoc/{mamonhoc}/{hocky}', 'App\Http\Controllers\DanhSachController@danhsachlopday')->name('danhsachlopday');
+            Route::get('/htql/canbo/chunhiem/{malop}/{hocky}', 'App\Http\Controllers\DanhSachController@danhsachlopchunhiem')->name('danhsachlopchunhiem');
+            Route::get('/htql/canbo/chunhiem/bangdiem/{malop}/3', 'App\Http\Controllers\DanhSachController@bangdiemcanamlopchunhiem')->name('bangdiemcanamlopchunhiem');
+            Route::get('/htql/canbo/dayhoc/bangdiem/{mamonhoc}/3', 'App\Http\Controllers\DanhSachController@bangdiemcanamlopday')->name('bangdiemcanamlopday');
+
+            Route::get('/htql/canbo/chunhiem/danhgia/{malop}/danhsachlop', 'App\Http\Controllers\DanhGiaNamHocController@index')->name("danhsachDanhGia");
         });
+        Route::get('/htql/canbo/chunhiem/danhgia/{malop}/{mahs}/edit', 'App\Http\Controllers\DanhGiaNamHocController@create')->name("danhgiahocsinh");
+        Route::post('/htql/canbo/chunhiem/danhgia/store', 'App\Http\Controllers\DanhGiaNamHocController@store')->name("luudanhgia");
         // EXCEL EXPORT Bang Diem Lop
         Route::get('/download/{mamon}/{malop}/{hocky}', 'App\Http\Controllers\ExcelExportBangDiem@exportBangDiemLop')->name('excelExport');
         Route::get('/download/{malop}/{hocky}', 'App\Http\Controllers\ExportWordController@xuatPhieuDiemTatCa')->name('wordExport');

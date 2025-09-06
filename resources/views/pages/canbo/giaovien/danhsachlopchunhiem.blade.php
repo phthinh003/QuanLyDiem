@@ -3,11 +3,20 @@
     <div class="mt-2 pt-2 card card-custom">
         <div class="card-header flex-wrap border-0 pt-6 pb-0">
             <div class="cart-title">
-                @foreach($thongtinlop as $item => $value)
-                    @foreach($value as $key => $v)
-                       {{ $key }} : {{ $v }}<br/>
-                    @endforeach
+                @foreach ($thongtinlop as $key => $value)
+                        {{ $key }} : {{ $value }}<br />
                 @endforeach
+            </div>
+            <hr>
+            <div class="card-toolbar">Thực hiện:
+                @isset($hocki)
+                    <a href="{{ route('canboManage.wordExport', [$malop, $hocki]) }}">
+                        <button class="btn btn-primary">Xuất phiếu điểm</button></a>
+                @endisset
+                {{-- {{ dd($malop) }} --}}
+                <a href="{{ route('canboManage.danhsachDanhGia', $malop) }}">
+                    <button class="btn btn-secondary">Đánh Giá</button>
+                </a>
             </div>
             <hr>
             <div class="card-toolbar">
@@ -16,16 +25,13 @@
                 <a href="{{ route('canboManage.danhsachlopchunhiem', ['malop' => $malop, 'hocky' => 2]) }}">
                     <button class="btn {{ request()->is('*2') ? 'btn-success' : '' }}">Học Kì 2</button></a>
 
-                    <a href="{{ route('canboManage.bangdiemcanamlopchunhiem', ['malop' => $malop]) }}">
-                        <button class="btn {{ request()->is('*3') ? 'btn-success' : '' }}">Cả Năm</button></a>
+                <a href="{{ route('canboManage.bangdiemcanamlopchunhiem', ['malop' => $malop]) }}">
+                    <button class="btn {{ request()->is('*3') ? 'btn-success' : '' }}">Cả Năm</button></a>
 
                 {{--  --}}
-                @isset($hocki)
-                    <a href="{{ route('canboManage.wordExport', [$malop, $hocki]) }}">
-                    <button class="btn btn-primary">Xuất phiếu điểm</button></a>
-                @endisset
 
             </div>
+            <hr>
         </div>
         <div class="card-body">
             <table style="width: 100%;" class="table table-hover table-checkable" id="danhSachLopChuNhiem">
@@ -45,15 +51,16 @@
                         <tr>
                             <td class="text-center font-weight-bold">{{ $item + 1 }}</td>
                             @foreach ($value as $key => $v)
-                                @if ($key=='tenhocsinh' || $key=='tb')
-                                <td class="text-center"> {{ $key=='tb'?$v==""?"":number_format((float)$v, 1, '.', ''):$v }}</td>
-                                @elseif($key=='diem')
-                                    @foreach ($v as $diemkey=> $diem)
+                                @if ($key == 'tenhocsinh' || $key == 'tb')
+                                    <td class="text-center">
+                                        {{ $key == 'tb' ? ($v == '' ? '' : number_format((float) $v, 1, '.', '')) : $v }}</td>
+                                @elseif($key == 'diem')
+                                    @foreach ($v as $diemkey => $diem)
                                         <td class="text-center">
                                             {{ $diem }}
                                         </td>
                                     @endforeach
-                                @elseif($key=='mahocsinh')
+                                @elseif($key == 'mahocsinh')
                                     <td class="text-center">{{ $v }}</td>
                                 @endif
                             @endforeach

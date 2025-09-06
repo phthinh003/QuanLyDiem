@@ -1,9 +1,18 @@
-$('#danhSachCanBo').DataTable({
+$('#danhSachLop').DataTable({
     reponsive : "true",
     columnDefs: [
         {
             target: 0,
-            width: '100px',
+            width: '90px',
+        },
+        {
+            target: 1,
+            width: '200px',
+        },
+
+        {
+            target: 3,
+            width: '200px',
         }
     ],
     "language": {

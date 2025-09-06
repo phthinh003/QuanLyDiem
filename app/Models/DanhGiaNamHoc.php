@@ -24,7 +24,7 @@ class DanhGiaNamHoc extends Model
         'hk_hk2',
     ];
 
-    protected $primaryKeys = ['mshocsinh', 'manienkhoa'];
+    protected $primaryKeys = ['mahocsinh', 'manienkhoa'];
     // Override method getKeyForSaveQuery (dùng khi update)
     protected function setKeysForSaveQuery($query)
     {

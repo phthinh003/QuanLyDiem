@@ -229,16 +229,14 @@ class DanhSachController extends Controller
         // ->where("chunhiem",$macanbo)->first();
         // dd($lop);
         $thongtinlop = [];
-        $thongtinlop = Arr::add(
-            $thongtinlop,
-            count($thongtinlop),
+        $thongtinlop =
             [
+                'Mã lớp' => $lop->malop,
                 'Tên lớp' => $lop->tenlop,
                 'Giáo viên chủ nhiệm' => $lop->hoten,
                 'Sỉ số' => count($danhsachlop),
                 'Niên khóa' => $lop->tennienkhoa,
-            ]
-        );
+            ];
         $dataloaidiem = LoaiDiem::orderBy('heso')->get();
         $danhsach = [];
         foreach ($danhsachlop as $item => $hocsinh) {
@@ -300,16 +298,13 @@ class DanhSachController extends Controller
             ->join('nienkhoa', 'lop.nienkhoa', 'nienkhoa.manienkhoa')
             ->where('malop', $malop)->first();
         $thongtinlop = [];
-        $thongtinlop = Arr::add(
-            $thongtinlop,
-            count($thongtinlop),
+        $thongtinlop =
             [
                 'Tên lớp' => $lop->tenlop,
                 'Giáo viên chủ nhiệm' => $lop->hoten,
                 'Sỉ số' => count($danhsachlop),
                 'Niên khóa' => $lop->tennienkhoa
-            ]
-        );
+            ];
         $danhsach = [];
         foreach ($danhsachlop as $item => $hocsinh) {
             $d = [];
