@@ -53,6 +53,9 @@
                                                 <div class="col">
                                                     @if ($monhoc->kieudiem == 1)
                                                         <select name="{{ $key }}" class="form-control">
+                                                            <option value="">
+                                                                [Trống]
+                                                            </option>
                                                             <option value="d" {{ $value2 == 'd' ? "selected" : "" }}>Đạt</option>
                                                             <option value="cd" {{ $value2 == 'cd' ? "selected" : "" }}>Chưa đạt</option>
                                                         </select>

@@ -106,9 +106,12 @@ class DiemController extends Controller
             } else {
                 $diem = Diem::find($key, 'madiem');
                 // dd($diem);
-                $diem->diem = $data;
-
-                $diem->save();
+                if ($data != null) {
+                    $diem->diem = $data;
+                    $diem->save();
+                } else {
+                    $diem->delete();
+                }
             }
         }
 
@@ -125,14 +128,13 @@ class DiemController extends Controller
         // Các ID chỉ có số là madiem của điểm đó.
         if (!str_contains($id, "HS")) { // Diem da co (sua diem)
             $diem = Diem::findOrFail($id);
-            if ($sodiem=="") {
+            if ($sodiem == "") {
                 $diem->delete();
-            }
-            else {
+            } else {
                 $diem->diem = $r->input('diem');
                 $diem->save();
             }
-        } elseif($sodiem != "" && $sodiem != null) { // Diem moi va diem khong null
+        } elseif ($sodiem != "" && $sodiem != null) { // Diem moi va diem khong null
             // Lay loai diem $id vd: HS*****_2_1
             $loaidiem = substr($id, strpos($id, '_') + 1, strrpos($id, '_') - strpos($id, '_') - 1);
             $mahocsinh = substr($id, 0, strpos($id, '_'));
@@ -149,7 +151,7 @@ class DiemController extends Controller
         //Lấy tbm
         $tbm = Diem::tbm($diem->mahocsinh, $diem->mamonhoc, $diem->hocky);
 
-        $sodiem=="" ? $diemmoi = null : $diemmoi = $sodiem;
+        $sodiem == "" ? $diemmoi = null : $diemmoi = $sodiem;
 
         if ($diem->madiem == null) {
             $diemhs = Diem::select(['madiem'])
