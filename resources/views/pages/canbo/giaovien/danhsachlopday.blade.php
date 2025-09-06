@@ -92,8 +92,8 @@
                                         </td>
                                     @elseif($key == 'diem')
                                         @foreach ($v as $keydiem => $diem)
-                                            <td data-id="{{ $keydiem }}" data-field="diem" data-value="{{ $diem }}"
-                                                class="text-center editable">
+                                            <td data-id="{{ $keydiem }}" data-field="diem"
+                                                data-value="{{ $diem }}" class="text-center editable">
                                                 {{-- <input style="border: 0" class="form-control form-control-sm diem-input"
                                                     min="0" max="10" step="0.25" type="number"
                                                     value="{{ $diem != '' ? number_format((float) $diem, 2, '.', '') : '' }}"> --}}
@@ -107,12 +107,13 @@
                                                     @switch($diem)
                                                         @case('d')
                                                             Đạt
-                                                            @break
+                                                        @break
+
                                                         @case('cd')
                                                             Chưa đạt
                                                         @break
-                                                        @default
 
+                                                        @default
                                                     @endswitch
                                                 @endif
                                             </td>
@@ -217,9 +218,12 @@
                                         alert('Lưu thất bại!');
                                     }
                                 })
-                                .catch(() => {
+                                .catch(error => {
+                                    // console.log(error);
+                                    console.log("Tên lỗi:", error.name);
+                                    console.log("Thông điệp lỗi:", error.message);
                                     cell.innerText = oldValue;
-                                    alert('Lỗi mạng hoặc server!');
+                                    alert("Lỗi ở đâu đó rồi:<");
                                 });
                         });
 
@@ -295,7 +299,11 @@
                                 return;
                             }
 
-                            let tendiem = {null:'', 'cd':'Chưa đạt', 'd':'Đạt'};
+                            let tendiem = {
+                                null: '',
+                                'cd': 'Chưa đạt',
+                                'd': 'Đạt'
+                            };
                             // cell.innerHTML = text;
 
                             fetch(`/diem-ajax/${id}`, {
@@ -326,7 +334,8 @@
                                         alert('Lưu thất bại!');
                                     }
                                 })
-                                .catch(() => {
+                                .catch(error => {
+                                    console.error("Có lỗi xảy ra:", error);
                                     cell.innerText = oldValue;
                                     alert('Lỗi mạng hoặc server!');
                                 });

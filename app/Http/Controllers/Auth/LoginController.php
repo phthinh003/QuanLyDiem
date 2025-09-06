@@ -122,7 +122,6 @@ class LoginController extends Controller
             $typeacc = Str::upper(substr(session()->get('userid'),0,2));
             if($typeacc=="CB"){
                 // dd($mamonhoc);
-                echo "<script>console.log('" . $malop . $mamonhoc . $mahocsinh . "')</script>";
                 if($malop==null && $mamonhoc==null && $mahocsinh==null) return true;
                 else{
                     $datalopchunhiem = Lop::from('lop')
