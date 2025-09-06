@@ -91,7 +91,7 @@ class DanhGiaNamHocController extends Controller
         $danhgia = DanhGiaNamHoc::where('mahocsinh', $data->mahocsinh)
             ->where('manienkhoa', $data->nienkhoa)
             ->get()->first();
-        if ($danhgia->toArray() == null) {
+        if ($danhgia == null) {
             return view('pages.danhmuc.danhgianamhoc.danhgia', compact('page_title', 'datalopchunhiem', 'datalopday', 'data'));
         } else {
             return view('pages.danhmuc.danhgianamhoc.chinhsuadanhgia', compact('page_title', 'datalopchunhiem', 'datalopday', 'data', 'danhgia'));
@@ -112,7 +112,7 @@ class DanhGiaNamHocController extends Controller
             $danhgia = $check[0];
             $danhgia->fill($request->toArray());
 
-            dd($danhgia);
+            // dd($danhgia);
             $danhgia->xacnhancualanhdao = 0;
             $danhgia->save();
         }

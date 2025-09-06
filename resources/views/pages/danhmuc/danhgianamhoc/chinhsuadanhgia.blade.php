@@ -28,6 +28,7 @@
                 </b>
             </div>
         </div>
+        {{-- {{ dd($danhgia) }} --}}
         <div class="card-body">
             <form action="{{ route('canboManage.luudanhgia') }}" method="post">
                 @csrf
@@ -114,7 +115,7 @@
                                 <div class="col-md-8">
                                     <div class="form-row">
                                         <div class="col">
-                                            <input class="form-control" {{ $danhgia->xeploaicc != null ? $danhgia->xeploaicc : '' }} type="text" name="xeploaicc" id="xeploaicc" placeholder="Nhập xếp loại chứng chỉ">
+                                            <input class="form-control" value="{{ $danhgia->xeploaicc != null ? $danhgia->xeploaicc : '' }}" type="text" name="xeploaicc" id="xeploaicc" placeholder="Nhập xếp loại chứng chỉ">
                                         </div>
                                     </div>
                                 </div>
@@ -127,7 +128,7 @@
                                 <div class="col-md-8">
                                     <div class="form-row">
                                         <div class="col">
-                                            <input type="text" class="form-control" {{ $danhgia->giaithuong != null ? $danhgia->giaithuong : '' }} name="giaithuong" id="giaithunog" placeholder="Nhập giải thưởng">
+                                            <input type="text" class="form-control" value="{{ $danhgia->giaithuong != null ? $danhgia->giaithuong : '' }}" name="giaithuong" id="giaithunog" placeholder="Nhập giải thưởng">
                                         </div>
                                     </div>
                                 </div>
