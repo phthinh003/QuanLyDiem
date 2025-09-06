@@ -114,7 +114,7 @@
                                 <div class="col-md-8">
                                     <div class="form-row">
                                         <div class="col">
-                                            <input class="form-control" {{ $danhgia->xeploaicc != null ? $danhgia->xeploaicc : '' }} type="text" name="xeploiacc" id="xeploaicc" placeholder="Nhập xếp loại chứng chỉ">
+                                            <input class="form-control" {{ $danhgia->xeploaicc != null ? $danhgia->xeploaicc : '' }} type="text" name="xeploaicc" id="xeploaicc" placeholder="Nhập xếp loại chứng chỉ">
                                         </div>
                                     </div>
                                 </div>

@@ -84,13 +84,14 @@ class DanhGiaNamHocController extends Controller
             ->join('nienkhoa', 'nienkhoa.manienkhoa', 'lop.nienkhoa')
             ->join('hocsinh', 'hocsinh.mahocsinh', 'lophoc.mahocsinh')
             ->where('lophoc.mahocsinh', $mahocsinh)
+            ->where('lophoc.malop', $malop)
             ->select(['lophoc.mahocsinh', 'lophoc.malop', 'lop.nienkhoa', 'hocsinh.hotenhocsinh', 'tenlop', 'tennienkhoa'])
             ->get()[0];
         // dd($data);
         $danhgia = DanhGiaNamHoc::where('mahocsinh', $data->mahocsinh)
             ->where('manienkhoa', $data->nienkhoa)
             ->get()->first();
-        if (count($danhgia->toArray()) == 0) {
+        if ($danhgia->toArray() == null) {
             return view('pages.danhmuc.danhgianamhoc.danhgia', compact('page_title', 'datalopchunhiem', 'datalopday', 'data'));
         } else {
             return view('pages.danhmuc.danhgianamhoc.chinhsuadanhgia', compact('page_title', 'datalopchunhiem', 'datalopday', 'data', 'danhgia'));
@@ -110,6 +111,8 @@ class DanhGiaNamHocController extends Controller
         } else {
             $danhgia = $check[0];
             $danhgia->fill($request->toArray());
+
+            dd($danhgia);
             $danhgia->xacnhancualanhdao = 0;
             $danhgia->save();
         }
